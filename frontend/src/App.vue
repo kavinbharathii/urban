@@ -37,11 +37,11 @@
 
 <style scoped>
 
-.text {
-  text-shadow: 3px 3px 10px #666;
-  text-decoration: none;
-  border-left: 10px dotted #E8CD26;
-  border-bottom: 10px dotted #666;
+.header div {
+	font-size: 40px;
+	text-shadow: 3px 3px 10px #666;
+	text-decoration: none;
+	border-bottom: 10px dotted #666;
 }
 
 .header {
@@ -68,8 +68,6 @@
 }
 
 .page {
-	height: 100vh;
-	width: 100vw;
 	background-color: rgb(22, 192, 156);
 }
 
