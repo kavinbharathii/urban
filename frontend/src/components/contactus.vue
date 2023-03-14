@@ -11,11 +11,12 @@ export default {
 <template>
     <div class="main">
         <div class="left">
-            <div class="logo">IMAGE</div>
-            <div class="mail">hello@servbees.com</div>
-            <div>PH: 360Verve, OPC41F, Pioneer Highlands West Tower 2, Madison St., Mandaluyong City Ph</div>
-            <div>SG: Servbees Pte. Ltd 9 Temasek Boulevard, #07-01 Suntec Tower 2. Singapore 038989
-
+            <div class="logo"></div>
+            <div class="loc">
+                <div>hello@servbees.com</div>
+                <div>PH: 360Verve, OPC41F, Pioneer Highlands West Tower 2, Madison St., Mandaluyong City</div>
+                <div>SG: Servbees Pte. Ltd 9 Temasek Boulevard, #07-01 Suntec Tower 2. Singapore 038989
+            </div>
         </div>
         </div>
 
@@ -49,13 +50,18 @@ export default {
 
 .left {
     width: 30%;
+    padding: 10em 0em 0 4em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .right {
     width: 70%;
     display: flex;
     flex-direction: column;
-    padding: 10em 5em;
+    padding: 10em 5em 10em 2em;
 }
 
 .name , .email {
@@ -114,6 +120,7 @@ textarea {
     border-radius: 8px;
     color: rgb(72, 72, 72);
     margin-bottom: 1.5em;
+    font-size: 18px;
 }
 
 .btn {
@@ -129,6 +136,18 @@ textarea {
     background: none;
     padding: 10px 41px;
     background-color: gray;
+    cursor: pointer;
+}
+
+.logo {
+    width: 40%;
+}
+.loc {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    gap: .75em;
+    font-size: 14px;
 }
 
 </style>

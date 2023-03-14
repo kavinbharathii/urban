@@ -249,7 +249,7 @@
 			</div>
 		</div>
 		<div class="p3 vh-100 vw-100"></div>
-		<!-- <carousel /> -->
+		<carousel />
 		<aboutUs />
 		<contactUs />
 

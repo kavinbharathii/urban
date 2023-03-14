@@ -3,7 +3,7 @@
 </script>
 
 <template>
-    <div class="vh-100 vw-100">
+    <div>
         <div id="demo" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-indicators">
                 <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
@@ -12,21 +12,21 @@
             </div>
             <div class="carousel-inner" >
                 <div class="carousel-item active">
-                    <img src="../assets/bk.png" alt="Los Angeles" class="d-block w-100">
+                    <img src="../assets/bk.png" alt="Los Angeles" class="d-block w-90">
                     <div class="carousel-caption">
                         <h5>Second slide label</h5>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                     </div>
                 </div>
                 <div class="carousel-item">
-                    <img src="../assets/bk.png" alt="Chicago" class="d-block w-100">
+                    <img src="../assets/bk.png" alt="Chicago" class="d-block w-90">
                     <div class="carousel-caption">
                         <h5>Second slide label</h5>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                     </div>
                 </div>
                 <div class="carousel-item">
-                    <img src="../assets/bk.png" alt="New York" class="d-block w-100">
+                    <img src="../assets/bk.png" alt="New York" class="d-block">
                     <div class="carousel-caption">
                         <h5>Second slide label</h5>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
