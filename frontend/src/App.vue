@@ -1,11 +1,14 @@
 <script>
 	import { RouterLink, RouterView } from 'vue-router'
-	import HelloWorld from './components/HelloWorld.vue'
+	import carousel from './components/carousel.vue'
 	export default {
 	data() {
 		return {
 			scrolled: false
 		};
+	},
+	components : {
+		carousel
 	},
 	created() {
     	this.handleScroll();
@@ -22,14 +25,15 @@
 
 <template>
 	<div>
-		
+
 		<header class="container-fluid fixed-top bg-white d-flex justify-content-center align-items-center header" :class="{ scrolled : scrolled  }">
 			<div>Serve Arena</div>
 		</header>
 		<div class="pages">
-			<div class="page p1 vh-100 vw-100"></div>
-			<div class="page p2 vh-100 vw-100"></div>
-			<div class="page p3 vh-100 vw-100"></div>
+			<div class="p1 vh-100 vw-100"></div>
+			<div class="p2 vh-100 vw-100"></div>
+			<div class="p3 vh-100 vw-100"></div>
+			<carousel/>
 		</div>
 
 	</div>
@@ -67,10 +71,6 @@
 	scroll-snap-align: start;
 }
 
-.page {
-	background-color: rgb(22, 192, 156);
-}
-
 .p1 {
 	background-color: rgb(233, 99, 108);
 }
@@ -82,5 +82,6 @@
 .p3 {
 	background-color: rgb(22, 192, 156);
 }
+
 
 </style>
