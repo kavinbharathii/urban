@@ -10,7 +10,15 @@ export default {
 
 <template>
     <div class="main">
-        <div class="left"></div>
+        <div class="left">
+            <div class="logo">IMAGE</div>
+            <div class="mail">hello@servbees.com</div>
+            <div>PH: 360Verve, OPC41F, Pioneer Highlands West Tower 2, Madison St., Mandaluyong City Ph</div>
+            <div>SG: Servbees Pte. Ltd 9 Temasek Boulevard, #07-01 Suntec Tower 2. Singapore 038989
+
+        </div>
+        </div>
+
         <div class="right">
             <div class="tle">Contact Us</div>
             <div class="des">Interested in being a partner? Thinking of offering your products or services on Servbees? Have some questions? Get in touch with us so we can get buzzy together!</div>
@@ -40,11 +48,11 @@ export default {
 }
 
 .left {
-    width: 25%;
+    width: 30%;
 }
 
 .right {
-    width: 75%;
+    width: 70%;
     display: flex;
     flex-direction: column;
     padding: 10em 5em;
@@ -53,6 +61,10 @@ export default {
 .name , .email {
     position: relative;
     width: 40%;
+}
+
+.name {
+    margin: 0 5% 0 0;
 }
 
 span{
@@ -74,7 +86,6 @@ span{
 
 .right .name-email {
     display: flex;
-    gap: 2em;
     margin-bottom: 1.5em;
 }
 
@@ -108,8 +119,8 @@ textarea {
 .btn {
     display: flex;
     align-items: center;
+    margin-right: 13%;
     justify-content: end;
-    margin-right: 6em;
 }
 
 .btn button {
