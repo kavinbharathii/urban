@@ -1,6 +1,8 @@
 <script>
 	import { RouterLink, RouterView } from 'vue-router'
 	import carousel from './components/carousel.vue'
+	import aboutUs from './components/aboutus.vue'
+	import contactUs from './components/contactus.vue'
 	export default {
 	data() {
 		return {
@@ -8,7 +10,9 @@
 		};
 	},
 	components : {
-		carousel
+		carousel,
+		aboutUs,
+		contactUs
 	},
 	created() {
     	this.handleScroll();
@@ -34,6 +38,9 @@
 			<div class="p2 vh-100 vw-100"></div>
 			<div class="p3 vh-100 vw-100"></div>
 			<carousel/>
+			<aboutUs/>
+			<contactUs/>
+			<div class="p1 vh-100 vw-100"></div>
 		</div>
 
 	</div>

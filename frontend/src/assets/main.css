@@ -1,8 +1,9 @@
 
 * {
   user-select: none;
-  font-family: 'Satoshi', sans-serif;
+  font-family: M PLUS Rounded\ 1c,sans-serif;
   scroll-behavior: smooth;
+  color: black;
 }
 
 *::-webkit-scrollbar {
