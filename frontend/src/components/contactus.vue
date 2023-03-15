@@ -9,6 +9,7 @@ export default {
 </script>
 
 <template>
+<div>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <div class="main">
         <div class="left">
@@ -99,7 +100,7 @@ export default {
         </div>
 
         <div class="right">
-            <div class="tle">Contact Us</div>
+            <h1 class="tle">Contact Us</h1>
             <div class="des">Interested in being a partner? Thinking of offering your products or services on Servbees? Have
                 some questions? Get in touch with us so we can get buzzy together!</div>
             <div class="name-email">
@@ -116,6 +117,7 @@ export default {
             </div>
         </div>
     </div>
+</div>
 </template>
 
 <style scoped>
@@ -165,8 +167,8 @@ export default {
 }
 
 .right .tle {
-    font-size: 24px;
     margin-bottom: 1em;
+    font-weight: 600;
 }
 
 .right .des {

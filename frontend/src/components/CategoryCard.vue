@@ -42,7 +42,7 @@ export default {
     border: 3px solid #fc3171bf;
 
     width: 25vw;
-    height: 30vh;
+    aspect-ratio: 1920 / 1080;
     margin: 0.8em;
     padding: 2em;
 
@@ -57,8 +57,7 @@ export default {
 }
 
 .card-action-button {
-    position: relative;
-    /* top: 4em; */
+    z-index: 1 !important;
 }
 
 #image {
