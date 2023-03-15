@@ -1,10 +1,16 @@
 <script>
+
+import fot from './footer.vue'
+
 export default {
     data() {
         return {
 
         }
     },
+    components: {
+        fot
+    }
 }
 </script>
 
@@ -117,6 +123,9 @@ export default {
             </div>
         </div>
     </div>
+
+    <fot/>
+
 </div>
 </template>
 
@@ -127,7 +136,7 @@ export default {
 
 .main {
     width: 100vw;
-    height: 100vh;
+    height: 90vh;
     display: flex;
 }
 

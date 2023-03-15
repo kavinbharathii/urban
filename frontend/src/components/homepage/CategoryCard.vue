@@ -20,15 +20,9 @@ export default {
     <div class="text-area">
         <h1>{{ this.categoryName }}</h1>
         <p class="desc">{{ this.description }}</p>
-
         <button class="card-action-button">Learn more</button>
-
     </div>
-    <div class="image-area">
-        <!-- palceholder div -->
-        <div id="image"></div>
-    </div>
-
+    <div class="image"></div>
 </div>
 </template>
 
@@ -50,6 +44,20 @@ export default {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+
+    position: relative;
+}
+
+.image  {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-image: url('com-ser.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-color: rgba(176, 148, 168, 0.4);
+    opacity: 0.5;
+    border-radius: 10px;
 }
 
 .desc {
@@ -60,10 +68,10 @@ export default {
     z-index: 1 !important;
 }
 
-#image {
-    width: 100px;
-    aspect-ratio: 1 / 1;
-    background-color: #787878;
-    border-radius: 10px;
+.text-area {
+    position: relative;
+    z-index: 999;
 }
+
+
 </style>
