@@ -62,8 +62,6 @@
 					</div>
 				</div>
 			</div>
-
-			<div class="p3 page vh-100 vw-100"></div>
 			
 			<div class="page vh-100 vw-100">
 				<aboutUs />
@@ -93,6 +91,7 @@
 	left: 0;
 
 	width: 100vw;
+	z-index: 100;
 }
 
 .logo {
