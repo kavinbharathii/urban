@@ -1,6 +1,5 @@
 <script>
 	import { RouterLink, RouterView } from 'vue-router'
-	import carousel from './components/carousel.vue'
 	import aboutUs from './components/aboutus.vue'
 	import contactUs from './components/contactus.vue'
 	import CategoryCard from './components/CategoryCard.vue'
@@ -14,7 +13,6 @@
 	},
 
 	components: {
-		carousel,
 		CategoryCard,
 		contactUs,
 		aboutUs
@@ -249,7 +247,6 @@
 			</div>
 		</div>
 		<div class="p3 vh-100 vw-100"></div>
-		<carousel />
 		<aboutUs />
 		<contactUs />
 
@@ -307,7 +304,7 @@
 	bottom: 0;
 	left: -0.25em;
 	right: -0.25em;
-	background-color: hsla(341, 97%, 59%, 0.75);
+	background-color: #fc3171bf;
 	transform-origin: center right;
 	transform: scaleX(0);
 	transition: transform 0.2s ease-in-out;
