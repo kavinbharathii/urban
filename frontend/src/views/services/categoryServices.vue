@@ -85,7 +85,7 @@ export default {
                 </div>
                 <div>
                     <div class="add-btn">
-                        <span @click="subtract(index)" v-if="{  }">-</span>
+                        <span @click="subtract(index)">-</span>
                         <div :id="'cart' + index" >Add</div>
                         <span @click="addition(index)">+</span>
                     </div>
