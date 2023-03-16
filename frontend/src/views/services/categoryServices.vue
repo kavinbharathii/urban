@@ -58,6 +58,8 @@ export default {
 </script>
 
 <template>
+<div>
+
     <serviceNavbar />
     <div class="main">
         <div class="name-img">
@@ -101,6 +103,7 @@ export default {
         </div>
 
     </div>
+</div>
 </template>
 
 <style scoped>
