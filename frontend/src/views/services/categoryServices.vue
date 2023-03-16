@@ -11,7 +11,8 @@ export default {
     data() {
         return {
             serviceName: [],
-            providedServices: []
+            providedServices: [],
+            Loading: true
         }
     },
     mounted: function () {
@@ -25,6 +26,8 @@ export default {
                 this.serviceName.push(doc.id)
                 this.providedServices.push(Object(doc.data()))
             });
+
+            this.Loading = false
         },
     }
 }
@@ -43,8 +46,13 @@ export default {
         </div>
         <div class="lin"></div>
 
-        <h3>Provided Services with Pricing</h3>
-        <div class="all-cards">
+        <button class="load-btn" v-if="this.Loading">
+            <span class="spinner-border spinner-border-sm" style="color: white"></span>Loading..
+        </button>
+
+
+        <h3 v-if="!this.Loading">Provided Services with Pricing</h3>
+        <div class="all-cards" v-if="!this.Loading">
 
             <div class="cards" v-for="(data, id) in this.providedServices" :key="id">
                 <div class="detail">
@@ -129,5 +137,18 @@ h3 {
 .free {
     width: 100%;
     height: 2em;
+}
+
+.load-btn {
+  color: white;
+  padding: .5em 1em;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  gap: 1em;
+  justify-content: space-between;
+  border: none;
+  outline: none;
+  background-color: #fc3171bf;
 }
 </style>

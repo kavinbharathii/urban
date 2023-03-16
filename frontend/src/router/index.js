@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/HomeView.vue'
-import Computer from '../views/services/computer.vue'
 import categoryServices from '../views/services/categoryServices.vue'
 
 const router = createRouter({
