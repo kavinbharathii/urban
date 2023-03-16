@@ -137,7 +137,6 @@
 	transform-origin: center left;
 }
 
-
 .p3 {
 	background-color: rgb(22, 192, 156);
 }

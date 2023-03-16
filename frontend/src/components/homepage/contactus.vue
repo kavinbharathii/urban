@@ -110,11 +110,11 @@ export default {
             <div class="des">Interested in being a partner? Thinking of offering your products or services on Servbees? Have
                 some questions? Get in touch with us so we can get buzzy together!</div>
             <div class="name-email">
-                <div class="name"><input type="text"><span>Full Name</span></div>
-                <div class="email"><input type="email"><span>Email Address</span></div>
+                <div class="name"><input type="text" required><span>Full Name</span></div>
+                <div class="email"><input type="email" required><span>Email Address</span></div>
             </div>
             <div class="text-area-div">
-                <textarea name="message" placeholder="Your Message"></textarea>
+                <textarea name="message" placeholder="Your Message" required></textarea>
             </div>
             <div class="btn">
                 <button>
@@ -203,14 +203,14 @@ input {
     transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
-input:focus~span {
+input:focus~span , input:valid ~ span{
     transform: translateX(0px) translateY(-7px);
     transition: .3s;
     font-size: 14px;
     color: grey;
 }
 
-input:focus {
+input:focus ,  input[value=""] {
     border: 3px solid #fc3171bf;
 }
 
@@ -234,6 +234,8 @@ textarea:focus {
     align-items: center;
     margin-right: 13%;
     justify-content: end;
+    border: none;
+    outline: none;
 }
 
 .btn button {
@@ -244,7 +246,6 @@ textarea:focus {
     background-color: #fc3171;
     cursor: pointer;
     border-radius: 10px;
-
     font-weight: 500;
     transition: all .2s ease-in-out;
 }

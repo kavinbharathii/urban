@@ -101,7 +101,7 @@ export default {
 
             <div class="free"></div>
         </div>
-
+        
     </div>
 </div>
 </template>
