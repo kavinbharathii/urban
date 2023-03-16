@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/HomeView.vue'
 import categoryServices from '../views/services/categoryServices.vue'
+import signIn from '../views/services/signIn.vue'
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
@@ -8,6 +9,14 @@ const router = createRouter({
 		{
 			path: '',
 			component: Home
+		},
+		{
+			path: '/signin',
+			component: signIn
+		},
+		{
+			path: '/signup',
+			// component: 
 		},
 		{
 			path: '/cctv-services',

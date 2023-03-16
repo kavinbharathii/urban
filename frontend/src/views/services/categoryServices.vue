@@ -2,9 +2,13 @@
 
 import { db } from '../firebase.js'
 import { collection, getDocs } from "firebase/firestore";
+import serviceNavbar from './serviceNavbar.vue';
 
 export default {
     name : "categoryServices",
+    components: {
+        serviceNavbar
+    },
     props: {
         categoryName: String 
     },
@@ -34,6 +38,7 @@ export default {
 </script>
 
 <template>
+    <serviceNavbar />
     <div class="main">
         <div class="name-img">
             <div class="name">
@@ -56,8 +61,8 @@ export default {
 
             <div class="cards" v-for="(data, id) in this.providedServices" :key="id">
                 <div class="detail">
-                    <div>{{ this.serviceName[id] }}</div>
-                    <div style="margin-bottom: 1em"><strong>✩</strong> {{ data.rating }} (456K Booking)</div>
+                    <div class="servicename">{{ this.serviceName[id] }}</div>
+                    <div class="rating"><strong>✩</strong> {{ data.rating }} (456K Booking)</div>
                     <div class="rupee">
                         <strong>₹ {{ data.rupee }}.00</strong>
                         <span> • {{ data.timing }}</span>
@@ -114,12 +119,6 @@ h3 {
     row-gap: 2em;
 }
 
-.rupee {
-    display: flex;
-    gap: 1em;
-    margin-bottom: 1em;
-}
-
 .view-btn {
     background: none;
     outline: none;
@@ -131,7 +130,7 @@ h3 {
 .cards {
     padding: 1em;
     background-color: #f5f2f2;
-    ;
+    border-radius: 10px;
 }
 
 .free {
@@ -151,4 +150,21 @@ h3 {
   outline: none;
   background-color: #fc3171bf;
 }
+
+.servicename {
+    font-size: 2em;
+    font-weight: 600;
+}
+
+.rating {
+    margin-bottom: 1.3em;
+    font-size: 0.8em;
+}
+
+.rupee {
+    display: flex;
+    gap: 1em;
+    margin-bottom: 1em;
+}
+
 </style>
