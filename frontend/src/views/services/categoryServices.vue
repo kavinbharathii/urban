@@ -5,12 +5,12 @@ import { collection, getDocs } from "firebase/firestore";
 import serviceNavbar from './serviceNavbar.vue';
 
 export default {
-    name : "categoryServices",
+    name: "categoryServices",
     components: {
         serviceNavbar
     },
     props: {
-        categoryName: String 
+        categoryName: String
     },
     data() {
         return {
@@ -30,9 +30,29 @@ export default {
                 this.serviceName.push(doc.id)
                 this.providedServices.push(Object(doc.data()))
             });
-
             this.Loading = false
         },
+        subtract(id) {
+
+            let btn = document.querySelector('#cart' + id.toString())
+
+            if (parseInt(btn.innerHTML) != 'Add' && parseInt(btn.innerHTML) >= 1) {
+
+                if (btn.innerHTML == 'Add') {
+                    btn.innerHTML = 1
+                } else {
+                    if (parseInt(btn.innerHTML) == 1) { btn.innerHTML = 'Add'; return }
+                    btn.innerHTML = parseInt(btn.innerHTML) - 1
+                }
+            }
+
+        },
+        addition(id) {
+
+            let btn = document.querySelector('#cart' + id.toString())
+            if (btn.innerHTML == 'Add') { btn.innerHTML = 1 }
+            else { btn.innerHTML = parseInt(btn.innerHTML) + 1 }
+        }
     }
 }
 </script>
@@ -59,13 +79,20 @@ export default {
         <h3 v-if="!this.Loading">Provided Services with Pricing</h3>
         <div class="all-cards" v-if="!this.Loading">
 
-            <div class="cards" v-for="(data, id) in this.providedServices" :key="id">
+            <div class="cards" v-for="(data, index) in this.providedServices" :key="index">
                 <div class="detail">
                     <div class="servicename">{{ this.serviceName[id] }}</div>
                     <div class="rating"><strong>✩</strong> {{ data.rating }} (456K Booking)</div>
                     <div class="rupee">
                         <strong>₹ {{ data.rupee }}.00</strong>
                         <span> • {{ data.timing }}</span>
+                    </div>
+                </div>
+                <div>
+                    <div class="add-btn">
+                        <span @click="subtract(index)" v-if="{}">-</span>
+                        <div :id="'cart' + index">Add</div>
+                        <span @click="addition(index)">+</span>
                     </div>
                 </div>
             </div>
@@ -131,6 +158,8 @@ h3 {
     padding: 1em;
     background-color: #f5f2f2;
     border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
 }
 
 .free {
@@ -139,16 +168,16 @@ h3 {
 }
 
 .load-btn {
-  color: white;
-  padding: .5em 1em;
-  margin: auto;
-  display: flex;
-  align-items: center;
-  gap: 1em;
-  justify-content: space-between;
-  border: none;
-  outline: none;
-  background-color: #fc3171bf;
+    color: white;
+    padding: .5em 1em;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    justify-content: space-between;
+    border: none;
+    outline: none;
+    background-color: #fc3171bf;
 }
 
 .servicename {
@@ -165,6 +194,30 @@ h3 {
     display: flex;
     gap: 1em;
     margin-bottom: 1em;
+
 }
 
+.add-btn {
+    display: flex;
+    gap: 0.5em;
+    align-items: center;
+    justify-content: space-between;
+    margin: .4em .7em 0 0;
+    background-color: hsla(341, 100%, 46%, 0.749);
+    color: #fff;
+    padding: 0.2em 0.5em;
+    border-radius: 8px;
+    min-width: 5em;
+}
+
+.add-btn span {
+    color: #fff;
+    cursor: pointer;
+}
+
+.add-btn button {
+    border: none;
+    color: #fff;
+    background-color: #fc3171bf;
+}
 </style>
