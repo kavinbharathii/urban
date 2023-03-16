@@ -2,7 +2,6 @@
   user-select: none;
   font-family: "Satoshi", sans-serif;
   scroll-behavior: smooth;
-  color: black;
 }
 
 *::-webkit-scrollbar {
