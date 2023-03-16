@@ -10,6 +10,7 @@ export default {
 }
 </script>
 
+
 <template>
     <div id="dev">
         <h1>Hello there!</h1>

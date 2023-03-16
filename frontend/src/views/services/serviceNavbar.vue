@@ -42,6 +42,7 @@ export default {
     /* position: fixed; */
 }
 
+
 .logo {
     font-size: 2em;
     margin-left: 2em
