@@ -9,7 +9,7 @@ export default {
 <template>
     <div class="fot">
         <div class="icons-div">
-            <div><a href="#"><font-awesome-icon icon="fa-brands fa-twitter icon" /></a></div>
+            <div><font-awesome-icon icon="fa-brands fa-twitter icon" /></div>
             <div><font-awesome-icon icon="fa-brands fa-youtube icon"/></div>
             <div><font-awesome-icon icon="fa-brands fa-instagram icon" /></div>
             <div><font-awesome-icon icon="fa-solid fa-envelope" /></div>
