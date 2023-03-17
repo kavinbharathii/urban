@@ -1,6 +1,6 @@
 <script>
 
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword , sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '../firebase.js'
 
 export default {
@@ -15,20 +15,24 @@ export default {
     },
     methods: {
         signup() {
-
-            if (this.form.password == this.form.confirmpassword) {
-                createUserWithEmailAndPassword(auth, this.form.email, this.form.password)
-                    .then((userCredential) => {
-                        const user = userCredential.user;
-                        console.log('login successfully')
-                    })
-                    .catch((error) => {
-                        console.log(error)
-                    });
-            } else {
-                console.error("Passwords don't match")
-            }
-
+            createUserWithEmailAndPassword(auth, this.form.email, this.form.password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    console.log('login successfully')
+                })
+                .catch((error) => {
+                    console.log(error)
+                });
+        },
+        reset() {
+            console.log('ok');
+            const email = document.querySelector('.resetemail')
+            console.log(email.value)
+            sendPasswordResetEmail(auth , email.value) 
+                .then(() => {
+                    console.log('link send')
+                })
+                .catch((err) => { console.log(err) })
         }
     }
 }
