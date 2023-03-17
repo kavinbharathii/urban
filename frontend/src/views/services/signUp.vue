@@ -41,8 +41,6 @@ export default {
 <template>
     <div id="dev">
         <div class="padder">
-            <h1>IT Arena</h1>
-            <p>Your <span></span>one spot service provider</p>
             
         </div>
         <div class="former">
@@ -53,7 +51,9 @@ export default {
                 <label for="confirm-password">Confirm Password<input type="password" v-model="form.confirmpassword" required></label>
                 <div class="buttons">
                     <button type="submit" class="prominent">Create Account</button>
-                    <button type="button" class="secondary">Already an User?</button>
+                    
+                    <button type="button" class="secondary"><router-link to="/signin">Already an User?</router-link></button>
+                    
                 </div>
             </form>
         </div>
@@ -90,7 +90,8 @@ export default {
     flex-direction: column;
 
     gap: 1em;
-    width: 25vw;
+    width: 70%;
+    max-width: 25em;
 }
 
 label {
@@ -128,4 +129,20 @@ label {
     background-color: #fefefe;
     border: 1px solid #fc3171bf;
 }
+
+
+input {
+    outline: none;
+    padding: 0 .4em;
+    height: 2em;
+}
+
+input:focus {
+    border: 3px solid rgba(203, 153, 162,.8);
+}
+
+a {
+    color: black;
+}
+
 </style>
