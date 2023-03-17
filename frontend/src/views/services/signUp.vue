@@ -1,6 +1,6 @@
 <script>
 
-import { createUserWithEmailAndPassword , sendPasswordResetEmail } from 'firebase/auth';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase.js'
 
 export default {
@@ -11,28 +11,32 @@ export default {
                 password: '',
                 confirmpassword: ''
             },
+            passwordMismatchError: false,
+            passwordError: "Passwords don't match"
         }
     },
     methods: {
         signup() {
-            createUserWithEmailAndPassword(auth, this.form.email, this.form.password)
-                .then((userCredential) => {
-                    const user = userCredential.user;
-                    console.log('login successfully')
-                })
-                .catch((error) => {
-                    console.log(error)
-                });
-        },
-        reset() {
-            console.log('ok');
-            const email = document.querySelector('.resetemail')
-            console.log(email.value)
-            sendPasswordResetEmail(auth , email.value) 
-                .then(() => {
-                    console.log('link send')
-                })
-                .catch((err) => { console.log(err) })
+
+            if (this.form.password == this.form.confirmpassword) {
+                createUserWithEmailAndPassword(auth, this.form.email, this.form.password)
+                    .then((userCredential) => {
+                        const user = userCredential.user;
+                        this.passwordMismatchError = false
+                    })
+                    .catch((error) => {
+                        let re_braces = /\((.*)\)/
+                        let re_slash = /[^/]*$/
+                        let error_parse = error.message.match(re_braces)[1]
+                        let message_parse = error_parse.match(re_slash)[0]
+                        let message = message_parse.replace("-", " ")
+                        this.passwordError = message
+                        this.passwordMismatchError = true
+                    });
+
+            } else {
+                this.passwordMismatchError = true
+            }
         }
     }
 }
@@ -55,7 +59,12 @@ export default {
                     <button type="button" class="secondary"><router-link to="/signin">Already an User?</router-link></button>
                     
                 </div>
+
+                <div v-if="passwordMismatchError" class="password-alert">
+                    {{ this.passwordError }}
+                </div>
             </form>
+            
         </div>
     </div>
 </template>
@@ -143,6 +152,19 @@ input:focus {
 
 a {
     color: black;
+}
+
+.password-alert {
+    color: #fa5f54;
+    width: 100%;
+    height: 3rem;
+    background-color: #fefefe;
+    border: 2px solid #fa5f54;
+    border-radius: 5px;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 </style>

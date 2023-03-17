@@ -1,7 +1,7 @@
 
 <script>
 
-import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth'
+import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth'
 import { auth } from '../firebase.js'
 import Router from '@/router'
 
@@ -9,7 +9,10 @@ export default {
     data() {
         return {
             form: { name: '', email: '', password: '' },
-            err: ''
+            err: '',
+            emailNotProvided: false,
+            signInError: "",
+            errorState: false
         }
     },
     methods: {
@@ -25,6 +28,7 @@ export default {
                     console.log('err', error)
                 });
         },
+
         getUser() {
             onAuthStateChanged(auth, (user) => {
                 if (user) {
@@ -37,19 +41,46 @@ export default {
                 }
             });
         },
+
         signin() {
             signInWithEmailAndPassword(auth, this.form.email, this.form.password)
                 .then((userCredential) => {
                     const user = userCredential.user;
                     console.log('sigin successfully')
+                    this.errorState = false
                 })
                 .catch((error) => {
                     console.log(error)
-                    this.err = 'E-mail or Password is incorrect'
+                    let re_braces = /\((.*)\)/
+                    let re_slash = /[^/]*$/
+                    let error_parse = error.message.match(re_braces)[1]
+                    let message_parse = error_parse.match(re_slash)[0]
+                    let message = message_parse.replace("-", " ")
+                    this.signInError = message
+                    this.errorState = true
                 });
         },
-    },
 
+        reset() {
+            console.log('ok');
+            const email = document.querySelector('#form-email')
+            console.log(email.value)
+
+            if (email.value == "") {
+                this.signInError = "Email was not provided"
+                this.errorState = true
+                console.log("Email was not provided")
+            } else {
+                this.emailNotProvided = false
+
+                sendPasswordResetEmail(auth , email.value) 
+                .then(() => {
+                    console.log('link send')
+                })
+                .catch((err) => { console.log(err) })
+            }
+        }
+    },
 }
 
 </script>
@@ -61,8 +92,14 @@ export default {
         <form @submit.prevent="signin()" class="signin">
             <h1>Welcome back!  🎉</h1>
 
-            <label for="email">Email: <br><input type="text" v-model="form.email" required></label>
-            <label for="password">Password: <br><input type="password" v-model="form.password" required></label>
+            <label for="email">
+                Email
+                <input id="form-email" type="text" v-model="form.email" required>
+            </label>
+            <label for="password">
+                <div class="forgot-wrapper">Password <div class="forgot" @click="reset()">Forgot Password?</div></div>
+                <input type="password" v-model="form.password" required>
+            </label>
             <div class="buttons">
                 <button type="submit" class="prominent">Continue</button>
                 <button type="button" class="secondary"><router-link to="/signup"> Create Account</router-link></button>
@@ -84,6 +121,10 @@ export default {
                 Login with Google?
             </button>
             <div class="bottom-span"></div>
+
+            <div v-if="errorState" class="email-alert">
+                {{ this.signInError }}
+            </div>
         </form>
     </div>
 </template>
@@ -192,4 +233,34 @@ a{
     color: #171717;
 }
 
+.forgot-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.forgot {
+    font-size: 0.8em;
+    font-weight: 100;
+    color: #536bd8;
+}
+
+.forgot:hover {
+    color: #607cfa;
+}
+
+.email-alert {
+    color: #fa5f54;
+    width: 100%;
+    height: 3rem;
+    background-color: #fefefe;
+    border: 2px solid #fa5f54;
+    border-radius: 5px;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 </style>

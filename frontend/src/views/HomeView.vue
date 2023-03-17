@@ -28,20 +28,20 @@
 			<div class="logo">IT Arena</div>
 
 			<div class="nav-links">
-				<a class="nav-link" href="">Home</a>
-				<a class="nav-link" href="">Services</a>
-				<a class="nav-link" href="">Contact</a>
-				<a class="nav-link" href="">About</a>
+				<a class="nav-link" href="#home">Home</a>
+				<a class="nav-link" href="#services">Services</a>
+				<a class="nav-link" href="#about">About</a>
+				<a class="nav-link" href="#contact">Contact</a>
 			</div>
 		</nav>
 
 		<div class="full-page">
 
-			<div class="page">
+			<div class="page" id="home">
 				<homevue/>
 			</div>
 
-			<div class="page">
+			<div class="page" id="services">
 				<div class="p2 vh-100 vw-100">
 					<div class="cards-container">
 						<div class="cards-col col-one">
@@ -63,11 +63,11 @@
 				</div>
 			</div>
 			
-			<div class="page vh-100 vw-100">
+			<div class="page vh-100 vw-100" id="about">
 				<aboutUs />
 			</div>
 
-			<div class="page vh-100 vw-100">
+			<div class="page vh-100 vw-100" id="contact">
 				<contactUs />
 			</div>
 
@@ -165,7 +165,7 @@
 	scroll-snap-align: start;
 }
 
-a{
+a {
 	text-decoration: none;
 }
 
