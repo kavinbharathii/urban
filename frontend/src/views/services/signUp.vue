@@ -1,6 +1,6 @@
 <script>
 
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword , sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '../firebase.js'
 
 export default {
@@ -19,6 +19,16 @@ export default {
                 .catch((error) => {
                     console.log(error)
                 });
+        },
+        reset() {
+            console.log('ok');
+            const email = document.querySelector('.resetemail')
+            console.log(email.value)
+            sendPasswordResetEmail(auth , email.value) 
+                .then(() => {
+                    console.log('link send')
+                })
+                .catch((err) => { console.log(err) })
         }
     }
 
@@ -33,5 +43,9 @@ export default {
             <label for="password">Password: <input type="password" v-model="form.password" required></label>
             <button type="submit"> signup </button>
         </form>
+        <div>
+            <div><input type="email" class="resetemail"></div>
+            <div><button @click="reset()">reset</button></div>
+        </div>
     </div>
 </template>
