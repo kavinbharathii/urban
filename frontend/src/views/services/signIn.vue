@@ -1,44 +1,44 @@
 
 <script>
 
-import { GoogleAuthProvider , signInWithPopup , onAuthStateChanged , signInWithEmailAndPassword } from 'firebase/auth'
+import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth'
 import { auth } from '../firebase.js'
 import Router from '@/router'
 
 export default {
     data() {
         return {
-            form : { name:'' , email: '' , password: '' },
+            form: { name: '', email: '', password: '' },
             err: ''
         }
     },
     methods: {
-      loginWithGoogle() {
-        const provider =  new GoogleAuthProvider();
-        signInWithPopup( auth ,provider)
-            .then((result)=>{
-                console.log(result.user);
-                Router.push('/cart')
-                this.getUser()
-            })
-            .catch((error)=>{
-                console.log('err' ,error)
-            });
+        loginWithGoogle() {
+            const provider = new GoogleAuthProvider();
+            signInWithPopup(auth, provider)
+                .then((result) => {
+                    console.log(result.user);
+                    Router.push('/cart')
+                    this.getUser()
+                })
+                .catch((error) => {
+                    console.log('err', error)
+                });
         },
         getUser() {
             onAuthStateChanged(auth, (user) => {
                 if (user) {
                     const uid = user.email;
                     this.email = uid.split('@')[0]
-                    console.log(uid,this.email)
+                    console.log(uid, this.email)
                 } else {
                     console.log("Can't get user e-mail")
                     Router.push('/signup')
                 }
             });
         },
-        signin(){
-			signInWithEmailAndPassword(auth, this.form.email, this.form.password)
+        signin() {
+            signInWithEmailAndPassword(auth, this.form.email, this.form.password)
                 .then((userCredential) => {
                     const user = userCredential.user;
                     console.log('sigin successfully')
@@ -49,7 +49,7 @@ export default {
                 });
         },
     },
-    
+
 }
 
 </script>
@@ -59,23 +59,39 @@ export default {
     <div id="signin-div">
         <div class="padd"></div>
         <form @submit.prevent="signin()" class="signin">
+            <h1>Welcome back!🎉</h1>
 
             <label for="email">Email: <br><input type="text" v-model="form.email" required></label>
             <label for="password">Password: <br><input type="password" v-model="form.password" required></label>
             <div class="buttons">
-                    <button type="submit" class="prominent">Continue</button>
-                    <button type="button" class="secondary">Create Account</button>
+                <button type="submit" class="prominent">Continue</button>
+                <button type="button" class="secondary">Create Account</button>
             </div>
-            <button @click="loginWithGoogle()" class="g-signin">Login with Google ? </button>
-        </form>        
+            <button @click="loginWithGoogle()" class="g-signin">
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0,0,256,256"
+                    width="20px" height="20px" fill-rule="nonzero" class="googlesvg">
+                    <g fill="#171717" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt"
+                        stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0"
+                        font-family="none" font-weight="none" font-size="none" text-anchor="none"
+                        style="mix-blend-mode: normal">
+                        <g transform="scale(10.66667,10.66667)">
+                            <path
+                                d="M12.545,10.239v3.821h5.445c-0.712,2.315 -2.647,3.972 -5.445,3.972c-3.332,0 -6.033,-2.701 -6.033,-6.032c0,-3.331 2.701,-6.032 6.033,-6.032c1.498,0 2.866,0.549 3.921,1.453l2.814,-2.814c-1.777,-1.619 -4.141,-2.607 -6.735,-2.607c-5.524,0 -10.002,4.477 -10.002,10c0,5.523 4.478,10 10.002,10c8.396,0 10.249,-7.85 9.426,-11.748z">
+                            </path>
+                        </g>
+                    </g>
+                </svg>
+                Login with Google?
+            </button>
+            <div class="bottom-span"></div>
+        </form>
     </div>
 </template>
 
 <style scoped>
-
 #signin-div {
     display: grid;
-    grid-template-columns: 1fr 2fr ;
+    grid-template-columns: 1fr 2fr;
     grid-template-rows: 1fr;
 
     width: 100vw;
@@ -84,15 +100,17 @@ export default {
 
 .padd {
     background-color: #fc3171bf;
+    width: 30vw;
+
 }
 
 .signin {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    /* align-items: center; */
     justify-content: center;
     gap: 1em;
-    min-width: 29em;
+    min-width: 25vw;
     margin: auto;
 }
 
@@ -113,7 +131,7 @@ label {
     margin-top: 1em;
 }
 
-.buttons > button {
+.buttons>button {
     width: 45%;
     outline: none;
     height: 2.5em;
@@ -135,7 +153,35 @@ label {
 .g-signin {
     background: none;
     border: none;
-    color: rgb(203, 153, 162);
+    /* color: hwb(349 60% 20%); */
+    color: #171717ff;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
+.googlesvg {
+    margin-right: 0.5em;
+}
+
+.bottom-span {
+    height: 2px;
+    width: 0%;
+    transition: 200ms ease;
+    background-color: #171717;
+}
+
+.g-signin:hover ~ .bottom-span {
+    width: 100%;
+}
+
+input {
+    height: 2rem;
+}
+
+input:focus {
+    border: 3px solid #cb99a2cc;
+    outline: none;
+}
 </style>
