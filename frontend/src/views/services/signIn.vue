@@ -59,13 +59,13 @@ export default {
     <div id="signin-div">
         <div class="padd"></div>
         <form @submit.prevent="signin()" class="signin">
-            <h1>Welcome back!🎉</h1>
+            <h1>Welcome back!  🎉</h1>
 
             <label for="email">Email: <br><input type="text" v-model="form.email" required></label>
             <label for="password">Password: <br><input type="password" v-model="form.password" required></label>
             <div class="buttons">
                 <button type="submit" class="prominent">Continue</button>
-                <button type="button" class="secondary">Create Account</button>
+                <button type="button" class="secondary"><router-link to="/signup"> Create Account</router-link></button>
             </div>
             <button @click="loginWithGoogle()" class="g-signin">
                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0,0,256,256"
@@ -153,12 +153,13 @@ label {
 .g-signin {
     background: none;
     border: none;
-    /* color: hwb(349 60% 20%); */
     color: #171717ff;
 
     display: flex;
     justify-content: center;
     align-items: center;
+
+    margin-top: 1em;
 }
 
 .googlesvg {
@@ -178,10 +179,17 @@ label {
 
 input {
     height: 2rem;
+    padding: 0 .4em;
 }
 
 input:focus {
     border: 3px solid #cb99a2cc;
     outline: none;
+
 }
+
+a{
+    color: #171717;
+}
+
 </style>
