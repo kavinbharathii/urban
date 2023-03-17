@@ -19,6 +19,7 @@ export default {
     </div>
 
     <div class="links">
+        <router-link to="/cart"><div class="action-button cart-btn">View Cart <span class="material-symbols-outlined">shopping_cart</span></div></router-link>
         <router-link to="/signin"><div class="action-button signin">Sign In</div></router-link>
         <router-link to="/signup"><div class="action-button signup">Sign Up</div></router-link>
     </div>
@@ -30,7 +31,7 @@ export default {
 
 .navbar {
     width: 100vw;
-    height: 20vh;
+    height: 10vh;
     
     background-color: #fefefe;
 
@@ -39,7 +40,7 @@ export default {
     justify-content: space-between;
     align-items: center;
 
-    /* position: fixed; */
+    position: fixed;
 }
 
 
@@ -71,4 +72,21 @@ export default {
     color: #fefefe;
     background-color: #171717;
 }
+
+.cart-btn {
+    color: #fefefe;
+    background-color: #fc3171bf;
+    border: none;
+    margin-right: 2em;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.25em 1em;
+}
+
+.cart-btn span  {
+    font-size: 20px;
+}
+
 </style>

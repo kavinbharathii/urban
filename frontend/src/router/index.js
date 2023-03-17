@@ -19,6 +19,10 @@ const router = createRouter({
 			// component: 
 		},
 		{
+			path: '/cart',
+			// component: 
+		},
+		{
 			path: '/cctv-services',
 			component: categoryServices,
 			props: {
