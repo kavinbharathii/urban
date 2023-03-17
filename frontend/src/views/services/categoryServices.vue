@@ -83,7 +83,7 @@ export default {
 
             <div class="cards" v-for="(data, index) in this.providedServices" :key="index">
                 <div class="detail">
-                    <div class="servicename">{{ this.serviceName[id] }}</div>
+                    <div class="servicename">{{ this.serviceName[index] }}</div>
                     <div class="rating"><strong>✩</strong> {{ data.rating }} (456K Booking)</div>
                     <div class="rupee">
                         <strong>₹ {{ data.rupee }}.00</strong>
