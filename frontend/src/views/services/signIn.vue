@@ -1,14 +1,15 @@
 
 <script>
 
-import { GoogleAuthProvider , signInWithPopup , onAuthStateChanged } from 'firebase/auth'
+import { GoogleAuthProvider , signInWithPopup , onAuthStateChanged , signInWithEmailAndPassword } from 'firebase/auth'
 import { auth } from '../firebase.js'
 import Router from '@/router'
 
 export default {
     data() {
         return {
-
+            form : { name:'' , email: '' , password: '' },
+            err: ''
         }
     },
     methods: {
@@ -35,7 +36,18 @@ export default {
                     Router.push('/signup')
                 }
             });
-        }
+        },
+        signin(){
+			signInWithEmailAndPassword(auth, this.form.email, this.form.password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    console.log(user)
+                })
+                .catch((error) => {
+                    console.log(error)
+                    this.err = 'E-mail or Password is incorrect'
+                });
+			},
     },
     
 }
@@ -45,10 +57,12 @@ export default {
 
 <template>
     <div id="dev">
-        <h1>Hello there!</h1>
-
-        <label for="username">Username: <input type="text"></label>
-        <label for="email">Email: <input type="text"></label>
+        <form @submit.prevent="signin()">
+            <label for="username">Username: <input type="text" v-model="form.name" required></label>
+            <label for="email">Email: <input type="text" v-model="form.email" required></label>
+            <label for="password">Password: <input type="password" v-model="form.password" required></label>
+            <button type="submit">Submit</button>
+        </form>        
         <button @click="loginWithGoogle()">Login with Google</button>
     </div>
 </template>

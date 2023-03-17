@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/HomeView.vue'
 import categoryServices from '../views/services/categoryServices.vue'
 import signIn from '../views/services/signIn.vue'
+import signUp from '../views/services/signUp.vue'
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
@@ -16,7 +17,7 @@ const router = createRouter({
 		},
 		{
 			path: '/signup',
-			// component: 
+			component: signUp
 		},
 		{
 			path: '/cart',
