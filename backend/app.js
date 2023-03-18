@@ -47,8 +47,6 @@ app.post('/data', (req, res) => {
     console.log(fullName);
     console.log(emailAddress);
     console.log(msg);
-
-
     sendEmail(fullName, emailAddress, msg)
     res.send('Data received');
 });
