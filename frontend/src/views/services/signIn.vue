@@ -25,18 +25,6 @@ export default {
                     console.log('err', error)
                 });
         },
-        getUser() {
-            onAuthStateChanged(auth, (user) => {
-                if (user) {
-                    const uid = user.email;
-                    this.email = uid.split('@')[0]
-                    console.log(uid, this.email)
-                } else {
-                    console.log("Can't get user e-mail")
-                    Router.push('/signup')
-                }
-            });
-        },
         signin() {
             signInWithEmailAndPassword(auth, this.form.email, this.form.password)
                 .then((userCredential) => {

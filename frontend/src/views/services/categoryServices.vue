@@ -1,8 +1,14 @@
 <script>
 
-import { db } from '../firebase.js'
+
 import { collection, getDocs } from "firebase/firestore";
+import { ref, set } from "firebase/database";
+import { onAuthStateChanged } from 'firebase/auth'
+
+
 import serviceNavbar from './serviceNavbar.vue';
+import Router from '@/router'
+import { db,auth,db_rt } from '../firebase.js'
 
 export default {
     name: "categoryServices",
@@ -16,7 +22,8 @@ export default {
         return {
             serviceName: [],
             providedServices: [],
-            Loading: true
+            Loading: true,
+            email: ''
         }
     },
     mounted: function () {
@@ -47,11 +54,47 @@ export default {
             }
 
         },
-        addition(id) {
-
+        addition( servicename , id , rupee , timing ) {
+            this.getUser(servicename , id , rupee , timing )
+        },
+        getUser(servicename ,id , rupee , timing) {
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    const uid = user.email;
+                    this.email = uid.split('@')[0]
+                    this.addcart(servicename , id , rupee , timing)
+                } else {
+                    console.log("Can't get user e-mail")
+                    setTimeout( () => { Router.push('/signup') } , 500) 
+                }
+            });
+        },
+        addcart(servicename , id , rupee , timing) {
             let btn = document.querySelector('#cart' + id.toString())
             if (btn.innerHTML == 'Add') { btn.innerHTML = 1 }
             else { btn.innerHTML = parseInt(btn.innerHTML) + 1 }
+
+            // realtime database section
+            this.writeUserData( servicename , btn.innerHTML , rupee , timing )
+        },
+
+        writeUserData  ( servicename , quantity , rupee , timing )  {
+            try {
+                console.log( this.email , this.categoryName , quantity , rupee , timing)
+                let category = this.categoryName;
+                console.log(category, servicename , quantity , rupee , timing )
+                set(ref(db_rt, this.email + '/' + category+'/' + servicename), {
+                    quantity: quantity,
+                    rupee : 'rupee',
+                    timing : timing,
+                    booked : true
+                });
+                console.log('Added successfully')
+                
+            }
+            catch (err) {
+                console.log("error :", err)
+            }
         }
     }
 }
@@ -61,6 +104,9 @@ export default {
 <div>
 
     <serviceNavbar />
+    <div class="dialogue-box">
+        Please login first
+    </div>
     <div class="main">
         <div class="name-img">
             <div class="name">
@@ -94,7 +140,7 @@ export default {
                     <div class="add-btn">
                         <span @click="subtract(index)">-</span>
                         <div :id="'cart' + index" >Add</div>
-                        <span @click="addition(index)">+</span>
+                        <span @click="addition( this.serviceName[index] , index , data.rupee , data.timing  ) ">+</span>
                     </div>
                 </div>
             </div>
@@ -103,6 +149,7 @@ export default {
         </div>
         
     </div>
+    
 </div>
 </template>
 
@@ -223,4 +270,20 @@ h3 {
     color: #fff;
     background-color: #fc3171bf;
 }
+
+.dialogue-box {
+        display: flex;
+        color: grey;
+        align-items: center;
+        justify-content: center;
+        margin: auto;
+        width: 50%;
+        transform: .35s;
+}
+.dia-active {
+    transform: translateY(1em);
+    transition: .35s;
+    color: red;
+}
+
 </style>

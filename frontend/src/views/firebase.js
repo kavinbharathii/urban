@@ -2,16 +2,25 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
+// realtime
+import { getDatabase , ref } from "firebase/database";
+
 const firebaseConfig = {
-  apiKey: "AIzaSyD-l8J-UOWQPd3TxCqHBCtuMvFWrpR-jfY",
-  authDomain: "urban-6d98d.firebaseapp.com",
-  projectId: "urban-6d98d",
-  storageBucket: "urban-6d98d.appspot.com",
-  messagingSenderId: "580479111215",
-  appId: "1:580479111215:web:ecc34221a74888d79e76da",
-  measurementId: "G-NR66JH0WGV"
+  apiKey: "AIzaSyDVc3pP4-XoZeXAX_L1FTlBqgJAPAaXzH4",
+  authDomain: "new-urban-5cf38.firebaseapp.com",
+  databaseURL: "https://new-urban-5cf38-default-rtdb.firebaseio.com",
+  projectId: "new-urban-5cf38",
+  storageBucket: "new-urban-5cf38.appspot.com",
+  messagingSenderId: "431110991205",
+  appId: "1:431110991205:web:960a86c9edc27995eb858c",
+  measurementId: "G-TYHNYEVRFR"
 };
 
+// firebase
 export const app = initializeApp(firebaseConfig);
 export const auth = getAuth();
 export const db = getFirestore(app)
+
+// Realtime database
+export const db_rt = getDatabase(app);
+export const dbref_rt = ref(getDatabase());
