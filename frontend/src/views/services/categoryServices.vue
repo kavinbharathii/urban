@@ -85,7 +85,7 @@ export default {
                 console.log(category, servicename , quantity , rupee , timing )
                 set(ref(db_rt, this.email + '/' + category+'/' + servicename), {
                     quantity: quantity,
-                    rupee : 'rupee',
+                    rupee : rupee,
                     timing : timing,
                     booked : true
                 });
@@ -96,7 +96,7 @@ export default {
                 console.log("error :", err)
             }
         }
-    }
+    },
 }
 </script>
 

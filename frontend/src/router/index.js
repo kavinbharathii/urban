@@ -3,6 +3,7 @@ import Home from '../views/HomeView.vue'
 import categoryServices from '../views/services/categoryServices.vue'
 import signIn from '../views/services/signIn.vue'
 import signUp from '../views/services/signUp.vue'
+import cart from '../views/cartView.vue'
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
@@ -21,7 +22,7 @@ const router = createRouter({
 		},
 		{
 			path: '/cart',
-			// component: 
+			component: cart,
 		},
 		{
 			path: '/cctv-services',
