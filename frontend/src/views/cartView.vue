@@ -65,7 +65,6 @@ export default {
             }
         },
         updateData(categoryname , servicename ,quantity ,  rupee , timing) {
-            console.log(categoryname , servicename ,quantity ,  rupee , timing )
             try {
                 set(ref(db_rt, this.loginemail + '/' + categoryname+'/' + servicename), {
                     quantity: quantity,
@@ -88,9 +87,9 @@ export default {
                 for ( let j in keys ) {
                     cate += parseInt(this.datas[i][keys[j]].rupee) * parseInt(this.datas[i][keys[j]].quantity)              
                 }
-                this.category[i] = cate
+                this.category[i] = cate;
             }
-            console.log(this.category,'parsingof')
+                console.log(this.category)
         },
         nakk() {
                 const messagesRef = ref(db_rt, this.loginemail+'/' );
@@ -98,9 +97,8 @@ export default {
                 this.datas = [];
                 snapshot.forEach(childSnapshot => {
                     const message = childSnapshot.val();
-                    this.datas.push(message);
+                    this.datas[childSnapshot.key] = childSnapshot.val()
                 })              
-                console.log('bro')  
                 this.parsingof()
                 });
             }         
