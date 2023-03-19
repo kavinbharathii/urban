@@ -8,7 +8,7 @@ import { onAuthStateChanged } from 'firebase/auth'
 
 import serviceNavbar from './serviceNavbar.vue';
 import Router from '@/router'
-import { db,auth,db_rt } from '../firebase.js'
+import { db, auth, db_rt } from '../firebase.js'
 
 export default {
     name: "categoryServices",
@@ -54,44 +54,44 @@ export default {
             }
 
         },
-        addition( servicename , id , rupee , timing ) {
-            this.getUser(servicename , id , rupee , timing )
+        addition(servicename, id, rupee, timing) {
+            this.getUser(servicename, id, rupee, timing)
         },
-        getUser(servicename ,id , rupee , timing) {
+        getUser(servicename, id, rupee, timing) {
             onAuthStateChanged(auth, (user) => {
                 if (user) {
                     const uid = user.email;
                     let email_username = uid.split('@')[0]
                     let valid_username = email_username.replaceAll(".", "")
                     this.email = valid_username
-                    this.addcart(servicename , id , rupee , timing)
+                    this.addcart(servicename, id, rupee, timing)
                 } else {
                     console.log("Can't get user e-mail")
-                    setTimeout( () => { Router.push('/signup') } , 500) 
+                    setTimeout(() => { Router.push('/signup') }, 500)
                 }
             });
         },
-        addcart(servicename , id , rupee , timing) {
+        addcart(servicename, id, rupee, timing) {
             let btn = document.querySelector('#cart' + id.toString())
             if (btn.innerHTML == 'Add') { btn.innerHTML = 1 }
             else { btn.innerHTML = parseInt(btn.innerHTML) + 1 }
 
             // realtime database section
-            this.writeUserData( servicename , btn.innerHTML , rupee , timing )
+            this.writeUserData(servicename, btn.innerHTML, rupee, timing)
         },
 
-        writeUserData  ( servicename , quantity , rupee , timing )  {
+        writeUserData(servicename, quantity, rupee, timing) {
             try {
-                console.log( this.email , this.categoryName , quantity , rupee , timing)
+                console.log(this.email, this.categoryName, quantity, rupee, timing)
                 let category = this.categoryName;
-                console.log(category, servicename , quantity , rupee , timing )
-                set(ref(db_rt, this.email + '/' + category+'/' + servicename), {
+                console.log(category, servicename, quantity, rupee, timing)
+                set(ref(db_rt, this.email + '/' + category + '/' + servicename), {
                     quantity: quantity,
-                    rupee : rupee,
-                    timing : timing,
-                    booked : true
+                    rupee: rupee,
+                    timing: timing,
+                    booked: true
                 })
-                console.log('Added successfully') 
+                console.log('Added successfully')
             }
             catch (err) {
                 console.log("error :", err)
@@ -102,56 +102,56 @@ export default {
 </script>
 
 <template>
-<div>
+    <div>
 
-    <serviceNavbar />
-    <div class="dialogue-box">
-        Please login first
-    </div>
-    <div class="main">
-        <div class="name-img">
-            <div class="name">
-                <div class="ser-name"> {{ this.categoryName }} Services </div>
-                <div> <strong>✩</strong> 4.86 (456K Booking)</div>
-            </div>
-            <div>
-                <img src="./images/computer.png" alt="com">
-            </div>
+        <serviceNavbar />
+        <div class="dialogue-box">
+            Please login first
         </div>
-        <div class="lin"></div>
-
-        <button class="load-btn" v-if="this.Loading">
-            <span class="spinner-border spinner-border-sm" style="color: white"></span>Loading..
-        </button>
-
-
-        <h3 v-if="!this.Loading">Provided Services with Pricing</h3>
-        <div class="all-cards" v-if="!this.Loading">
-
-            <div class="cards" v-for="(data, index) in this.providedServices" :key="index">
-                <div class="detail">
-                    <div class="servicename">{{ this.serviceName[index] }}</div>
-                    <div class="rating"><strong>✩</strong> {{ data.rating }} (456K Booking)</div>
-                    <div class="rupee">
-                        <strong>₹ {{ data.rupee }}.00</strong>
-                        <span> • {{ data.timing }}</span>
-                    </div>
+        <div class="main">
+            <div class="name-img">
+                <div class="name">
+                    <div class="ser-name"> {{ this.categoryName }} Services </div>
+                    <div> <strong>✩</strong> 4.86 (456K Booking)</div>
                 </div>
                 <div>
-                    <div class="add-btn">
-                        <span @click="subtract(index)">-</span>
-                        <div :id="'cart' + index" >Add</div>
-                        <span @click="addition( this.serviceName[index] , index , data.rupee , data.timing  ) ">+</span>
-                    </div>
+                    <img src="./images/computer.png" alt="com">
                 </div>
             </div>
+            <div class="lin"></div>
 
-            <div class="free"></div>
+            <button class="load-btn" v-if="this.Loading">
+                <span class="spinner-border spinner-border-sm" style="color: white"></span>Loading..
+            </button>
+
+
+            <h3 v-if="!this.Loading">Provided Services with Pricing</h3>
+            <div class="all-cards" v-if="!this.Loading">
+
+                <div class="cards" v-for="(data, index) in this.providedServices" :key="index">
+                    <div class="detail">
+                        <div class="servicename">{{ this.serviceName[index] }}</div>
+                        <div class="rating"><strong>✩</strong> {{ data.rating }} (456K Booking)</div>
+                        <div class="rupee">
+                            <strong>₹ {{ data.rupee }}.00</strong>
+                            <span> • {{ data.timing }}</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="add-btn">
+                            <span @click="subtract(index)">-</span>
+                            <div :id="'cart' + index">Add</div>
+                            <span @click="addition(this.serviceName[index], index, data.rupee, data.timing)">+</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="free"></div>
+            </div>
+
         </div>
-        
-    </div>
 
-</div>
+    </div>
 </template>
 
 <style scoped>
@@ -273,18 +273,18 @@ h3 {
 }
 
 .dialogue-box {
-        display: flex;
-        color: grey;
-        align-items: center;
-        justify-content: center;
-        margin: auto;
-        width: 50%;
-        transform: .35s;
+    display: flex;
+    color: grey;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    width: 50%;
+    transform: .35s;
 }
+
 .dia-active {
     transform: translateY(1em);
     transition: .35s;
     color: red;
 }
-
 </style>
