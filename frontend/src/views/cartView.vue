@@ -28,6 +28,12 @@ export default {
             await get(child(dbref_rt, email+'/' )).then((snapshot) => {
                 if (snapshot.exists()) {
                     this.cartData.push(snapshot.val())
+
+                    for (let i in this.cartData[0]) {
+                        this.category.push(i)
+                    }
+                    console.log(this.category)
+
                 } else {
                     console.log("No data available");
                 }
@@ -41,8 +47,8 @@ export default {
             onAuthStateChanged(auth, (user) => {
                 if (user) {
                     const uid = user.email;
-                    this.loginemail = uid.split('@')[0]
-                    console.log(this.loginemail)
+                    let email_username = uid.split('@')[0]
+                    this.loginemail = email_username.replace(".", "")
                     this.getUsercart(this.loginemail)
                     this.nakk(this.loginemail)
                 } else {
@@ -89,7 +95,6 @@ export default {
                 }
                 this.category[i] = cate;
             }
-                console.log(this.category)
         },
         nakk() {
                 const messagesRef = ref(db_rt, this.loginemail+'/' );
@@ -146,7 +151,7 @@ export default {
             </div>
             <div class="cart-total">
                 Total
-                {{ this.cartTotal }}
+                {{ cartTotal }}
             </div>
         </div>
     </div>
