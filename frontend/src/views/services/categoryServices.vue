@@ -61,7 +61,9 @@ export default {
             onAuthStateChanged(auth, (user) => {
                 if (user) {
                     const uid = user.email;
-                    this.email = uid.split('@')[0]
+                    let email_username = uid.split('@')[0]
+                    let valid_username = email_username.replaceAll(".", "")
+                    this.email = valid_username
                     this.addcart(servicename , id , rupee , timing)
                 } else {
                     console.log("Can't get user e-mail")
@@ -88,9 +90,8 @@ export default {
                     rupee : rupee,
                     timing : timing,
                     booked : true
-                });
-                console.log('Added successfully')
-                
+                })
+                console.log('Added successfully') 
             }
             catch (err) {
                 console.log("error :", err)
@@ -149,7 +150,7 @@ export default {
         </div>
         
     </div>
-    
+
 </div>
 </template>
 

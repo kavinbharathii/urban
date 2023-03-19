@@ -32,8 +32,9 @@ export default {
             onAuthStateChanged(auth, (user) => {
                 if (user) {
                     const uid = user.email;
-                    this.email = uid.split('@')[0]
-                    console.log(uid, this.email)
+                    let email_username = uid.split('@')[0]
+                    let valid_username = email_username.replace(".", "")
+                    console.log(valid_username)
                 } else {
                     console.log("Can't get user e-mail")
                     Router.push('/signup')

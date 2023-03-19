@@ -2,7 +2,7 @@
 
 import { child, get} from "firebase/database";
 import { auth , dbref_rt } from "../views/firebase.js"
-import { onAuthStateChanged } from "firebase/auth";
+import { connectAuthEmulator, onAuthStateChanged } from "firebase/auth";
 import Router from '@/router'
 
 export default {
@@ -10,7 +10,8 @@ export default {
         return{
             loginemail : '',
             cartData: [],
-            category: []
+            category: [],
+            cartTotal: 0
         }
     },
     components: {
@@ -26,6 +27,20 @@ export default {
                 if (snapshot.exists()) {
                     this.cartData.push(snapshot.val())
                     this.parsingof
+
+                    for (let item in this.cartData[0]) {
+                        this.category.push(item)
+                    }
+
+                    console.log(this.category)
+
+                    for (let item in this.category) {
+                        console.log(this.category[item])
+                        this.cartTotal += this.category[item]
+                    }
+
+                    console.log(this.cartTotal)
+
                 } else {
                     console.log("No data available");
                 }
@@ -37,7 +52,10 @@ export default {
             onAuthStateChanged(auth, (user) => {
                 if (user) {
                     const uid = user.email;
-                    this.loginemail = uid.split('@')[0]
+                    let email_username = uid.split('@')[0]
+                    let valid_username = email_username.replaceAll(".", "")
+                    this.loginemail = valid_username
+
                     console.log(this.loginemail)
                     this.getUsercart(this.loginemail)
                 } else {
@@ -47,11 +65,10 @@ export default {
             });
         },
         updateData ( servicename , quantity , rupee , timing )  {
-            console.log(servicename , quantity , rupee , timing )
+            // console.log(servicename , quantity , rupee , timing )
             try {
-                console.log( this.email , this.categoryName , quantity , rupee , timing)
                 let category = this.categoryName;
-                console.log(category, servicename , quantity , rupee , timing )
+                // console.log(category, servicename , quantity , rupee , timing )
                 set(ref(db_rt, this.email + '/' + category+'/' + servicename), {
                     quantity: quantity,
                     rupee : rupee,
@@ -75,9 +92,9 @@ export default {
                 for ( let j in keys ) {
                     cate += parseInt(this.cartData[0][i][keys[j]].rupee) * parseInt(this.cartData[0][i][keys[j]].quantity)              
                 }
+                console.log(cate)
                 this.category[i] = cate
             } 
-            console.log(this.category)
         }
     }
 }
@@ -112,7 +129,19 @@ export default {
             </div>
         </div>
 
-        <div class="cart-details"></div>
+        <div class="cart-details">
+            <h3>Cart Details</h3>
+            <div v-for="(item, index) in this.category" :key="index" class="cart-details-services">
+                <div class="service-summary">
+                    <div class="service-summary-name">{{ item }} </div>
+                    <div class="service-summary-price">{{ this.category[item] }}</div>
+                </div>
+            </div>
+            <div class="cart-total">
+                Total
+                {{ this.cartTotal }}
+            </div>
+        </div>
     </div>
 </template>
 
@@ -187,5 +216,25 @@ export default {
     background-color: #fc3171bf;
 }
 
-</style>
+.cart-details {
+    background: #f0f0f0;
+    margin: 3em;
+    border-radius: 10px;
+}
 
+.cart-details-services {
+    color: #171717;
+    margin: 1em 0 1em 0;
+    font-size: 0.8em;
+}
+
+.service-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.service-summary-price {
+    color: #04c484;
+}
+</style>
