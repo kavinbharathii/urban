@@ -13,7 +13,8 @@ export default {
             loginemail : '',
             cartData: [],
             category: [],
-            datas: []
+            datas: [],
+            cartTotal: 0,
         }
     },
     components: {
@@ -48,7 +49,7 @@ export default {
                 if (user) {
                     const uid = user.email;
                     let email_username = uid.split('@')[0]
-                    this.loginemail = email_username.replace(".", "")
+                    this.loginemail = email_username.replaceAll(".", "")
                     this.getUsercart(this.loginemail)
                     this.nakk(this.loginemail)
                 } else {
@@ -86,14 +87,15 @@ export default {
             }
         },
         parsingof() {
+            this.cartTotal = 0
             for ( let i in this.datas ) {
-
                 const keys = Object.keys(this.datas[i])
                 let cate = 0
                 for ( let j in keys ) {
                     cate += parseInt(this.datas[i][keys[j]].rupee) * parseInt(this.datas[i][keys[j]].quantity)              
                 }
-                this.category[i] = cate;
+                this.cartTotal += cate
+                this.category[i] = cate
             }
         },
         nakk() {
@@ -146,12 +148,12 @@ export default {
             <div v-for="(item, index) in this.category" :key="index" class="cart-details-services">
                 <div class="service-summary">
                     <div class="service-summary-name">{{ item }} </div>
-                    <div class="service-summary-price">{{ this.category[item] }}</div>
+                    <div class="service-summary-price">₹ {{ this.category[item] }}</div>
                 </div>
             </div>
             <div class="cart-total">
-                Total
-                {{ cartTotal }}
+                <div class="total-label">Total</div>
+                <div class="total-value">₹ {{ cartTotal }}</div>
             </div>
         </div>
     </div>
@@ -176,6 +178,7 @@ export default {
     border-radius: 10px;
     display: flex;
     justify-content: space-between;
+    margin: 0.5em;
 }
 
 .category {
@@ -202,7 +205,6 @@ export default {
     margin-bottom: 1em;
 
 }
-
 
 .add-btn {
     display: flex;
@@ -250,5 +252,13 @@ export default {
     color: #04c484;
 }
 
+.cart-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+
+    font-size: 1.3em;
+}
 </style>
 

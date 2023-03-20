@@ -29,6 +29,10 @@ export default {
             }).catch(error => {
                 console.log(error)
             })
+
+            this.msgData.fullName = ""
+            this.msgData.emailAddress = ""
+            this.msgData.msg = ""
         }
     }
 }

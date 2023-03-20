@@ -1,14 +1,14 @@
 
 <script>
-	import aboutUs from '../components/homepage/aboutus.vue'
-	import contactUs from '../components/homepage/contactus.vue'
-	import CategoryCard from '../components/homepage/CategoryCard.vue'
-	import homevue from '../components/homepage/Home.vue'
-	export default {
+import aboutUs from '../components/homepage/aboutus.vue'
+import contactUs from '../components/homepage/contactus.vue'
+import CategoryCard from '../components/homepage/CategoryCard.vue'
+import homevue from '../components/homepage/Home.vue'
+export default {
 
 	data() {
 		return {
-			
+
 		};
 	},
 
@@ -24,45 +24,68 @@
 
 <template>
 	<div id="dev">
-		<nav class="nav-bar">
-			<div class="logo">IT Arena</div>
-
-			<div class="nav-links">
-				<a class="nav-link" href="#home">Home</a>
-				<a class="nav-link" href="#services">Services</a>
-				<a class="nav-link" href="#about">About</a>
-				<a class="nav-link" href="#contact">Contact</a>
+		<nav class="nav-bar navbar navbar-expand-sm navbar-dark d-flex justify-content-space-between align-items-center">		
+			<div>
+				<h1 class="logo">IT Arena</h1>
 			</div>
+			<div class="container">
+                <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#n_bar" aria-controls="navbarNavAltMarkup" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="n_bar">
+                    <ul class="navbar-nav">
+                        <li class="nav-item active"><a class="nav-link" href="#home">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+
 		</nav>
 
 		<div class="full-page">
 
 			<div class="page" id="home">
-				<homevue/>
+				<homevue />
 			</div>
 
 			<div class="page" id="services">
 				<div class="p2 vh-100 vw-100">
 					<div class="cards-container">
 						<div class="cards-col col-one">
-							<router-link to="/computer-services"><CategoryCard categoryName="Computer" description="Description." /></router-link>
-							<router-link to="/laptop-services"><CategoryCard categoryName="Laptop" description="Description." /></router-link>
+							<router-link to="/computer-services">
+								<CategoryCard categoryName="Computer" description="Description." />
+							</router-link>
+							<router-link to="/laptop-services">
+								<CategoryCard categoryName="Laptop" description="Description." />
+							</router-link>
 						</div>
 
 						<div class="cards-col col-two">
-							<router-link to="/cctv-services"><CategoryCard categoryName="CCTV" description="Description." /></router-link>
-							<router-link to="/printer-services"><CategoryCard categoryName="Printer" description="Description." /></router-link>
-							<router-link to="/ups-services"><CategoryCard categoryName="UPS" description="Description." /></router-link>
+							<router-link to="/cctv-services">
+								<CategoryCard categoryName="CCTV" description="Description." />
+							</router-link>
+							<router-link to="/printer-services">
+								<CategoryCard categoryName="Printer" description="Description." />
+							</router-link>
+							<router-link to="/ups-services">
+								<CategoryCard categoryName="UPS" description="Description." />
+							</router-link>
 						</div>
 
 						<div class="cards-col col-three">
-							<router-link to="/electrician"><CategoryCard categoryName="Electrician" description="Description." /></router-link>
-							<router-link to="/plumbing"><CategoryCard categoryName="Plumbing" description="Description." /></router-link>
+							<router-link to="/electrician">
+								<CategoryCard categoryName="Electrician" description="Description." />
+							</router-link>
+							<router-link to="/plumbing">
+								<CategoryCard categoryName="Plumbing" description="Description." />
+							</router-link>
 						</div>
 					</div>
 				</div>
 			</div>
-			
+
 			<div class="page vh-100 vw-100" id="about">
 				<aboutUs />
 			</div>
@@ -74,24 +97,19 @@
 		</div>
 		<router-view></router-view>
 	</div>
-
 </template>
 
 <style scoped>
 
 .nav-bar {
-	font-size: 40px;
 	text-decoration: none;
-
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	position: fixed;
-	top: 0;
-	left: 0;
-
-	width: 100vw;
 	z-index: 100;
+	width: 100vw;
+}
+
+.collapse {
+	display: flex;
+	justify-content: end !important;
 }
 
 .logo {
@@ -109,14 +127,18 @@
 
 .nav-link {
 	text-decoration: none;
-	font-size: 0.4em;
+	/* font-size: 0.4em; */
 	text-transform: uppercase;
 
-	/* style */
 	position: relative;
 	z-index: 1;
+	color: #171717;
+	margin: 0 0.5em 0 0.5em;
 }
 
+.nav-link:hover {
+	color: #171717;
+}
 
 .nav-link::before {
 	content: '';
@@ -151,14 +173,14 @@
 	gap: 1.5em;
 
 	min-width: 100vw;
-    min-height: 100vh;
+	min-height: 100vh;
 }
 
 .full-page {
 	max-width: 100vw;
-    max-height: 100vh;
-    overflow: scroll;
-    scroll-snap-type: y mandatory;
+	max-height: 100vh;
+	overflow: scroll;
+	scroll-snap-type: y mandatory;
 }
 
 .page {
@@ -167,6 +189,4 @@
 
 a {
 	text-decoration: none;
-}
-
-</style>
+}</style>

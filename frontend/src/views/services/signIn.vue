@@ -21,7 +21,7 @@ export default {
             signInWithPopup(auth, provider)
                 .then((result) => {
                     console.log(result.user);
-                    Router.push('/cart')
+                    Router.push('/#services')
                     this.getUser()
                 })
                 .catch((error) => {
@@ -48,6 +48,8 @@ export default {
                     const user = userCredential.user;
                     console.log('sigin successfully')
                     this.errorState = false
+
+                    Router.push('/#services')
                 })
                 .catch((error) => {
                     console.log(error)

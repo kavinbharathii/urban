@@ -2,6 +2,7 @@
 
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase.js'
+import Router from '@/router'
 
 export default {
     data() {
@@ -23,6 +24,8 @@ export default {
                     .then((userCredential) => {
                         const user = userCredential.user;
                         this.passwordMismatchError = false
+
+                        Router.push("/signin")
                     })
                     .catch((error) => {
                         let re_braces = /\((.*)\)/
