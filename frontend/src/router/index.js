@@ -4,6 +4,7 @@ import categoryServices from '../views/services/categoryServices.vue'
 import signIn from '../views/services/signIn.vue'
 import signUp from '../views/services/signUp.vue'
 import cart from '../views/cartView.vue'
+import adminPage from '../components/adminpage/adminPage.vue'
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
@@ -37,6 +38,10 @@ const router = createRouter({
 			props: {
 				categoryName: 'Computer'
 			}
+		},
+		{
+			path: '/admin',
+			component: adminPage
 		}
 	]
 })
