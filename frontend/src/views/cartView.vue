@@ -1,10 +1,9 @@
 <script>
 
-import { child, get} from "firebase/database";
 import { onAuthStateChanged } from "firebase/auth";
-import { ref, set , onValue } from "firebase/database";
+import { ref, set , onValue , remove } from "firebase/database";
 
-import { auth , dbref_rt , db_rt } from "../views/firebase.js"
+import { auth , db_rt } from "../views/firebase.js"
 import Router from '@/router'
 
 export default {
@@ -12,7 +11,7 @@ export default {
         return{
             loginemail : '',
             cartData: [],
-            category: [],
+            category: null,
             datas: [],
             cartTotal: 0,
         }
@@ -24,25 +23,6 @@ export default {
         this.getuser()
     },
     methods: {
-
-        async getUsercart(email) {
-            await get(child(dbref_rt, email+'/' )).then((snapshot) => {
-                if (snapshot.exists()) {
-                    this.cartData.push(snapshot.val())
-
-                    for (let i in this.cartData[0]) {
-                        this.category.push(i)
-                    }
-                    console.log(this.category)
-
-                } else {
-                    console.log("No data available");
-                }
-                })
-                .catch((error) => {
-                    console.error(error);
-                });
-        },
         getuser() {
 
             onAuthStateChanged(auth, (user) => {
@@ -50,8 +30,7 @@ export default {
                     const uid = user.email;
                     let email_username = uid.split('@')[0]
                     this.loginemail = email_username.replaceAll(".", "")
-                    this.getUsercart(this.loginemail)
-                    this.nakk(this.loginemail)
+                    this.changeCartRupee(this.loginemail)
                 } else {
                   console.log("Can't get user e-mail")
                   Router.push('/signup')
@@ -98,17 +77,38 @@ export default {
                 this.category[i] = cate
             }
         },
-        nakk() {
-                const messagesRef = ref(db_rt, this.loginemail+'/' );
-                onValue(messagesRef, snapshot => {
-                this.datas = [];
-                snapshot.forEach(childSnapshot => {
-                    const message = childSnapshot.val();
-                    this.datas[childSnapshot.key] = childSnapshot.val()
-                })              
-                this.parsingof()
-                });
-            }         
+        changeCartRupee() {
+            const messagesRef = ref(db_rt, this.loginemail+'/' );
+            onValue(messagesRef, snapshot => {
+                this.category = [];
+                this.cartData = [];
+                if (snapshot.exists()) {
+                    this.category = Object.keys(snapshot.val())
+                    this.cartData.push(snapshot.val())
+
+                } else {
+                    console.log("No data available");
+                }
+            })
+            onValue(messagesRef, snapshot => {
+            this.datas = [];
+            snapshot.forEach(childSnapshot => {
+                const message = childSnapshot.val();
+                this.datas[childSnapshot.key] = childSnapshot.val()
+            })              
+            this.parsingof()
+            });
+            
+        },
+        removeitemCart(categoryname , servicename ) {
+            console.log(categoryname,servicename)
+            const delRef = ref(db_rt, this.loginemail+'/' + categoryname +'/' + servicename )
+            remove(delRef)
+                .then(() => {
+                        console.log('deleted successfully')
+                    })
+                .catch((err) => { console.log("error : " ,err)})
+        }
     },
 
 }
@@ -130,7 +130,10 @@ export default {
                                 <span> • {{ data2.timing }}</span>
                             </div>
                         </div>
-                        <div>
+                        <div class="add-remove-btn">
+                            <div class="remove-btn">
+                                <div @click="removeitemCart(category , sname)"><button>Remove</button></div>
+                            </div>
                             <div class="add-btn">
                                 <span @click="updateof( category , sname , data2.rupee , data2.timing , 'sub' )">-</span>
                                 <div :id="'cart' + sname.split(' ').join('')">{{ data2.quantity }}</div>
@@ -206,12 +209,29 @@ export default {
 
 }
 
+.add-remove-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.remove-btn {
+    background: none;
+}
+
+.remove-btn button {
+    background: none;
+    outline: none;
+    border: none;
+    color: red;
+}
+
 .add-btn {
     display: flex;
     gap: 0.5em;
     align-items: center;
     justify-content: space-between;
-    margin: .4em .7em 0 0;
     background-color: hsla(341, 100%, 46%, 0.749);
     color: #fff;
     padding: 0.2em 0.5em;

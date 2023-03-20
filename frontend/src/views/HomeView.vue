@@ -24,25 +24,29 @@ export default {
 
 <template>
 	<div id="dev">
-		<nav class="nav-bar navbar navbar-expand-sm navbar-dark d-flex justify-content-space-between align-items-center">		
+
+		<div class="header">
 			<div>
 				<h1 class="logo">IT Arena</h1>
 			</div>
-			<div class="container">
-                <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#n_bar" aria-controls="navbarNavAltMarkup" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="n_bar">
-                    <ul class="navbar-nav">
-                        <li class="nav-item active"><a class="nav-link" href="#home">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-                    </ul>
-                </div>
-            </div>
-
-		</nav>
+			<div>
+				<nav class="nav-bar navbar navbar-expand-sm navbar-dark">	
+					<div class="container">
+						<button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#n_bar" aria-controls="navbarNavAltMarkup" aria-label="Toggle navigation">
+							<span class="navbar-toggler-icon"></span>
+						</button>
+						<div class="collapse navbar-collapse" id="n_bar">
+							<ul class="navbar-nav">
+								<li class="nav-item active"><a class="nav-link" href="#home">Home</a></li>
+								<li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+								<li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+								<li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+							</ul>
+						</div>
+					</div>
+				</nav>
+			</div>
+		</div>
 
 		<div class="full-page">
 
@@ -105,12 +109,21 @@ export default {
 .nav-bar {
 	text-decoration: none;
 	z-index: 100;
-	width: 100vw;
+}
+
+
+.header {
+	margin-top: .3em;
+	display: flex;
+	justify-content: space-between;
 }
 
 .collapse {
-	display: flex;
-	justify-content: end !important;
+	justify-content: end;
+}
+
+button {
+	background-color: #171717;
 }
 
 .logo {
@@ -128,7 +141,6 @@ export default {
 
 .nav-link {
 	text-decoration: none;
-	/* font-size: 0.4em; */
 	text-transform: uppercase;
 
 	position: relative;
