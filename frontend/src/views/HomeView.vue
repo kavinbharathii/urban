@@ -101,6 +101,7 @@ export default {
 
 <style scoped>
 
+
 .nav-bar {
 	text-decoration: none;
 	z-index: 100;
