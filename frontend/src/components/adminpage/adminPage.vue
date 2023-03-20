@@ -2,7 +2,7 @@
 <script>
 
 import { db } from "@/views/firebase.js"
-import { setDoc, doc } from "@firebase/firestore";
+import { setDoc, doc, getDoc, getDocs, collection } from "@firebase/firestore";
 import Router from '@/router'
 
 export default {
@@ -14,7 +14,19 @@ export default {
                 price: "",
                 timing: ""
             },
-            categories: []
+            editServiceForm: {
+                serviceName: "",
+                categoryName: "",
+                price: "",
+                timing: ""
+            },
+
+            categories: [
+                "Computer",
+                "CCTV"
+            ],
+
+            services: {}
         }
     },
 
@@ -35,54 +47,110 @@ export default {
                     console.log(err)
                 })
             }
+        },
+
+        editService() {
+
         }
+    },
+
+    async mounted() {
+        console.log("may jesus piss on you!")
+        for (let category in this.categories) {
+            const services = await getDocs(collection(db, category))
+            console.log(services)
+            services.forEach(doc => {
+                console.log(doc.id)
+            })
+        }
+        console.log("I hope it was warm")
     }
 }
 
 </script>
 
 <template>
+    <div id="dev">
+        <form id="add-new-service">
+            <h3>Add new service</h3>
+            <label for="">
+                Service Name:
+                <input type="text" v-model="this.newServiceForm.serviceName">
+            </label>
 
-<div id="dev">
-    <form id="add-new-service">
-        <h3>Add new service</h3>
-        <label for="">
-            Service Name:
-            <input type="text" v-model="this.newServiceForm.serviceName">
-        </label>
+            <label for="">
+                Category:
+                <select required v-model="this.newServiceForm.categoryName">
+                    <option value="Computer">Computer</option>
+                    <option value="CCTV">CCTV</option>
+                </select>
+            </label>
 
-        <label for="">
-            Category: 
-            <select required v-model="this.newServiceForm.categoryName">
-                <option value="Computer">Computer</option>
-                <option value="CCTV">CCTV</option>
-            </select>
-        </label>
+            <label for="">
+                Price:
+                <input type="number" v-model="this.newServiceForm.price">
+            </label>
 
-        <label for="">
-            Price: 
-            <input type="number" v-model="this.newServiceForm.price">
-        </label>
+            <label for="">
+                Timing:
+                <input type="text" v-model="this.newServiceForm.timing">
+            </label>
 
-        <label for="">
-            Timing: 
-            <input type="text" v-model="this.newServiceForm.timing">
-        </label>
+            <button @click.prevent="addNewService">Add Service</button>
+        </form>
 
-        <button @click.prevent="addNewService">Add Service</button>
-    </form>
-</div>
+        <!-- --------------------------------------- edit services --------------------------------------- -->
+        <form action="" id="edit-services">
+            <h3>Edit service</h3>
 
+            <label for="">
+                Category:
+                <select required v-model="this.editServiceForm.categoryName">
+                    <option value="Computer">Computer</option>
+                    <option value="CCTV">CCTV</option>
+                </select>
+            </label>
+
+            <label for="">
+                Services:
+                <select required :disabled="this.editServiceForm.categoryName == ''"
+                    v-model="this.editServiceForm.serviceName">
+                    <option value="Computer">Computer</option>
+                    <option value="CCTV">CCTV</option>
+
+                    <!-- <option value="" v-for=""></option> -->
+                </select>
+            </label>
+
+            <label for="">
+                Price:
+                <input type="number" v-model="this.editServiceForm.price">
+            </label>
+
+            <label for="">
+                Timing:
+                <input type="text" v-model="this.editServiceForm.timing">
+            </label>
+
+            <button @click.prevent="editService">Add Service</button>
+        </form>
+    </div>
 </template>
 
 <style scoped>
-
 #dev {
     width: 100vw;
     height: 100vh;
 }
 
 #add-new-service {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#edit-services {
     display: flex;
     flex-direction: column;
     justify-content: center;
