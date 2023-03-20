@@ -218,19 +218,6 @@ h3 {
     height: 2em;
 }
 
-.load-btn {
-    color: white;
-    padding: .5em 1em;
-    margin: auto;
-    display: flex;
-    align-items: center;
-    gap: 1em;
-    justify-content: space-between;
-    border: none;
-    outline: none;
-    background-color: #fc3171bf;
-}
-
 .servicename {
     font-size: 2em;
     font-weight: 600;

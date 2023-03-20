@@ -14,6 +14,7 @@ export default {
             category: null,
             datas: [],
             cartTotal: 0,
+            loading: true
         }
     },
     components: {
@@ -75,6 +76,7 @@ export default {
                 }
                 this.cartTotal += cate
                 this.category[i] = cate
+                
             }
         },
         changeCartRupee() {
@@ -85,7 +87,7 @@ export default {
                 if (snapshot.exists()) {
                     this.category = Object.keys(snapshot.val())
                     this.cartData.push(snapshot.val())
-
+                    this.loading = false
                 } else {
                     console.log("No data available");
                 }
@@ -108,6 +110,9 @@ export default {
                         console.log('deleted successfully')
                     })
                 .catch((err) => { console.log("error : " ,err)})
+        },
+        placeservice() {
+            document.getElementById('id01').style.display='block'
         }
     },
 
@@ -116,10 +121,15 @@ export default {
 
 <template>
 
-    <div class="cart-page">
+<div>
+    <button class="load-btn" v-if="this.loading">
+        <span class="spinner-border spinner-border-sm" style="color: white"></span>Loading..
+    </button>
+
+    <div class="cart-page" v-if="!this.loading">
         <div class="cart-view">
             <div v-for="(data,index) in this.cartData" :key="index">
-                <div v-for="(data1 , category) in data" :key="category">
+                <div v-for="(data1 , category) in data" :key="category" class="all-cards"> 
                     <div class="category"> {{ category }}  services</div> 
                     <div v-for="(data2, sname) in data1" :key="sname" class="cards">
                         <div>
@@ -141,13 +151,13 @@ export default {
                             </div>
                         </div>
                     </div>
-                <div :id="'book' + category">BOOK</div>
+                <div :id="'book' + category" @click="placeservice()" class="w3-button book-btn"><button>BOOK</button></div>
                 </div>
             </div>
         </div>
 
        <div class="cart-details">
-            <h3>Cart Details</h3>
+            <h3>Cart Summary</h3>
             <div v-for="(item, index) in this.category" :key="index" class="cart-details-services">
                 <div class="service-summary">
                     <div class="service-summary-name">{{ item }} </div>
@@ -160,19 +170,69 @@ export default {
             </div>
         </div>
     </div>
+
+    <div>
+        <div class="w3-container">
+            
+            <!-- <button onclick="document.getElementById('id01').style.display='block'">Open Modal</button> -->
+
+            <div id="id01" class="w3-modal">
+                <div class="w3-modal-content">
+                    <div class="w3-container">
+                        <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                        <p>Some text. Some text. Some text.</p>
+                        <p>Some text. Some text. Some text.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
 </template>
 
 <style scoped>
 
+.load-btn {
+    margin-top: 2em;
+}
+
+.cart-view::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+.cart-view::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+.cart-view::-webkit-scrollbar-thumb {
+  background: #fa93b4bf;
+}
+
+/* Handle on hover */
+.cart-view::-webkit-scrollbar-thumb:hover {
+  background: #fc3171bf;
+}
+
 .cart-page {
-    padding:0 10%;
+    padding:4em 10% 0 10%;
     display: grid;
     grid-template-columns: 1fr 1fr;
 }
 
-.cart-view , .cart-details{
-    height: 100vh ;
-    padding: 2em;
+.cart-view {
+    height: 80vh;
+    overflow: scroll;
+    padding: 0 2em 0 0;
+    margin-top: 1em;
+    overflow-x: hidden;
+}
+
+.all-cards {
+    margin-bottom: 2em;
 }
 
 .cards {
@@ -189,7 +249,7 @@ export default {
     display: flex;
     align-items: center;
     color: #fc3171bf;
-    margin: 1em 0 .3em 0;
+    margin: 0em 0 .75em 0;
 }
 
 .servicename {
@@ -250,10 +310,31 @@ export default {
     background-color: #fc3171bf;
 }
 
+.book-btn {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+}
+
+.book-btn:hover {
+    background: none !important;
+}
+
+.book-btn button {
+    background:none;
+    border: none;
+    outline: none;
+    padding: .4em 1em;
+    background-color: #fa93b4bf;
+}
+
 .cart-details {
     background: #f0f0f0;
-    margin: 3em;
+    margin: 1em 0 auto 0;
     border-radius: 10px;
+    height: auto;
+    padding: 2em;
+    margin-left: 2em;
 }
 
 .cart-details-services {
@@ -280,5 +361,7 @@ export default {
 
     font-size: 1.3em;
 }
+
+
 </style>
 
