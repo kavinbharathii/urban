@@ -266,4 +266,15 @@ a{
     align-items: center;
 }
 
+@media only screen and (max-width: 600px) {
+    #signin-div {
+        display: flex;
+        flex-direction: column;
+    }
+    .padd {
+        height: 20vh;
+        width: 100vw;
+    }
+}
+
 </style>

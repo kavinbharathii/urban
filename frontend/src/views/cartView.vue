@@ -171,11 +171,8 @@ export default {
         </div>
     </div>
 
-    <div>
+    <!-- <div>
         <div class="w3-container">
-            
-            <!-- <button onclick="document.getElementById('id01').style.display='block'">Open Modal</button> -->
-
             <div id="id01" class="w3-modal">
                 <div class="w3-modal-content">
                     <div class="w3-container">
@@ -186,7 +183,7 @@ export default {
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
 </div>
 
@@ -360,6 +357,25 @@ export default {
     flex-direction: row;
 
     font-size: 1.3em;
+}
+
+@media only screen and (max-width: 768px){
+    .cart-page {
+        display: flex;
+        flex-direction: column-reverse;
+        row-gap: 2em;
+        padding: 2em;
+    }
+    *.cart-view::-webkit-scrollbar {
+        display: none;
+    }
+    .cart-view {
+        height: auto;
+        padding: 0;
+    }
+    .cart-details {
+        margin-left: 0;
+    }
 }
 
 

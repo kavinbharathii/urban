@@ -170,4 +170,18 @@ a {
     align-items: center;
 }
 
+@media screen {
+    #dev {
+        display: flex;
+        flex-direction: column;
+    }
+    .padder {
+        width: 100vw;
+        height: 20vh;
+    }
+    .signin-form {
+        width: 90%;
+    }
+}
+
 </style>

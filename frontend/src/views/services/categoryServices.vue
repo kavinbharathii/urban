@@ -105,9 +105,6 @@ export default {
     <div>
 
         <serviceNavbar />
-        <div class="dialogue-box">
-            Please login first
-        </div>
         <div class="main">
             <div class="name-img">
                 <div class="name">
@@ -115,7 +112,7 @@ export default {
                     <div> <strong>✩</strong> 4.86 (456K Booking)</div>
                 </div>
                 <div>
-                    <img src="./images/computer.png" alt="com">
+                    <!-- <img src="./images/computer.png" alt="com"> -->
                 </div>
             </div>
             <div class="lin"></div>
@@ -253,6 +250,10 @@ h3 {
     cursor: pointer;
 }
 
+.load-btn {
+    margin-top: 2em;
+}
+
 .add-btn button {
     border: none;
     color: #fff;
@@ -274,4 +275,25 @@ h3 {
     transition: .35s;
     color: red;
 }
+
+@media only screen and (max-width: 600px) {
+    .lin {
+        width: 90%;
+        margin: 0 5%;
+    }
+    h3 {
+        padding: 0 5%;
+        margin: 2em 0 2em 0;
+    }
+    .name-img {
+        padding: 7em 0 3em 1.5em;
+    }
+    .all-cards {
+        padding: 0 5%;
+    }
+    .servicename {
+        font-size: 1.5em;
+    }
+}
+
 </style>

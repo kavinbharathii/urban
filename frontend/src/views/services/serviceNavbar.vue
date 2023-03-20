@@ -15,11 +15,11 @@ export default {
 
 <div class="navbar">
     <div class="logo">
-        <h1>IT Arena</h1>
+        <div>IT Arena</div>
     </div>
 
     <div class="links">
-        <router-link to="/cart"><div class="action-button cart-btn">View Cart <span class="material-symbols-outlined">shopping_cart</span></div></router-link>
+        <router-link to="/cart"><div class="action-button cart-btn"><span class="material-symbols-outlined">shopping_cart</span></div></router-link>
         <router-link to="/signin"><div class="action-button signin">Sign In</div></router-link>
         <router-link to="/signup"><div class="action-button signup">Sign Up</div></router-link>
     </div>
@@ -87,6 +87,19 @@ export default {
 
 .cart-btn span  {
     font-size: 20px;
+}
+
+@media only screen and (max-width: 600px) {
+    .logo {
+        margin-left: .5em;
+    }
+    .cart-btn{
+        margin-right: 0;
+    }
+    .links {
+        margin: 0 0.5em 0 0;
+        gap: .5em;
+    }
 }
 
 </style>
