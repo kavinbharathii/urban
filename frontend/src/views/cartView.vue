@@ -48,7 +48,7 @@ export default {
                 if (user) {
                     const uid = user.email;
                     let email_username = uid.split('@')[0]
-                    this.loginemail = email_username.replace(".", "")
+                    this.loginemail = email_username.replaceAll(".", "")
                     this.getUsercart(this.loginemail)
                     this.nakk(this.loginemail)
                 } else {
