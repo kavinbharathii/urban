@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <script>
 
 import { onAuthStateChanged } from "firebase/auth";
@@ -503,3 +504,5 @@ export default {
     }
 }
 </style>
+=======
+>>>>>>> 674b78c3ddb8048b53726f2eb744455bf79bb262
