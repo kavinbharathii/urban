@@ -87,6 +87,7 @@ export default {
         }
     },
 
+    // query data in mount
     async mounted() {
         this.getServiceData()
     }
