@@ -292,4 +292,27 @@ export default {
     font-size: 1.3em;
 
 }
+
+@media only screen and (max-width: 768px ){
+	#dev {
+		position: relative;
+		display: block;
+	}
+	#dev > .head-area {
+		position: absolute;
+		top: 10px;
+		left: 0;
+	}
+	#dev > .head-area svg {
+		width: 300px;
+	}
+	#dev > .text-area {
+		position: absolute;
+		bottom: 6em;
+		right: 0;
+		width: 100vw;
+		padding: 2em;
+	}
+}
+
 </style>

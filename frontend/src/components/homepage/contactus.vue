@@ -180,7 +180,7 @@ export default {
     width: 70%;
     display: flex;
     flex-direction: column;
-    padding: 10em 5em 10em 2em;
+    padding: 7em 5em 10em 2em;
 }
 
 .name,
@@ -323,4 +323,51 @@ textarea:focus {
     display: flex;
     flex-direction: row;
 }
+
+@media only screen and (max-width: 768px){
+	.main {
+		display: flex;
+		flex-direction: column;
+        height: auto;
+        width: auto;
+	}	
+    .left {
+        display: flex;
+        width: auto;
+        flex-direction: column;
+        padding: 0.5em 1em;
+        gap: 5em;
+    }
+    .right{
+        padding: 2em;
+        width: 100%;
+    }
+    .right .name-email {
+        flex-direction: column;
+        gap: 1em;
+        width: 100%;
+    }
+    .name , .email {
+        width: 100%;
+        margin: 0;
+    }
+    .name input , .email input {
+        width: 80%;
+    }
+    textarea {
+        margin: 0 0 1em 0;
+        width: 100%;
+    }
+    input {
+        padding: 10px 10px 10px 20px;
+        margin-bottom: .4em;
+    }
+    .name span, .email span {
+        top: -8px;
+        background-color: white;
+        padding: 0 .6em;
+    }
+
+}
+
 </style>

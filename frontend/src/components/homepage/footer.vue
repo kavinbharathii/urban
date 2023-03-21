@@ -15,8 +15,8 @@ export default {
             <div><font-awesome-icon icon="fa-solid fa-envelope" /></div>
         </div>
         <div class="made-div">
-            <div>© 2023 ItArena Pte Ltd. All rights reserved.</div>
-            <div>Made with <font-awesome-icon icon="fa-solid fa-heart hrt-icon" bounce /> in SG & PH</div>
+            <div>© 2023 ItArena Pte Ltd. All rights reserved.Made with <font-awesome-icon icon="fa-solid fa-heart hrt-icon" bounce /> in SG & PH</div>
+            <!-- <div>Made with <font-awesome-icon icon="fa-solid fa-heart hrt-icon" bounce /> in SG & PH</div> -->
         </div>
     </div>
 </template>
@@ -60,6 +60,29 @@ export default {
 .made-div svg {
     padding: 0 0.5em;
     margin-top: 0.7em;
+}
+
+@media only screen and (max-width: 768px) {
+    .fot {
+        padding: .5em 1em;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        gap: .3em;
+    }
+    .made-div {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+    .icons-div {
+        gap: 1.5em;
+        margin-left: 1em;
+        width: 100%;
+        justify-content: center;
+    }
 }
 
 </style>
