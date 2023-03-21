@@ -50,11 +50,11 @@ export default {
 
 		<div class="full-page">
 
-			<div class="page" id="home">
+			<!-- <div class="page" id="home">
 				<homevue />
-			</div>
+			</div> -->
 
-			<div class="page" id="services">
+			<!-- <div class="page" id="services">
 				<div class="p2 vh-100 vw-100">
 					<div class="cards-container">
 						<div class="cards-col col-one">
@@ -88,13 +88,13 @@ export default {
 						</div>
 					</div>
 				</div>
-			</div>
+			</div> -->
 
 			<div class="page vh-100 vw-100" id="about">
 				<aboutUs />
 			</div>
 
-			<div class="page vh-100 vw-100" id="contact">
+			<div id="contact">
 				<contactUs />
 			</div>
 
@@ -189,12 +189,12 @@ button {
 	min-height: 100vh;
 }
 
-.full-page {
+/* .full-page {
 	max-width: 100vw;
 	max-height: 100vh;
 	overflow: scroll;
 	scroll-snap-type: y mandatory;
-}
+} */
 
 .page {
 	scroll-snap-align: start;
@@ -202,4 +202,7 @@ button {
 
 a {
 	text-decoration: none;
-}</style>
+}
+
+
+</style>
