@@ -4,6 +4,7 @@
 import { db } from "@/views/firebase.js"
 import { setDoc, doc, getDoc, getDocs, collection } from "@firebase/firestore";
 import Router from '@/router'
+import { async } from "@firebase/util";
 
 export default {
     data() {
@@ -26,11 +27,12 @@ export default {
                 "CCTV"
             ],
 
-            services: {}
+            servicesData: {}
         }
     },
 
     methods: {
+        // add a new service
         addNewService() {
             if (this.newServiceForm.serviceName == "" || this.newServiceForm.categoryName == "" ||
                 this.price == "" || this.newServiceForm.timing == "") {
@@ -47,23 +49,46 @@ export default {
                     console.log(err)
                 })
             }
+
+            this.getServiceData()
         },
 
+        // edit an existing service
         editService() {
 
+            if (this.editServiceForm.categoryName == "" || this.editServiceForm.serviceName == "") {
+                console.log("Invalid form")
+            } else {
+                if (this.editServiceForm.price == "" || this.editServiceForm.timing == "") {
+                    console.log("Nothing to change")
+                } else {
+                    setDoc(doc(db, this.editServiceForm.categoryName + '/' + this.editServiceForm.serviceName), {
+                        rating: "10",
+                        rupee: this.editServiceForm.price,
+                        timing: this.editServiceForm.timing
+                    })
+                }
+            }
+
+            this.getServiceData()
+        },
+
+        // update queries of categories and services
+        async getServiceData() {
+            for (let category of this.categories) {
+                const services = await getDocs(collection(db, category))
+                this.servicesData[category] = []
+                services.forEach(doc => {
+                    // adding the services to the specific category
+                    this.servicesData[category].push(doc.id)
+                })
+            }
+            console.log(this.servicesData)
         }
     },
 
     async mounted() {
-        console.log("may jesus piss on you!")
-        for (let category in this.categories) {
-            const services = await getDocs(collection(db, category))
-            console.log(services)
-            services.forEach(doc => {
-                console.log(doc.id)
-            })
-        }
-        console.log("I hope it was warm")
+        this.getServiceData()
     }
 }
 
@@ -115,10 +140,11 @@ export default {
                 Services:
                 <select required :disabled="this.editServiceForm.categoryName == ''"
                     v-model="this.editServiceForm.serviceName">
-                    <option value="Computer">Computer</option>
-                    <option value="CCTV">CCTV</option>
-
-                    <!-- <option value="" v-for=""></option> -->
+                    <option value=""></option>
+                    <option :value="servicesUnderCategory"
+                        v-for="servicesUnderCategory in this.servicesData[this.editServiceForm.categoryName]">
+                        {{ servicesUnderCategory }}
+                    </option>
                 </select>
             </label>
 
@@ -132,7 +158,7 @@ export default {
                 <input type="text" v-model="this.editServiceForm.timing">
             </label>
 
-            <button @click.prevent="editService">Add Service</button>
+            <button @click.prevent="editService">Edit Service</button>
         </form>
     </div>
 </template>
