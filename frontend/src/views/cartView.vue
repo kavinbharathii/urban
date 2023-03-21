@@ -186,16 +186,15 @@ export default {
                                     <div @click="removeitemCart(category, sname)"><button>Remove</button></div>
                                 </div>
                                 <div class="add-btn">
-                                    <span
-                                        @click="updateof(category, sname, data2.rupee, data2.timing, 'sub')">-</span>
+                                    <span @click="updateof(category, sname, data2.rupee, data2.timing, 'sub')">-</span>
                                     <div :id="'cart' + sname.split(' ').join('')">{{ data2.quantity }}</div>
-                                    <span
-                                        @click="updateof(category, sname, data2.rupee, data2.timing, 'add')">+</span>
+                                    <span @click="updateof(category, sname, data2.rupee, data2.timing, 'add')">+</span>
                                 </div>
                             </div>
                         </div>
                         <div :id="'book' + category" @click="bookservice(category)" class="w3-button book-btn">
-                            <button>BOOK</button></div>
+                            <button>BOOK</button>
+                        </div>
                     </div>
                     <div class="bookall w3-button book-btn" @click="bookallservice()">Book all cart services</div>
                 </div>
