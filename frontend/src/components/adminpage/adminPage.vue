@@ -2,9 +2,8 @@
 <script>
 
 import { db } from "@/views/firebase.js"
-import { setDoc, doc, getDoc, getDocs, collection } from "@firebase/firestore";
-import Router from '@/router'
-import { async } from "@firebase/util";
+import { setDoc, doc, getDocs, collection  } from "@firebase/firestore";
+
 
 export default {
     data() {
@@ -20,6 +19,12 @@ export default {
                 categoryName: "",
                 price: "",
                 timing: ""
+            },
+            addNewCategory:{
+                collectionName:"",
+                serviceName: "",
+                price: "",
+                timing : ""
             },
 
             categories: [
@@ -84,8 +89,20 @@ export default {
                 })
             }
             console.log(this.servicesData)
-        }
-    },
+        },
+
+        // add new collection 
+        async createNewCollection() {
+            console.log(this.addNewCategory)
+            const collectionName = this.addNewCategory.collectionName;
+            const newDocID = this.addNewCategory.serviceName;
+            const newData = { rupee: this.addNewCategory.price , timing : this.addNewCategory.timing };
+            const newDocRef = doc(db, collectionName, newDocID);
+
+            await setDoc(newDocRef, newData);
+            console.log("Add successfully");
+            }
+        },
 
     // query data in mount
     async mounted() {
@@ -143,7 +160,7 @@ export default {
                     v-model="this.editServiceForm.serviceName">
                     <option value=""></option>
                     <option :value="servicesUnderCategory"
-                        v-for="servicesUnderCategory in this.servicesData[this.editServiceForm.categoryName]">
+                        v-for="(servicesUnderCategory,index) in this.servicesData[this.editServiceForm.categoryName]" :key="index">
                         {{ servicesUnderCategory }}
                     </option>
                 </select>
@@ -161,6 +178,19 @@ export default {
 
             <button @click.prevent="editService">Edit Service</button>
         </form>
+
+        <!-- add new services -->
+
+        <div>
+            <form >
+                <input type="text" placeholder="categoryname" v-model="addNewCategory.collectionName">                
+                <input type="text" placeholder="servicename" v-model="addNewCategory.serviceName">
+                <input type="text" placeholder="timing" v-model="addNewCategory.timing">
+                <input type="number" placeholder="rupee" v-model="addNewCategory.price">
+
+            </form>
+            <button @click="createNewCollection()">ADD collection</button>
+        </div>
     </div>
 </template>
 

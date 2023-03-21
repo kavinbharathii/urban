@@ -170,7 +170,7 @@ a {
     align-items: center;
 }
 
-@media screen {
+@media only screen and (max-width: 768px) {
     #dev {
         display: flex;
         flex-direction: column;

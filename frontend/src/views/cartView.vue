@@ -14,7 +14,13 @@ export default {
             category: null,
             datas: [],
             cartTotal: 0,
-            loading: true
+            loading: true,
+            addressDetail:{
+                name: null,
+                ph_num: null,
+                address_line_1: null,
+                address_line_2: null
+            }
         }
     },
     components: {
@@ -113,9 +119,12 @@ export default {
         },
         placeservice() {
             document.getElementById('id01').style.display='block'
+        },
+        cashondelivery() {
+            console.log(this.addressDetail)
+            
         }
     },
-
 }
 </script>
 
@@ -171,19 +180,25 @@ export default {
         </div>
     </div>
 
-    <!-- <div>
+    <div>
         <div class="w3-container">
             <div id="id01" class="w3-modal">
                 <div class="w3-modal-content">
                     <div class="w3-container">
                         <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-display-topright">&times;</span>
-                        <p>Some text. Some text. Some text.</p>
-                        <p>Some text. Some text. Some text.</p>
+                        <div>
+                            <input type="text" placeholder="Name" v-model="addressDetail.name">
+                            <input type="number" placeholder="Mobile number" v-model="addressDetail.ph_num">
+                            <input type="text" placeholder="address line 1" v-model="addressDetail.address_line_1">
+                            <input type="text" placeholder="address line 2" v-model="addressDetail.address_line_2">
+                            <button class="cod" @click="cashondelivery()">Cash on delivery</button>
+                            <button class="online_pay">Online pay</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div> -->
+    </div>
 
 </div>
 
@@ -357,6 +372,12 @@ export default {
     flex-direction: row;
 
     font-size: 1.3em;
+}
+
+
+.w3-modal-content {
+    width: 50vw !important;
+    min-height: 70vh !important;
 }
 
 @media only screen and (max-width: 768px){
