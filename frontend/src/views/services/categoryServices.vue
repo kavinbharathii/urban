@@ -126,6 +126,7 @@ export default {
 }
 </script>
 
+
 <template>
     <div>
         <serviceNavbar :showOptions="!this.userLoggedIn" :userName="this.userName" />
