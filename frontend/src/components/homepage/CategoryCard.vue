@@ -66,6 +66,7 @@ export default {
 
 .card-action-button {
     z-index: 1 !important;
+    border-radius: 5px;
 }
 
 .text-area {

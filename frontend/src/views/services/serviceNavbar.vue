@@ -2,9 +2,13 @@
 <script>
 
 export default {
+    props: {
+        showOptions: Boolean,
+        userName: String
+    },
     data() {
         return {
-            userSignedIn: false
+            userSignedIn: false,
         }
     }
 }
@@ -20,8 +24,13 @@ export default {
 
     <div class="links">
         <router-link to="/cart"><div class="action-button cart-btn"><span class="material-symbols-outlined">shopping_cart</span></div></router-link>
-        <router-link to="/signin"><div class="action-button signin">Sign In</div></router-link>
-        <router-link to="/signup"><div class="action-button signup">Sign Up</div></router-link>
+        <router-link to="/signin" v-if="this.showOptions">
+            <div class="action-button signin">Sign In</div>
+        </router-link>
+        <router-link to="/signup" v-if="this.showOptions">
+            <div class="action-button signup">Sign Up</div>
+        </router-link>
+        <div class="name" v-if="this.userName !== ''">{{ this.userName }}</div>
     </div>
 </div>
 

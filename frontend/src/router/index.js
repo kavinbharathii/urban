@@ -40,6 +40,13 @@ const router = createRouter({
 			}
 		},
 		{
+			path: '/electrician-services',
+			component: categoryServices,
+			props: {
+				categoryName: 'Electrician'
+			}
+		},
+		{
 			path: '/admin',
 			component: adminPage
 		}

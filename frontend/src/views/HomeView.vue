@@ -4,6 +4,7 @@ import aboutUs from '../components/homepage/aboutus.vue'
 import contactUs from '../components/homepage/contactus.vue'
 import CategoryCard from '../components/homepage/CategoryCard.vue'
 import homevue from '../components/homepage/Home.vue'
+
 export default {
 
 	data() {
@@ -18,7 +19,7 @@ export default {
 		contactUs,
 		aboutUs,
 	}
-};
+}
 
 </script>
 
@@ -50,11 +51,11 @@ export default {
 
 		<div class="full-page">
 
-			<!-- <div class="page" id="home">
+			<div class="page" id="home">
 				<homevue />
-			</div> -->
+			</div>
 
-			<!-- <div class="page" id="services">
+			<div class="page" id="services">
 				<div class="p2 vh-100 vw-100">
 					<div class="cards-container">
 						<div class="cards-col col-one">
@@ -79,16 +80,16 @@ export default {
 						</div>
 
 						<div class="cards-col col-three">
-							<router-link to="/electrician">
+							<router-link to="/electrician-services">
 								<CategoryCard categoryName="Electrician" description="Description." />
 							</router-link>
-							<router-link to="/plumbing">
+							<router-link to="/plumbing-services">
 								<CategoryCard categoryName="Plumbing" description="Description." />
 							</router-link>
 						</div>
 					</div>
 				</div>
-			</div> -->
+			</div>
 
 			<div class="page vh-100 vw-100" id="about">
 				<aboutUs />
@@ -104,8 +105,6 @@ export default {
 </template>
 
 <style scoped>
-
-
 .nav-bar {
 	text-decoration: none;
 	z-index: 100;
