@@ -203,5 +203,15 @@ a {
 	text-decoration: none;
 }
 
+@media only screen and (max-width: 600px) {
+    .cards-container {
+		flex-direction: column;
+		width: 100vw;
+	}
+
+	.cards-col {
+		width: 100vw;
+	}
+}
 
 </style>

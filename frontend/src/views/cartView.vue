@@ -122,7 +122,7 @@ export default {
         },
 
         bookservice(category) {
-            // document.getElementById('id01').style.display='block'
+            document.getElementById('id01').style.display='block'
             let bookcategory = [];
             bookcategory[category] = this.cartData[0][category]
             this.bookingcart['booked'] = bookcategory
@@ -130,7 +130,7 @@ export default {
         },
 
         bookallservice() {
-            // document.getElementById('id01').style.display='block'
+            document.getElementById('id01').style.display='block'
             this.bookingcart['booked'] = this.cartData[0]
             console.log(this.bookingcart)
         },
@@ -164,7 +164,7 @@ export default {
 <template>
     <div>
         <button class="load-btn" v-if="this.loading">
-            <span class="spinner-border spinner-border-sm" style="color: white"></span>Loading..
+            <span class="spinner-border spinner-border-sm" style="color: white"></span>Loading...
         </button>
 
         <div class="cart-page" v-if="!this.loading">

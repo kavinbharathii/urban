@@ -5,6 +5,8 @@ import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signInWithEmai
 import { auth } from '../firebase.js'
 import Router from '@/router'
 
+const delay = ms => new Promise(res_ => setTimeout(res_, ms))
+
 export default {
     data() {
         return {
@@ -12,7 +14,8 @@ export default {
             err: '',
             emailNotProvided: false,
             signInError: "",
-            errorState: false
+            errorState: false,
+            successState: false
         }
     },
     methods: {
@@ -20,7 +23,8 @@ export default {
             const provider = new GoogleAuthProvider();
             signInWithPopup(auth, provider)
                 .then((result) => {
-                    console.log(result.user);
+                    console.log(result.user)
+                    this.successState = true
                     Router.push('/#services')
                     this.getUser()
                 })
@@ -48,7 +52,11 @@ export default {
                     const user = userCredential.user;
                     console.log('sigin successfully')
                     this.errorState = false
+                    this.successState = true
 
+                    console.log('this')
+                    delay(2000)
+                    console.log('that')
                     Router.push('/#services')
                 })
                 .catch((error) => {
@@ -60,6 +68,7 @@ export default {
                     let message = message_parse.replace("-", " ")
                     this.signInError = message
                     this.errorState = true
+                    this.successState = false
                 });
         },
 
@@ -124,8 +133,12 @@ export default {
             </button>
             <div class="bottom-span"></div>
 
-            <div v-if="errorState" class="email-alert">
+            <div v-if="errorState" class="email-alert alert-error">
                 {{ this.signInError }}
+            </div>
+
+            <div v-if="successState" class="email-alert alert-success">
+                Signed In successfully
             </div>
         </form>
     </div>
@@ -254,16 +267,24 @@ a{
 }
 
 .email-alert {
-    color: #fa5f54;
     width: 100%;
     height: 3rem;
     background-color: #fefefe;
-    border: 2px solid #fa5f54;
     border-radius: 5px;
     
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.alert-error {
+    color: #fa5f54;
+    border: 2px solid #fa5f54;
+}
+
+.alert-success {
+    color: #22c55e;
+    border: 2px solid #22c55e;
 }
 
 @media only screen and (max-width: 600px) {

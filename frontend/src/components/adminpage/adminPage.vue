@@ -1,8 +1,9 @@
 
 <script>
 
-import { db } from "@/views/firebase.js"
-import { setDoc, doc, getDocs, collection  } from "@firebase/firestore";
+import { db, db_rt } from "@/views/firebase.js"
+import { get, ref } from "@firebase/database";
+import { setDoc, doc, getDocs, collection } from "@firebase/firestore";
 
 
 export default {
@@ -20,11 +21,11 @@ export default {
                 price: "",
                 timing: ""
             },
-            addNewCategory:{
-                collectionName:"",
+            addNewCategory: {
+                collectionName: "",
                 serviceName: "",
                 price: "",
-                timing : ""
+                timing: ""
             },
 
             categories: [
@@ -32,7 +33,8 @@ export default {
                 "CCTV"
             ],
 
-            servicesData: {}
+            servicesData: {},
+            bookedData: {}
         }
     },
 
@@ -88,7 +90,6 @@ export default {
                     this.servicesData[category].push(doc.id)
                 })
             }
-            console.log(this.servicesData)
         },
 
         // add new collection 
@@ -96,17 +97,25 @@ export default {
             console.log(this.addNewCategory)
             const collectionName = this.addNewCategory.collectionName;
             const newDocID = this.addNewCategory.serviceName;
-            const newData = { rupee: this.addNewCategory.price , timing : this.addNewCategory.timing };
+            const newData = { rupee: this.addNewCategory.price, timing: this.addNewCategory.timing };
             const newDocRef = doc(db, collectionName, newDocID);
 
             await setDoc(newDocRef, newData);
             console.log("Add successfully");
-            }
         },
+
+        async getAllBookedItems() {
+            const bookedServices = await get(ref(db_rt, 'Booked'))
+            const data = bookedServices.val()
+            this.bookedData = data
+        },
+    },
 
     // query data in mount
     async mounted() {
         this.getServiceData()
+
+        this.getAllBookedItems()
     }
 }
 
@@ -160,7 +169,8 @@ export default {
                     v-model="this.editServiceForm.serviceName">
                     <option value=""></option>
                     <option :value="servicesUnderCategory"
-                        v-for="(servicesUnderCategory,index) in this.servicesData[this.editServiceForm.categoryName]" :key="index">
+                        v-for="(servicesUnderCategory, index) in this.servicesData[this.editServiceForm.categoryName]"
+                        :key="index">
                         {{ servicesUnderCategory }}
                     </option>
                 </select>
@@ -182,14 +192,36 @@ export default {
         <!-- add new services -->
 
         <div>
-            <form >
-                <input type="text" placeholder="categoryname" v-model="addNewCategory.collectionName">                
+            <form>
+                <input type="text" placeholder="categoryname" v-model="addNewCategory.collectionName">
                 <input type="text" placeholder="servicename" v-model="addNewCategory.serviceName">
                 <input type="text" placeholder="timing" v-model="addNewCategory.timing">
                 <input type="number" placeholder="rupee" v-model="addNewCategory.price">
 
             </form>
             <button @click="createNewCollection()">ADD collection</button>
+        </div>
+
+        <div v-for="(userName, index1) in this.bookedData" :key="index1">
+            <h1>{{ index1 }}</h1>
+            <div v-for="(date, index2) in userName" :key="index2">
+                <h2>{{ index2 }}</h2>
+                <div v-for="(time, index3) in date" :key="index3">
+                    <h3>{{ index3 }}</h3>
+                    <div v-for="(categories, index4) in time" :key="index4">
+                        <h4>{{ index4 }}</h4>
+                        <div v-for="(services, index5) in categories" :key="index5">
+                            <h5>{{ index5 }}</h5>
+                            <div v-for="(servicetype, index6) in services" :key="index6">
+                                <h6>{{ index6 }}</h6>
+                                <div v-for="(prop, index7) in servicetype" :key="index7">
+                                    {{ index7 }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
