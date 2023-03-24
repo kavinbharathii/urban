@@ -25,8 +25,8 @@ export default {
             bookingcart: [],
             time: '',
             currDate: '',
-            booked : null,
-            cartviewbutnotbooked : []
+            booked: null,
+            cartviewbutnotbooked: []
         }
     },
     components: {
@@ -55,15 +55,15 @@ export default {
             let quantity = document.querySelector('#cart' + servicename.split(' ').join(''))
             if (cal == 'add') {
                 quantity.innerHTML = parseInt(quantity.innerHTML) + 1
-                this.updateData(categoryname, servicename, quantity.innerHTML, rupee, timing , this.booked = false)
+                this.updateData(categoryname, servicename, quantity.innerHTML, rupee, timing, this.booked = false)
             }
             if (cal == 'sub') {
                 quantity.innerHTML = parseInt(quantity.innerHTML) - 1
                 if (quantity.innerHTML == 0) { quantity.innerHTML = 1 }
-                this.updateData(categoryname, servicename, quantity.innerHTML, rupee, timing ,  this.booked = false)
+                this.updateData(categoryname, servicename, quantity.innerHTML, rupee, timing, this.booked = false)
             }
         },
-        updateData(categoryname, servicename, quantity, rupee, timing , booked) {
+        updateData(categoryname, servicename, quantity, rupee, timing, booked) {
             try {
                 set(ref(db_rt, this.loginemail + '/' + categoryname + '/' + servicename), {
                     quantity: quantity,
@@ -87,7 +87,7 @@ export default {
                 for (let j in keys) {
                     if (this.datas[i][keys[j]].booked == false) {
                         cate += parseInt(this.datas[i][keys[j]].rupee) * parseInt(this.datas[i][keys[j]].quantity)
-                        notbookedcnt += 1 
+                        notbookedcnt += 1
                     }
                 }
                 this.cartviewbutnotbooked[i] = notbookedcnt
@@ -121,7 +121,7 @@ export default {
         },
 
         removeitemCart(categoryname, servicename) {
-            console.log(categoryname,servicename , 'deleting')
+            console.log(categoryname, servicename, 'deleting')
             const delRef = ref(db_rt, this.loginemail + '/' + categoryname + '/' + servicename)
             remove(delRef)
                 .then(() => {
@@ -131,14 +131,14 @@ export default {
         },
 
         bookservice(category) {
-            document.getElementById('id01').style.display='block'
+            document.getElementById('id01').style.display = 'block'
             let bookcategory = [];
             bookcategory[category] = this.cartData[0][category]
             this.bookingcart['booked'] = bookcategory
         },
 
         bookallservice() {
-            document.getElementById('id01').style.display='block'
+            document.getElementById('id01').style.display = 'block'
             this.bookingcart['booked'] = this.cartData[0]
         },
 
@@ -158,32 +158,32 @@ export default {
                 let cMonth = currentDate.getMonth() + 1
                 let cYear = currentDate.getFullYear()
                 this.time = currentDate.getHours() + ":" + currentDate.getMinutes() + ":" + currentDate.getSeconds();
-                this.currDate = cDay+'-'+cMonth+'-'+cYear;
+                this.currDate = cDay + '-' + cMonth + '-' + cYear;
 
                 // save booking details to database
 
-                console.log(this.bookingcart , 'BOOKED')
+                console.log(this.bookingcart, 'BOOKED')
 
-                for ( let category in this.bookingcart['booked']) {
+                for (let category in this.bookingcart['booked']) {
                     let categoryObject = this.bookingcart['booked'][category]
                     for (let service in categoryObject) {
 
-                        this.writeinDb( category ,service ,categoryObject[service])
-                        this.removeitemCart(category , service)
+                        this.writeinDb(category, service, categoryObject[service])
+                        this.removeitemCart(category, service)
                     }
                 }
 
                 // address saving in DB
                 try {
-                    set(ref(db_rt, 'Booking' + '/' + this.loginemail + '/'  + this.currDate + '/' + this.time + '/' + 'Address' ), {
-                        username : this.addressDetail.name,
-                        address_line_1 : this.addressDetail.address_line_1,
-                        address_line_2 : this.addressDetail.address_line_2
+                    set(ref(db_rt, 'Booking' + '/' + this.loginemail + '/' + this.currDate + '/' + this.time + '/' + 'Address'), {
+                        username: this.addressDetail.name,
+                        address_line_1: this.addressDetail.address_line_1,
+                        address_line_2: this.addressDetail.address_line_2
                     })
                     console.log('address saved')
                 }
-                catch(err) {
-                    console.log('error' , err)
+                catch (err) {
+                    console.log('error', err)
                 }
 
             } else {
@@ -193,11 +193,11 @@ export default {
                 // declined payment -> Cash on Delivery
             }
         },
-        
-        writeinDb( category, service ,categoryObject) {
-            
+
+        writeinDb(category, service, categoryObject) {
+
             try {
-                set(ref(db_rt,'Booking/' + this.loginemail + '/' + this.currDate + '/' + this.time + '/'  + 'services/' + category + '/' + service ), {
+                set(ref(db_rt, 'Booking/' + this.loginemail + '/' + this.currDate + '/' + this.time + '/' + 'services/' + category + '/' + service), {
                     timing: categoryObject.timing,
                     rupee: categoryObject.rupee,
                     quantity: categoryObject.quantity,
@@ -208,8 +208,50 @@ export default {
             catch (err) {
                 console.log("error :", err)
             }
+        },
+
+        async paymentMethod() {
+            let response = await fetch("http://localhost:3000/payment", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    amount: 500,
+                }),
+            })
+
+            console.log(response)
+            let orderData = await response.json();
+            console.log(orderData.id)
+
+            let options = {
+                key: "rzp_test_HBni4PPnBF3Swj",
+                amount: "500",
+                currency: "INR",
+                name: "Kavin Bharathi",
+                order_id: orderData.id,
+                handler: function (response) {
+                    alert(response.razorpay_payment_id);
+                    alert(response.razorpay_order_id);
+                    alert(response.razorpay_signature)
+                }
+            };
+            var rzp1 = new Razorpay(options);
+
+            rzp1.on('payment.failed', function (response) {
+                alert(response.error.code);
+                alert(response.error.description);
+                alert(response.error.source);
+                alert(response.error.step);
+                alert(response.error.reason);
+                alert(response.error.metadata.order_id);
+                alert(response.error.metadata.payment_id);
+            });
+            rzp1.open();
         }
-    },
+
+    }
 }
 </script>
 
@@ -221,7 +263,9 @@ export default {
 
         <div>
             <header v-if="!this.loading">
-                <div class="yr-orders"><button><router-link :to="{ path: '/yourorders', query: { useremail: this.loginemail }}"> Your Orders</router-link></button></div>
+                <div class="yr-orders"><button><router-link
+                            :to="{ path: '/yourorders', query: { useremail: this.loginemail } }"> Your
+                            Orders</router-link></button></div>
             </header>
         </div>
 
@@ -230,7 +274,7 @@ export default {
                 <div v-for="(data, index) in this.cartData" :key="index">
                     <div v-for="(data1, category) in data" :key="category" class="all-cards">
                         <div class="category" v-if="this.cartviewbutnotbooked[category] >= 1"> {{ category }} services</div>
-                        <div v-for="(data2, sname) in data1" :key="sname"> 
+                        <div v-for="(data2, sname) in data1" :key="sname">
                             <div class="fuck" v-if="!data2.booked">
                                 <div>
                                     <div class="servicename">{{ sname }}</div>
@@ -252,11 +296,13 @@ export default {
                                 </div>
                             </div>
                         </div>
-                        <div :id="'book' + category" @click="bookservice(category)" class="w3-button book-btn" v-if="this.cartviewbutnotbooked[category] >= 1" >
+                        <div :id="'book' + category" @click="bookservice(category)" class="w3-button book-btn"
+                            v-if="this.cartviewbutnotbooked[category] >= 1">
                             <button>BOOK</button>
                         </div>
                     </div>
-                    <div class="bookall w3-button book-btn" @click="bookallservice()" v-if="cartTotal > 1">Book all cart services</div>
+                    <div class="bookall w3-button book-btn" @click="bookallservice()" v-if="cartTotal > 1">Book all cart
+                        services</div>
                 </div>
             </div>
 
@@ -554,7 +600,7 @@ export default {
 }
 
 .yr-orders button {
-    background: none;   
+    background: none;
     outline: none;
     border: none;
     background-color: #fc3171bf;
@@ -581,5 +627,4 @@ export default {
     .cart-details {
         margin-left: 0;
     }
-}
-</style>
+}</style>
