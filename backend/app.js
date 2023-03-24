@@ -1,7 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const Razorpay = require('razorpay')
 const nodemailer = require('nodemailer')
+const port = 3000
 
 const sendEmail = async (name, email, message) => {
     let transporter = nodemailer.createTransport({
@@ -34,6 +36,8 @@ const sendEmail = async (name, email, message) => {
 }
 
 const app = express();
+app.use(express.json())
+app.use(cors())
 
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -51,8 +55,30 @@ app.post('/data', (req, res) => {
     res.send('Data received');
 });
 
-app.listen(3000, () => {
-    console.log('Server started on port 3000');
+app.post('/payment', async (req, res) => {
+
+    console.log("Ulla varuthu")
+    let { amount } = req.body
+
+    let instance = new Razorpay({ key_id: 'rzp_test_HBni4PPnBF3Swj', key_secret: 'CTuKUGEBUL3FtJBauO4TLTrJ' })
+
+    let order = await instance.orders.create({
+        amount: amount * 100,
+        currency: "INR",
+        receipt: "receipt#1",
+    }).then(() => {
+        console.log("Working")
+    }).catch((err) => {
+        console.log(err)
+    })
+
+    res.status(201).json({
+        success: true,
+        order,
+        amount
+    })
 });
 
-
+app.listen(3000, () => {
+    console.log(`Server started on port ${port}`);
+});
