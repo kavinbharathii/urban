@@ -22,7 +22,11 @@ export default {
                 address_line_2: null
             },
             readyToPay: false,
-            bookingcart: []
+            bookingcart: [],
+            time: '',
+            currDate: '',
+            booked : null,
+            cartviewbutnotbooked : []
         }
     },
     components: {
@@ -51,21 +55,22 @@ export default {
             let quantity = document.querySelector('#cart' + servicename.split(' ').join(''))
             if (cal == 'add') {
                 quantity.innerHTML = parseInt(quantity.innerHTML) + 1
-                this.updateData(categoryname, servicename, quantity.innerHTML, rupee, timing)
+                this.updateData(categoryname, servicename, quantity.innerHTML, rupee, timing , this.booked = false)
             }
             if (cal == 'sub') {
                 quantity.innerHTML = parseInt(quantity.innerHTML) - 1
                 if (quantity.innerHTML == 0) { quantity.innerHTML = 1 }
-                this.updateData(categoryname, servicename, quantity.innerHTML, rupee, timing)
+                this.updateData(categoryname, servicename, quantity.innerHTML, rupee, timing ,  this.booked = false)
             }
         },
-        updateData(categoryname, servicename, quantity, rupee, timing) {
+        updateData(categoryname, servicename, quantity, rupee, timing , booked) {
+            console.log(booked)
             try {
                 set(ref(db_rt, this.loginemail + '/' + categoryname + '/' + servicename), {
                     quantity: quantity,
                     rupee: rupee,
                     timing: timing,
-                    booked: true
+                    booked: booked
                 }).then(() => {
                     console.log('Added successfully')
                 })
@@ -79,13 +84,18 @@ export default {
             for (let i in this.datas) {
                 const keys = Object.keys(this.datas[i])
                 let cate = 0
+                let notbookedcnt = 0
                 for (let j in keys) {
-                    cate += parseInt(this.datas[i][keys[j]].rupee) * parseInt(this.datas[i][keys[j]].quantity)
+                    if (this.datas[i][keys[j]].booked == false) {
+                        cate += parseInt(this.datas[i][keys[j]].rupee) * parseInt(this.datas[i][keys[j]].quantity)
+                        notbookedcnt += 1 
+                    }
                 }
+                this.cartviewbutnotbooked[i] = notbookedcnt
                 this.cartTotal += cate
                 this.category[i] = cate
-
             }
+            console.log(this.cartviewbutnotbooked['CCTV'])
         },
         changeCartRupee() {
             const messagesRef = ref(db_rt, this.loginemail + '/');
@@ -132,7 +142,6 @@ export default {
         bookallservice() {
             document.getElementById('id01').style.display='block'
             this.bookingcart['booked'] = this.cartData[0]
-            console.log(this.bookingcart)
         },
 
         cashondelivery() {
@@ -142,19 +151,61 @@ export default {
         confirmBooking(confirmationType) {
             if (confirmationType == true) {
                 console.log("Confirmed booking")
-                console.log(this.addressDetail)
 
                 this.readyToPay = false
                 document.getElementById('id01').style.display = 'none'
 
+                let currentDate = new Date();
+                let cDay = currentDate.getDate()
+                let cMonth = currentDate.getMonth() + 1
+                let cYear = currentDate.getFullYear()
+                this.time = currentDate.getHours() + ":" + currentDate.getMinutes() + ":" + currentDate.getSeconds();
+                this.currDate = cDay+'-'+cMonth+'-'+cYear;
 
                 // save booking details to database
+                for ( let category in this.bookingcart['booked']) {
+                    let categoryObject = this.bookingcart['booked'][category]
+                    for (let service in categoryObject) {
+
+                        this.writeinDb( category ,service ,categoryObject[service])
+                        this.updateData( category , service , categoryObject[service].quantity , categoryObject[service].rupee , categoryObject[service].timing , this.booked = true)
+                    }
+                }
+
+                // address saving in DB
+                try {
+                    set(ref(db_rt, 'Booking' + '/' + this.loginemail + '/'  + this.currDate + '/' + this.time + '/' + 'Address' ), {
+                        username : this.addressDetail.name,
+                        address_line_1 : this.addressDetail.address_line_1,
+                        address_line_2 : this.addressDetail.address_line_2
+                    })
+                    console.log('address saved')
+                }
+                catch(err) {
+                    console.log('error' , err)
+                }
 
             } else {
                 console.log("Declined booking")
                 this.readyToPay = false
 
                 // declined payment -> Cash on Delivery
+            }
+        },
+        
+        writeinDb( category, service ,categoryObject) {
+            
+            try {
+                set(ref(db_rt,'Booking/' + this.loginemail + '/' + this.currDate + '/' + this.time + '/'  + 'services/' + category + '/' + service ), {
+                    timing: categoryObject.timing,
+                    rupee: categoryObject.rupee,
+                    quantity: categoryObject.quantity,
+                    booked: true
+                })
+                console.log('category saved')
+            }
+            catch (err) {
+                console.log("error :", err)
             }
         }
     },
@@ -167,40 +218,48 @@ export default {
             <span class="spinner-border spinner-border-sm" style="color: white"></span>Loading...
         </button>
 
+        <div>
+            <header v-if="!this.loading">
+                <div class="yr-orders"><button><router-link :to="{ path: '/yourorders', query: { useremail: this.loginemail }}"> Your Orders</router-link></button></div>
+            </header>
+        </div>
+
         <div class="cart-page" v-if="!this.loading">
             <div class="cart-view">
                 <div v-for="(data, index) in this.cartData" :key="index">
                     <div v-for="(data1, category) in data" :key="category" class="all-cards">
-                        <div class="category"> {{ category }} services</div>
-                        <div v-for="(data2, sname) in data1" :key="sname" class="cards">
-                            <div>
-                                <div class="servicename">{{ sname }}</div>
-                                <div class="rating"><strong>✩</strong> {{ data2.rating }} (456K Booking)</div>
-                                <div class="rupee">
-                                    <strong>₹ {{ data2.rupee }}.00</strong>
-                                    <span> • {{ data2.timing }}</span>
+                        <div class="category" v-if="this.cartviewbutnotbooked[category] >= 1"> {{ category }} services</div>
+                        <div v-for="(data2, sname) in data1" :key="sname"> 
+                            <div class="fuck" v-if="!data2.booked">
+                                <div>
+                                    <div class="servicename">{{ sname }}</div>
+                                    <div class="rating"><strong>✩</strong> {{ data2.rating }} (456K Booking)</div>
+                                    <div class="rupee">
+                                        <strong>₹ {{ data2.rupee }}.00</strong>
+                                        <span> • {{ data2.timing }}</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="add-remove-btn">
-                                <div class="remove-btn">
-                                    <div @click="removeitemCart(category, sname)"><button>Remove</button></div>
-                                </div>
-                                <div class="add-btn">
-                                    <span @click="updateof(category, sname, data2.rupee, data2.timing, 'sub')">-</span>
-                                    <div :id="'cart' + sname.split(' ').join('')">{{ data2.quantity }}</div>
-                                    <span @click="updateof(category, sname, data2.rupee, data2.timing, 'add')">+</span>
+                                <div class="add-remove-btn">
+                                    <div class="remove-btn">
+                                        <div @click="removeitemCart(category, sname)"><button>Remove</button></div>
+                                    </div>
+                                    <div class="add-btn">
+                                        <span @click="updateof(category, sname, data2.rupee, data2.timing, 'sub')">-</span>
+                                        <div :id="'cart' + sname.split(' ').join('')">{{ data2.quantity }}</div>
+                                        <span @click="updateof(category, sname, data2.rupee, data2.timing, 'add')">+</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div :id="'book' + category" @click="bookservice(category)" class="w3-button book-btn">
+                        <div :id="'book' + category" @click="bookservice(category)" class="w3-button book-btn" v-if="this.cartviewbutnotbooked[category] >= 1" >
                             <button>BOOK</button>
                         </div>
                     </div>
-                    <div class="bookall w3-button book-btn" @click="bookallservice()">Book all cart services</div>
+                    <div class="bookall w3-button book-btn" @click="bookallservice()" v-if="cartTotal > 1">Book all cart services</div>
                 </div>
             </div>
 
-            <div class="cart-details">
+            <div class="cart-details" v-if="cartTotal > 1">
                 <h3>Cart Summary</h3>
                 <div v-for="(item, index) in this.category" :key="index" class="cart-details-services">
                     <div class="service-summary">
@@ -257,10 +316,6 @@ export default {
     width: 10px;
 }
 
-/* Track */
-.cart-view::-webkit-scrollbar-track {
-    background: #f1f1f1;
-}
 
 /* Handle */
 .cart-view::-webkit-scrollbar-thumb {
@@ -273,7 +328,7 @@ export default {
 }
 
 .cart-page {
-    padding: 4em 10% 0 10%;
+    padding: 1em 10% 0 10%;
     display: grid;
     grid-template-columns: 1fr 1fr;
 }
@@ -291,12 +346,19 @@ export default {
 }
 
 .cards {
-    padding: 1em;
     background-color: #f5f2f2;
     border-radius: 10px;
     display: flex;
     justify-content: space-between;
     margin: 0.5em;
+}
+
+.fuck {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 1em;
 }
 
 .category {
@@ -329,6 +391,8 @@ export default {
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
+    height: 100%;
+    gap: 2em;
 }
 
 .remove-btn {
@@ -478,6 +542,22 @@ export default {
 .no-button {
     border: 3px solid #f22b2b;
     background-color: #b5392c;
+}
+
+.yr-orders {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    padding: 2em;
+    margin-right: 2em;
+}
+
+.yr-orders button {
+    background: none;   
+    outline: none;
+    border: none;
+    background-color: #fc3171bf;
+    padding: .5em 1em;
 }
 
 @media only screen and (max-width: 768px) {
