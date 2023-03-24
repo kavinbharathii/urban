@@ -5,6 +5,7 @@ import signIn from '../views/services/signIn.vue'
 import signUp from '../views/services/signUp.vue'
 import cart from '../views/cartView.vue'
 import adminPage from '../components/adminpage/adminPage.vue'
+import orders from '../views/order.vue'
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
@@ -24,6 +25,13 @@ const router = createRouter({
 		{
 			path: '/cart',
 			component: cart,
+		},
+		{
+			path: '/yourorders',
+			component: orders,
+			props(route) {
+				return {  useremail : route.query.useremail }
+			}
 		},
 		{
 			path: '/cctv-services',

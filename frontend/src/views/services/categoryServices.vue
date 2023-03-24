@@ -9,7 +9,6 @@ import { onAuthStateChanged } from 'firebase/auth'
 import serviceNavbar from './serviceNavbar.vue';
 import Router from '@/router'
 import { db, auth, db_rt } from '../firebase.js'
-import { validateCallback } from "@firebase/util";
 
 export default {
     name: "categoryServices",
@@ -114,7 +113,7 @@ export default {
                     quantity: quantity,
                     rupee: rupee,
                     timing: timing,
-                    booked: true
+                    booked: false
                 })
                 console.log('Added successfully')
             }
