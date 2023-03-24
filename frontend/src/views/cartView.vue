@@ -216,7 +216,7 @@ export default {
 <template>
     <div>
         <button class="load-btn" v-if="this.loading">
-            <span class="spinner-border spinner-border-sm" style="color: white"></span>Loading..
+            <span class="spinner-border spinner-border-sm" style="color: white"></span>Loading...
         </button>
 
         <div>
@@ -276,7 +276,6 @@ export default {
         </div>
 
         <div>
-
             <div class="w3-container">
                 <div id="id01" class="w3-modal">
                     <div class="w3-modal-content">
@@ -584,4 +583,3 @@ export default {
     }
 }
 </style>
-
