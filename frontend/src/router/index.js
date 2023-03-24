@@ -6,6 +6,9 @@ import signUp from '../views/services/signUp.vue'
 import cart from '../views/cartView.vue'
 import adminPage from '../components/adminpage/adminPage.vue'
 import orders from '../views/order.vue'
+import addservices from '../components/adminpage/addservices.vue'
+import addcategory from '../components/adminpage/addcategory.vue'
+import editservices from '../components/adminpage/editservices.vue'
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
@@ -57,6 +60,18 @@ const router = createRouter({
 		{
 			path: '/admin',
 			component: adminPage
+		},
+		{
+			path:'/admin/addservices',
+			component: addservices
+		},
+		{
+			path:'/admin/addcategory',
+			component: addcategory
+		},
+		{
+			path:'/admin/editservices',
+			component: editservices
 		}
 	]
 })
