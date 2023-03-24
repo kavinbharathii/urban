@@ -105,9 +105,12 @@ export default {
         },
 
         async getAllBookedItems() {
-            const bookedServices = await get(ref(db_rt, 'Booked'))
+            const bookedServices = await get(ref(db_rt, 'Booking'))
             const data = bookedServices.val()
+            console.log(data)
             this.bookedData = data
+
+            console.log(this.bookedData)
         },
     },
 
@@ -202,7 +205,7 @@ export default {
             <button @click="createNewCollection()">ADD collection</button>
         </div>
 
-        <div v-for="(userName, index1) in this.bookedData" :key="index1">
+        <div v-for="(userName, index1) in this.bookedData" :key="index1" class="user-card">
             <h1>{{ index1 }}</h1>
             <div v-for="(date, index2) in userName" :key="index2">
                 <h2>{{ index2 }}</h2>
@@ -210,7 +213,8 @@ export default {
                     <h3>{{ index3 }}</h3>
                     <div v-for="(categories, index4) in time" :key="index4">
                         <h4>{{ index4 }}</h4>
-                        <div v-for="(services, index5) in categories" :key="index5">
+                        <p>{{ categories.Address }}</p>
+                        <div v-for="(services, index5) in categories.services" :key="index5">
                             <h5>{{ index5 }}</h5>
                             <div v-for="(servicetype, index6) in services" :key="index6">
                                 <h6>{{ index6 }}</h6>
@@ -244,5 +248,16 @@ export default {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+.user-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    background: #a9a9a9;
+    border-radius: 10px;
+    border: 1px solid #c5c5c5;
 }
 </style>
