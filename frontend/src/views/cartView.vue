@@ -64,7 +64,6 @@ export default {
             }
         },
         updateData(categoryname, servicename, quantity, rupee, timing , booked) {
-            console.log(booked)
             try {
                 set(ref(db_rt, this.loginemail + '/' + categoryname + '/' + servicename), {
                     quantity: quantity,
@@ -95,7 +94,6 @@ export default {
                 this.cartTotal += cate
                 this.category[i] = cate
             }
-            console.log(this.cartviewbutnotbooked['CCTV'])
         },
         changeCartRupee() {
             const messagesRef = ref(db_rt, this.loginemail + '/');
@@ -108,6 +106,7 @@ export default {
                     this.loading = false
                 } else {
                     console.log("No data available");
+                    this.loading = false
                 }
             })
             onValue(messagesRef, snapshot => {
@@ -122,7 +121,7 @@ export default {
         },
 
         removeitemCart(categoryname, servicename) {
-            console.log(categoryname, servicename)
+            console.log(categoryname,servicename , 'deleting')
             const delRef = ref(db_rt, this.loginemail + '/' + categoryname + '/' + servicename)
             remove(delRef)
                 .then(() => {
@@ -136,7 +135,6 @@ export default {
             let bookcategory = [];
             bookcategory[category] = this.cartData[0][category]
             this.bookingcart['booked'] = bookcategory
-            console.log(this.bookingcart)
         },
 
         bookallservice() {
@@ -163,12 +161,15 @@ export default {
                 this.currDate = cDay+'-'+cMonth+'-'+cYear;
 
                 // save booking details to database
+
+                console.log(this.bookingcart , 'BOOKED')
+
                 for ( let category in this.bookingcart['booked']) {
                     let categoryObject = this.bookingcart['booked'][category]
                     for (let service in categoryObject) {
 
                         this.writeinDb( category ,service ,categoryObject[service])
-                        this.updateData( category , service , categoryObject[service].quantity , categoryObject[service].rupee , categoryObject[service].timing , this.booked = true)
+                        this.removeitemCart(category , service)
                     }
                 }
 
