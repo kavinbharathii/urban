@@ -8,7 +8,8 @@ export default {
         return{
             orderCart: [],
             ordered: [],
-            categoryAmt: []
+            categoryAmt: [],
+            Loading : true
         }
     },
     props : {
@@ -23,6 +24,7 @@ export default {
                 this.ordered.push(snapshot.val())
                 snapshot.forEach(childSnapshot => {
                     this.orderCart[childSnapshot.key] = childSnapshot.val()
+                    this.Loading = false
                 })
                 })
                 .then(() => {
@@ -31,14 +33,6 @@ export default {
                 .catch((error) => {
                     console.error(error);
                 });            
-        },
-        getBookedtotalAmt(date,time) {
-            console.log('hi')
-            // let date_ = date.split(' ').join('') 
-            // let time_ = time.split(' ').join('') 
-            // let str = 'amt' + date_ + time_
-            // let rupee = document.getElementById(str)
-            // console.log(rupee)
         },
         totalbookedamount( data ) {
             
@@ -54,14 +48,20 @@ export default {
 
 <template>
     <div class="order-page">
+
         <div class="yr-order">Your Orders</div>
-        <div class="cart-view">
+
+        <div>
+            <button class="load-btn" v-if="this.Loading">
+                <span class="spinner-border spinner-border-sm" style="color: white"></span>Loading...
+            </button>
+        </div>
+
+        <div class="cart-view" v-if="!this.Loading">
             <div v-for="(data1, index) in this.ordered" :key="index">
 
-                <!-- date loop -->
-                <div v-for="(data2 , index2) in data1" :key="index2">
+                <div v-for="(data2 , index2) in data1" :key="index2" class="all-carts">
 
-                    <!-- time loop -->
                     <div v-for="(data3 , index3) in data2" :key="index3" class="order-cart">  
                         <div class="date-time">
                             <div class="date">Date : {{ index2 }}</div>
@@ -81,8 +81,8 @@ export default {
                                     </div>
                                     <div class="service-detail">
                                         <div><pre>Price : {{ data5.rupee }}   </pre></div>
-                                        <div> <pre> quantity : {{ data5.quantity }}   </pre> </div>
-                                        <div><pre> timing : {{ data5.timing }}</pre> </div>
+                                        <div><pre>quantity : {{ data5.quantity }}   </pre> </div>
+                                        <div><pre>timing : {{ data5.timing }}</pre> </div>
                                     </div>
                             </div>
                             <div class="status">Status  :  </div>
@@ -92,6 +92,7 @@ export default {
                 </div>
             </div>
         </div>
+
     </div>
 </template>
 
@@ -107,8 +108,21 @@ export default {
     justify-content: center;
 }
 
+.load-btn {
+    margin-top: 2em;
+}
+
 .cart-view {
     padding: 2em 4em;
+}
+
+.all-carts
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
 }
 
 .order-cart {
@@ -118,6 +132,8 @@ export default {
     margin-bottom: 2em;
     background-color: #f2f2f2;
     border-radius: 10px;
+    width: 100%;
+    max-width: 70em;
 }
 
 .date-time {
@@ -146,6 +162,7 @@ export default {
 
 .service-detail {
     display: flex;
+    flex-wrap: wrap;
     padding: 0 0 0 0.5em;
 }
 
@@ -159,6 +176,25 @@ export default {
     position: absolute;
     top: 0;
     right: 23px;
+}
+
+
+@media only screen and (max-width: 786px) {
+    .cart-view {
+        padding: 1em;
+    }
+    .date-time {
+        padding: 1em;
+    }
+    .service-cart {
+        padding: 0 1em;
+    }
+    .totAmt {
+        right: 8px;
+    }
+    .service-detail {
+        padding: 0 0 0 4em;
+    }
 }
 
 </style>

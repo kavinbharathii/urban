@@ -262,20 +262,20 @@ export default {
         </button>
 
         <div>
-            <header v-if="!this.loading">
-                <div class="yr-orders"><button><router-link
-                            :to="{ path: '/yourorders', query: { useremail: this.loginemail } }"> Your
-                            Orders</router-link></button></div>
+            <header v-if="!this.loading" class="header">
+                <div class="cart"><h1>Cart</h1><div class="action-button cart-btn"><span class="material-symbols-outlined">shopping_cart</span></div></div>
+                <div class="yr-orders"><button><router-link :to="{ path: '/yourorders', query: { useremail: this.loginemail } }"> YourOrders</router-link></button>
+                </div>
             </header>
         </div>
-        <div @click="paymentMethod()">click</div>
+
         <div class="cart-page" v-if="!this.loading">
             <div class="cart-view">
                 <div v-for="(data, index) in this.cartData" :key="index">
                     <div v-for="(data1, category) in data" :key="category" class="all-cards">
                         <div class="category" v-if="this.cartviewbutnotbooked[category] >= 1"> {{ category }} services</div>
                         <div v-for="(data2, sname) in data1" :key="sname">
-                            <div class="fuck" v-if="!data2.booked">
+                            <div class="book-data" v-if="!data2.booked">
                                 <div>
                                     <div class="servicename">{{ sname }}</div>
                                     <div class="rating"><strong>✩</strong> {{ data2.rating }} (456K Booking)</div>
@@ -328,13 +328,16 @@ export default {
                         <div class="w3-container modal-container">
                             <span onclick="document.getElementById('id01').style.display='none'"
                                 class="w3-button w3-display-topright">&times;</span>
-                            <div>
+                            <div class="input-address-div">
+                                <div class="address-header">Booking Address</div>
                                 <input type="text" placeholder="Name" v-model="addressDetail.name">
                                 <input type="number" placeholder="Mobile number" v-model="addressDetail.ph_num">
                                 <input type="text" placeholder="address line 1" v-model="addressDetail.address_line_1">
                                 <input type="text" placeholder="address line 2" v-model="addressDetail.address_line_2">
-                                <button class="cod" @click="cashondelivery()">Cash on delivery</button>
-                                <button class="online_pay">Online pay</button>
+                                <div class="payment-btn">
+                                    <button class="cod" @click="cashondelivery()">Cash on delivery</button>
+                                    <button class="online_pay" @click="paymentMethod()">Online pay</button>
+                                </div>
                             </div>
                         </div>
                         <div v-if="this.readyToPay" class="confirmation-dialog">
@@ -347,14 +350,13 @@ export default {
                     </div>
                 </div>
             </div>
-
-
         </div>
 
     </div>
 </template>
 
 <style scoped>
+
 .load-btn {
     margin-top: 2em;
 }
@@ -362,7 +364,6 @@ export default {
 .cart-view::-webkit-scrollbar {
     width: 10px;
 }
-
 
 /* Handle */
 .cart-view::-webkit-scrollbar-thumb {
@@ -372,6 +373,24 @@ export default {
 /* Handle on hover */
 .cart-view::-webkit-scrollbar-thumb:hover {
     background: #fc3171bf;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+}
+
+.cart {
+    width: 75%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: black;
+    gap: 1em;
+}
+
+.cart span {
+    margin-top: .60em;
 }
 
 .cart-page {
@@ -400,7 +419,7 @@ export default {
     margin: 0.5em;
 }
 
-.fuck {
+.book-data {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -530,7 +549,8 @@ export default {
 
 .w3-modal-content {
     width: 50vw !important;
-    min-height: 70vh !important;
+    min-height: auto !important;
+    padding-bottom: 4em;
 }
 
 .bookall {
@@ -552,14 +572,11 @@ export default {
     width: 100%;
     height: 100%;
     z-index: 100;
-    background-color: #17171755;
-
+    background-color: #e0dcdc;
     position: absolute;
     top: 0;
     left: 0;
-
     color: #171717;
-
     display: flex;
     justify-content: center;
     align-items: center;
@@ -592,9 +609,7 @@ export default {
 }
 
 .yr-orders {
-    display: flex;
-    align-items: center;
-    justify-content: end;
+    width: 25%;
     padding: 2em;
     margin-right: 2em;
 }
@@ -605,6 +620,74 @@ export default {
     border: none;
     background-color: #fc3171bf;
     padding: .5em 1em;
+}
+
+.address-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: #ee6a94bf;
+    margin-bottom: 1em;
+}
+
+.input-address-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1em;
+    margin-top: 2em;
+}
+
+.input-address-div input::placeholder {
+    font-family: 'Poppins';
+}
+
+.input-address-div input {
+    padding: .3em .75em;     
+    outline: none;
+    max-width: 30em ;
+    width: 100%;
+}
+
+.payment-btn {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    max-width: 30em;
+    gap: 1em;
+}
+
+.cod {
+    border: 1px solid rgb(255, 61, 94);
+    background: no-repeat;
+    outline: none;
+    color: rgb(233, 106, 127);
+    padding: 0.5em 1em;
+    width: 100%;
+    max-width: 30em;
+}
+
+.online_pay {
+    border: 1px solid rgb(97 101 187);
+    background-color: rgb(81 112 235);
+    outline: none;
+    color: white;
+    padding: 0.5em 1em;
+    width: 100%;
+    max-width: 30em;
+}   
+
+.cod:hover {
+    background-color: hsla(341, 100%, 46%, 0.749);
+    color: #fff;
+}
+
+.online_pay:hover {
+    background-color: #fff;
+    border: 1px solid rgb(97,101,187);
+    color: blue;
 }
 
 @media only screen and (max-width: 768px) {
@@ -627,4 +710,9 @@ export default {
     .cart-details {
         margin-left: 0;
     }
-}</style>
+    .w3-modal-content {
+        width: 95% !important;
+    }
+}
+
+</style>
