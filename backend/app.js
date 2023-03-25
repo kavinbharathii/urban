@@ -38,8 +38,6 @@ const sendEmail = async (name, email, message) => {
 const app = express();
 app.use(express.json())
 app.use(cors())
-
-app.use(cors())
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -57,13 +55,12 @@ app.post('/data', (req, res) => {
 
 app.post('/payment', async (req, res) => {
 
-    console.log("Ulla varuthu")
-    let { amount } = req.body
+    // let { amount } = req.body
 
     let instance = new Razorpay({ key_id: 'rzp_test_HBni4PPnBF3Swj', key_secret: 'CTuKUGEBUL3FtJBauO4TLTrJ' })
 
     let order = await instance.orders.create({
-        amount: amount * 100,
+        amount: 5 * 100,
         currency: "INR",
         receipt: "receipt#1",
     }).then(() => {
@@ -75,7 +72,7 @@ app.post('/payment', async (req, res) => {
     res.status(201).json({
         success: true,
         order,
-        amount
+        // amount
     })
 });
 

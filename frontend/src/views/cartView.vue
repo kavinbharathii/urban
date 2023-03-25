@@ -211,7 +211,7 @@ export default {
         },
 
         async paymentMethod() {
-            let response = await fetch("http://localhost:3000/payment", {
+            let response = await fetch("http://127.0.0.1:3000/payment", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -223,18 +223,18 @@ export default {
 
             console.log(response)
             let orderData = await response.json();
-            console.log(orderData.id)
+            console.log(orderData)
 
             let options = {
                 key: "rzp_test_HBni4PPnBF3Swj",
-                amount: "500",
+                amount: "100",
                 currency: "INR",
                 name: "Kavin Bharathi",
                 order_id: orderData.id,
                 handler: function (response) {
-                    alert(response.razorpay_payment_id);
-                    alert(response.razorpay_order_id);
-                    alert(response.razorpay_signature)
+                    alert(response.razorpay_payment_id,'hi');
+                    alert(response.razorpay_order_id,'ji');
+                    alert(response.razorpay_signature,'ji')
                 }
             };
             var rzp1 = new Razorpay(options);
@@ -268,7 +268,7 @@ export default {
                             Orders</router-link></button></div>
             </header>
         </div>
-
+        <div @click="paymentMethod()">click</div>
         <div class="cart-page" v-if="!this.loading">
             <div class="cart-view">
                 <div v-for="(data, index) in this.cartData" :key="index">
