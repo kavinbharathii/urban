@@ -5,7 +5,7 @@ export default {
 </script>
 
 <template>
-    <div class="pages vh-100 vw-100">
+    <div class="pages vw-100">
         <div class="p1 vh-100 vw-100">
             <div class="text-area">
                 <h1>Your <span style="color: hsla(341, 97%, 59%, 0.75);">one spot</span></h1>
@@ -212,6 +212,22 @@ export default {
 
 .p1>.text-area>p {
 	font-size: 1.1em;
+}
+
+@media only screen and (max-width: 786px) {
+    .p1 {
+        height: auto !important;
+        flex-direction: column-reverse;
+        justify-content: space-around;
+        padding-top: 5em;
+    }
+    .p1 > .text-area > h1 {
+        font-size: 3em;
+    }
+    .image-area svg {
+        width: 300px;
+    }
+
 }
 
 </style>

@@ -16,7 +16,6 @@ export default {
         </div>
         <div class="made-div">
             <div>© 2023 ItArena Pte Ltd. All rights reserved.Made with <font-awesome-icon icon="fa-solid fa-heart hrt-icon" bounce /> in SG & PH</div>
-            <!-- <div>Made with <font-awesome-icon icon="fa-solid fa-heart hrt-icon" bounce /> in SG & PH</div> -->
         </div>
     </div>
 </template>

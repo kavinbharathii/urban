@@ -35,17 +35,9 @@ export default {
     border-radius: 10px;
     border: 3px solid #fc3171bf;
 
-    width: 25vw;
-    aspect-ratio: 1920 / 1080;
     margin: 0.8em;
     padding: 2em;
 
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-
-    position: relative;
 }
 
 .image  {

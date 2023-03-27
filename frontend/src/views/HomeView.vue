@@ -56,18 +56,15 @@ export default {
 			</div>
 
 			<div class="page" id="services">
-				<div class="p2 vh-100 vw-100">
+				<div class="p2 vw-100">
 					<div class="cards-container">
-						<div class="cards-col col-one">
 							<router-link to="/computer-services">
 								<CategoryCard categoryName="Computer" description="Description." />
 							</router-link>
 							<router-link to="/laptop-services">
 								<CategoryCard categoryName="Laptop" description="Description." />
 							</router-link>
-						</div>
 
-						<div class="cards-col col-two">
 							<router-link to="/cctv-services">
 								<CategoryCard categoryName="CCTV" description="Description." />
 							</router-link>
@@ -77,16 +74,13 @@ export default {
 							<router-link to="/ups-services">
 								<CategoryCard categoryName="UPS" description="Description." />
 							</router-link>
-						</div>
 
-						<div class="cards-col col-three">
 							<router-link to="/electrician-services">
 								<CategoryCard categoryName="Electrician" description="Description." />
 							</router-link>
 							<router-link to="/plumbing-services">
 								<CategoryCard categoryName="Plumbing" description="Description." />
 							</router-link>
-						</div>
 					</div>
 				</div>
 			</div>
@@ -186,6 +180,12 @@ button {
 
 	min-width: 100vw;
 	min-height: 100vh;
+
+	padding: 2em 0;
+}
+
+.cards-container a {
+	min-width: 25em;
 }
 
 /* .full-page {
@@ -201,6 +201,17 @@ button {
 
 a {
 	text-decoration: none;
+}
+
+.navbar-nav > li {
+	margin-right: 0;
+	width: 100%;
+
+	display: flex;
+	justify-content: right;
+
+	/* border-right: 2px solid #fc3171bf; */
+	/* margin-bottom: 2px; */
 }
 
 @media only screen and (max-width: 600px) {

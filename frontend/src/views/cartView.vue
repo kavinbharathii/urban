@@ -551,6 +551,7 @@ export default {
     width: 50vw !important;
     min-height: auto !important;
     padding-bottom: 4em;
+    border-radius: 10px;
 }
 
 .bookall {
@@ -695,7 +696,7 @@ export default {
         display: flex;
         flex-direction: column-reverse;
         row-gap: 2em;
-        padding: 2em;
+        padding: 0 2em;
     }
 
     *.cart-view::-webkit-scrollbar {
