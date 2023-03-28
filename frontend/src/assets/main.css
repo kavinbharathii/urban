@@ -6,6 +6,12 @@
   scroll-behavior: smooth;
 }
 
+:root {
+  --rose: #fc3171bf;
+  --rose-dark: #fc3171;
+  --rose-light: #fc317199;
+}
+
 *:not(.cart-view)::-webkit-scrollbar {
   display: none;
 }
