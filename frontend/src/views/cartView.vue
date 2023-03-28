@@ -11,6 +11,7 @@ export default {
     data() {
         return {
             loginemail: '',
+            actualEmail : '',
             cartData: [],
             category: null,
             datas: [],
@@ -42,6 +43,7 @@ export default {
             onAuthStateChanged(auth, (user) => {
                 if (user) {
                     const uid = user.email;
+                    this.actualEmail = user.email
                     let email_username = uid.split('@')[0]
                     this.loginemail = email_username.replaceAll(".", "")
                     this.changeCartRupee(this.loginemail)
@@ -155,7 +157,6 @@ export default {
 
         confirmBooking(confirmationType, paymentMethod ) {
 
-            console.log(paymentMethod)
             if (confirmationType == true) {
                 console.log("Confirmed booking")
 
@@ -194,6 +195,8 @@ export default {
                 catch (err) {
                     console.log('error', err)
                 }
+                // sending email
+                this.SendingConfirmEmail()
 
             } else {
                 console.log("Declined booking")
@@ -276,23 +279,25 @@ export default {
             rzp1.open();
         },
 
-        async handlePaymentResponse(response) {
-            console.log('hi')
-            const { razorpay_payment_id, razorpay_order_id } = response;
-            console.log(razorpay_order_id,razorpay_payment_id);
+        SendingConfirmEmail() {
 
-            // const res = await axios.post('/api/verify-payment', {
-            //     payment_id: razorpay_payment_id,
-            //     order_id: razorpay_order_id,
-            // });
-
-            // if (res.data.success) {
-            //     // Payment successful
-            //     console.log('Payment successful');
-            // } else {
-            //     // Payment failed
-            //     console.log('Payment failed');
-            // }
+            // Sending msg to the admin  mail
+            let msgData = {
+                username: this.addressDetail.name,
+                ph_num : this.addressDetail.ph_num,
+                address_line_1: this.addressDetail.address_line_1,
+                address_line_2: this.addressDetail.address_line_2,
+                email : this.actualEmail
+            }
+            console.log(msgData)
+            axios.post(
+                'http://127.0.0.1:3000/confirm-order',
+                msgData
+            ).then(response => {
+                console.log(response.data)
+            }).catch(error => {
+                console.log(error)
+            })
         },
     }
 }
@@ -373,10 +378,10 @@ export default {
                                 class="w3-button w3-display-topright">&times;</span>
                             <div class="input-address-div">
                                 <div class="address-header">Booking Address</div>
-                                <input type="text" placeholder="Name" v-model="addressDetail.name">
-                                <input type="number" placeholder="Mobile number" v-model="addressDetail.ph_num">
-                                <input type="text" placeholder="address line 1" v-model="addressDetail.address_line_1">
-                                <input type="text" placeholder="address line 2" v-model="addressDetail.address_line_2">
+                                <input type="text" placeholder="Name" v-model="addressDetail.name" required autocomplete="off">
+                                <input type="number" placeholder="Mobile number" v-model="addressDetail.ph_num" required autocomplete="off">
+                                <input type="text" placeholder="address line 1" v-model="addressDetail.address_line_1" required autocomplete="off">
+                                <input type="text" placeholder="address line 2" v-model="addressDetail.address_line_2" required autocomplete="off">
                                 <div class="payment-btn">
                                     <button class="cod" @click="cashondelivery()">Cash on delivery</button>
                                     <button class="online_pay" @click="paymentMethod()">Online pay</button>

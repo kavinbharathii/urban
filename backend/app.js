@@ -36,6 +36,37 @@ const sendEmail = async (name, email, message) => {
     return mailOptions.text
 }
 
+const sendConfirmOrderEmail = async (name, ph_num, address_line_1 , address_line_2 , email ) => {
+    let transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'r.m.kavinbharathi@gmail.com',
+            pass: 'txbdqstcptqymkdm',
+        },
+    });
+
+    const mailOptions = {
+        from: 'r.m.kavinbharathi@gmail.com',
+        to: 'barathkumar.b2411@gmail.com',
+        subject: `You received an email from ${name} from IT Arena`,
+        text: `Name     : ${name}
+               PhoneNumber : ${ph_num}
+               Email    : ${email}
+               Address  : ${address_line_1 + address_line_2 }`
+    }
+
+    let send = await transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.log(error);
+        } else {
+            console.log('Text sent successfully.');
+        }
+    })
+
+    console.log("All operations successful")
+    return mailOptions.text
+}
+
 const app = express();
 app.use(express.json())
 app.use(cors())
@@ -47,12 +78,23 @@ app.post('/data', (req, res) => {
     const emailAddress = req.body.emailAddress;
     const msg = req.body.msg;
 
-    console.log(fullName);
-    console.log(emailAddress);
-    console.log(msg);
     sendEmail(fullName, emailAddress, msg)
     res.send('Data received');
 });
+
+
+app.post('/confirm-order', (req, res) => {
+    const name = req.body.username;
+    const ph_num = req.body.ph_num;
+    const address_line_1 = req.body.address_line_1;
+    const address_line_2 = req.body.address_line_2;
+    const email = req.body.email;
+    console.log(name, ph_num, address_line_1 , address_line_2, email)
+
+    sendConfirmOrderEmail(name, ph_num, address_line_1 , address_line_2, email)
+    res.send('Data received');
+});
+
 
 let razorpay = new Razorpay({ key_id: 'rzp_test_HBni4PPnBF3Swj', key_secret: 'CTuKUGEBUL3FtJBauO4TLTrJ' })
 
