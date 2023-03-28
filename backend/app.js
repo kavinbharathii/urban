@@ -2,7 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const Razorpay = require('razorpay')
-const nodemailer = require('nodemailer')
+const nodemailer = require('nodemailer');
+const crypto = require("crypto");
 const port = 3000
 
 const sendEmail = async (name, email, message) => {
@@ -53,29 +54,55 @@ app.post('/data', (req, res) => {
     res.send('Data received');
 });
 
-app.post('/payment', async (req, res) => {
+let razorpay = new Razorpay({ key_id: 'rzp_test_HBni4PPnBF3Swj', key_secret: 'CTuKUGEBUL3FtJBauO4TLTrJ' })
+
+app.post('/create-payment', async (req, res) => {
 
     // let { amount } = req.body
 
-    let instance = new Razorpay({ key_id: 'rzp_test_HBni4PPnBF3Swj', key_secret: 'CTuKUGEBUL3FtJBauO4TLTrJ' })
-
-    let order = await instance.orders.create({
-        amount: 5 * 100,
+    let options = {
+        amount: 1 * 100,
         currency: "INR",
-        receipt: "receipt#1",
-    }).then(() => {
-        console.log("Working")
-    }).catch((err) => {
-        console.log(err)
-    })
+        receipt: "rcptid_" + Math.random().toString(36).substring(7),
+    };
 
-    res.status(201).json({
-        success: true,
-        order,
-        // amount
-    })
+    try {
+        const response = await razorpay.orders.create(options);
+        const orderId = response.id;
+        res.status(200).json({ orderId });
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Failed to create order" });
+    }    
+
 });
 
+
+app.post("/verify-payment", (req, res) => {
+
+        let { razorpayPaymentId , razorpayOrderId , razorpaySignature } = req.body
+        console.log('hi')
+        let body = razorpayOrderId + "|" + razorpayPaymentId;
+       
+        var crypto = require("crypto");
+        var expectedSignature = crypto.createHmac('sha256', 'CTuKUGEBUL3FtJBauO4TLTrJ')
+                                        .update(body.toString())
+                                        .digest('hex');
+                                        console.log("sig received " , razorpaySignature);
+                                        console.log("sig generated " ,expectedSignature);
+
+        var response = {"signatureIsValid":"false"}
+        if(expectedSignature === razorpaySignature) {
+
+            response={"signatureIsValid":"true"}
+            console.log(response)
+            res.status(200).json({ response });
+        }else {
+            res.status(200).json({ response });
+        }
+});
+          
 app.listen(3000, () => {
     console.log(`Server started on port ${port}`);
 });

@@ -29,6 +29,7 @@ export default {
                 })
                 .then(() => {
                     // console.log( this.orderCart)
+                    this.Loading = false
                 })
                 .catch((error) => {
                     console.error(error);

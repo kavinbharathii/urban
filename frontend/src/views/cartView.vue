@@ -2,6 +2,7 @@
 
 import { onAuthStateChanged } from "firebase/auth";
 import { ref, set, onValue, remove } from "firebase/database";
+import axios from "axios";
 
 import { auth, db_rt } from "../views/firebase.js"
 import Router from '@/router'
@@ -146,7 +147,15 @@ export default {
             this.readyToPay = true
         },
 
-        confirmBooking(confirmationType) {
+        async payonline() {
+            this.readyToPay = true
+            let payed = await this.paymentMethod()
+            
+        },
+
+        confirmBooking(confirmationType, paymentMethod ) {
+
+            console.log(paymentMethod)
             if (confirmationType == true) {
                 console.log("Confirmed booking")
 
@@ -168,7 +177,7 @@ export default {
                     let categoryObject = this.bookingcart['booked'][category]
                     for (let service in categoryObject) {
 
-                        this.writeinDb(category, service, categoryObject[service])
+                        this.writeinDb(category, service, categoryObject[service] , paymentMethod)
                         this.removeitemCart(category, service)
                     }
                 }
@@ -194,14 +203,15 @@ export default {
             }
         },
 
-        writeinDb(category, service, categoryObject) {
+        writeinDb(category, service, categoryObject , paymentMethod ) {
 
             try {
                 set(ref(db_rt, 'Booking/' + this.loginemail + '/' + this.currDate + '/' + this.time + '/' + 'services/' + category + '/' + service), {
                     timing: categoryObject.timing,
                     rupee: categoryObject.rupee,
                     quantity: categoryObject.quantity,
-                    booked: true
+                    booked: true,
+                    paymentMethod: paymentMethod
                 })
                 console.log('category saved')
             }
@@ -211,46 +221,79 @@ export default {
         },
 
         async paymentMethod() {
-            let response = await fetch("http://127.0.0.1:3000/payment", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    amount: 500,
-                }),
-            })
+            
+            const response = await axios.post("http://127.0.0.1:3000/create-payment", {
+                amount: 'this.amount',
+                name: 'this.name',
+                email: 'this.email',
+            });
 
-            console.log(response)
-            let orderData = await response.json();
-            console.log(orderData)
+            const { orderId } = response.data;
 
             let options = {
                 key: "rzp_test_HBni4PPnBF3Swj",
                 amount: "100",
                 currency: "INR",
-                name: "Kavin Bharathi",
-                order_id: orderData.id,
-                handler: function (response) {
-                    alert(response.razorpay_payment_id,'hi');
-                    alert(response.razorpay_order_id,'ji');
-                    alert(response.razorpay_signature,'ji')
-                }
+                name: "IT Arena",
+                order_id: orderId,
+                handler: async (response) => {
+                    try {
+                        const paymentResponse = await axios.post(
+                            "http://127.0.0.1:3000/verify-payment",
+                            {
+                            razorpayPaymentId: response.razorpay_payment_id,
+                            razorpayOrderId: orderId,
+                            razorpaySignature: response.razorpay_signature,
+                            }
+                        );
+
+                        let signatureIsValid = paymentResponse.data
+                        let paid = signatureIsValid.response.signatureIsValid 
+
+                        if (paid) {
+                            this.confirmBooking(true , 'Paid')
+                        }
+                        else {
+                            console.log('Payment Pending')
+                        }
+
+                    } catch (err) {
+                        console.error(err);
+                    }
+                },
             };
             var rzp1 = new Razorpay(options);
 
             rzp1.on('payment.failed', function (response) {
-                alert(response.error.code);
-                alert(response.error.description);
-                alert(response.error.source);
-                alert(response.error.step);
-                alert(response.error.reason);
-                alert(response.error.metadata.order_id);
-                alert(response.error.metadata.payment_id);
+                alert('response.error.code');
+                alert('response.error.description');
+                alert('response.error.source');
+                alert('response.error.step');
+                alert('response.error.reason');
+                alert('response.error.metadata.order_id');
+                alert('response.error.metadata.payment_id');
             });
             rzp1.open();
-        }
+        },
 
+        async handlePaymentResponse(response) {
+            console.log('hi')
+            const { razorpay_payment_id, razorpay_order_id } = response;
+            console.log(razorpay_order_id,razorpay_payment_id);
+
+            // const res = await axios.post('/api/verify-payment', {
+            //     payment_id: razorpay_payment_id,
+            //     order_id: razorpay_order_id,
+            // });
+
+            // if (res.data.success) {
+            //     // Payment successful
+            //     console.log('Payment successful');
+            // } else {
+            //     // Payment failed
+            //     console.log('Payment failed');
+            // }
+        },
     }
 }
 </script>
@@ -343,7 +386,7 @@ export default {
                         <div v-if="this.readyToPay" class="confirmation-dialog">
                             <h3>Please confirm your order</h3>
                             <div class="buttons">
-                                <button class="confirm-button yes-button" @click="this.confirmBooking(true)">Yes</button>
+                                <button class="confirm-button yes-button" @click="this.confirmBooking(true,'Cash on delivery')">Yes</button>
                                 <button class="confirm-button no-button" @click="this.confirmBooking(false)">No</button>
                             </div>
                         </div>
