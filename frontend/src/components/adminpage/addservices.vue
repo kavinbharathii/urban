@@ -170,6 +170,8 @@ select {
         width: 50vw;
     }
 
+
+    
     .circle {
         width: 80vw;
         height: 80vw;
