@@ -2,12 +2,12 @@
 <script>
 
 import { db, db_rt } from "@/views/firebase.js"
-import { get, ref , onValue } from "@firebase/database";
+import { get, ref, onValue } from "@firebase/database";
 import { setDoc, doc, getDocs, collection } from "@firebase/firestore";
 
 export default {
     data() {
-        return {    
+        return {
             bookedData: {},
             cartData: []
         }
@@ -25,6 +25,36 @@ export default {
             })
             console.log(this.cartData)
         },
+
+        prettyDates(dateString) {
+            const monthNames = ["January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"]
+
+            const dateAdditions = ["th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th"]
+
+            let [date, month, year] = dateString.split('-')
+            date = date + dateAdditions[parseInt(date[date.length - 1])]
+            month = monthNames[parseInt(month)]
+
+            let prettyDateString = [date, month, year].join(" ")
+            return prettyDateString
+        },
+
+        prettyTimes(timeString) {
+            let [hours, minutes, seconds] = timeString.split(":")
+            hours = parseInt(hours)
+            let meridian = parseInt(hours) < 12 ? 'am' : 'pm'
+            hours = (hours > 12) ? hours - 12 : hours 
+            
+            // formatting the "0" hours at midnight time
+            if (hours == 0) hours = 12
+
+            minutes = minutes.padStart(2, '0')
+
+            let timePart = [hours, minutes].join(":")
+            let prettyTimeString = [timePart, meridian].join(" ")
+            return prettyTimeString
+        }
     },
     async mounted() {
         this.getAllBookedItems()
@@ -36,27 +66,33 @@ export default {
 
 <template>
     <div id="dev">
-    
+
+        <h1 class="title-card">Admin Dashboard</h1>
         <!-- rendering booked data -->
         <div v-for="(bookedData, index0) in this.cartData" :key="index0">
             <div v-for="(userName, index1) in bookedData" :key="index1" class="user-card">
-                <h1 class="Email">{{ index1 }}</h1>
+                <h1 class="username">{{ index1 }}</h1>
                 <div v-for="(date, index2) in userName" :key="index2" class="date-card">
-                    <h2>{{ index2 }}</h2>
+                    <h2 class="dateClass">
+                        <div class="date-circle"></div>    
+                        {{ this.prettyDates(index2) }}
+                    </h2>
                     <div v-for="(time, index3) in date" :key="index3" class="time-card">
-                        <div class="time"> <h3>{{ index3 }}</h3> </div>
+                        <div class="time">
+                            <h5 class="timeClass">{{ this.prettyTimes(index3) }}</h5>
+                        </div>
                         <div class="address-card">
                             <div>
-                               Ordered Address : 
+                                Ordered Address:
                             </div>
                             <div>{{ time.Address.username }}</div>
                             <div>{{ time.Address.address_line_1 }}</div>
                             <div>{{ time.Address.address_line_2 }}</div>
                         </div>
                         <div class="all-categories">
-                            <div v-for="(category , index5) in time.services" :key="index5" class="category">
+                            <div v-for="(category, index5) in time.services" :key="index5" class="category">
                                 <div class="categoryname"> {{ index5 }} service </div>
-                                <div v-for="(services , index6) in category" :key="index6" class="services-cart"> 
+                                <div v-for="(services, index6) in category" :key="index6" class="services-cart">
                                     <div class="service-name">{{ index6 }}</div>
                                     <div class="services-detail">
                                         <div class="paymentstatus">{{ services.paymentMethod }}</div>
@@ -64,7 +100,7 @@ export default {
                                         <div class="rupee">Price :{{ services.rupee }}</div>
                                     </div>
                                 </div>
-                            <div>Status : </div>
+                                <div>Status : </div>
                             </div>
                         </div>
                     </div>
@@ -78,10 +114,12 @@ export default {
 <style scoped>
 #dev {
     width: 100vw;
-    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
-
-
 
 #edit-services {
     display: flex;
@@ -90,22 +128,64 @@ export default {
     align-items: center;
 }
 
+.title-card {
+    margin-top: 1em;
+    margin-left: 2em;
+
+    width: 100%;
+    font-weight: 700;
+}
+
 .user-card {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+    align-items: left;
 
-    border-radius: 10px;
-    border: 1px solid #c5c5c5;
+    border-left: 3px solid var(--rose);
+
+    width: 90vw;
+    margin-bottom: 1.5em;
 }
 
 .date-card {
     display: flex;
     flex-direction: column;
     margin-bottom: 2em;
-    background: #a9a9a9;
+    /* background: #a9a9a9; */
     padding: 2em;
+
+    position: relative;
+}
+
+.date-circle {
+    width: 15px;
+    height: 15px;
+    border-radius: 100vh;
+
+    background-color: var(--rose);
+    position: absolute;
+
+    top: 1.8em;
+    left: -0.3em;
+}
+
+.dateClass {
+    font-weight: 500;
+}
+
+.timeClass {
+    font-weight: 500;
+    margin: 0;
+    padding: 0;
+
+    border-bottom: 3px solid var(--rose);
+}
+
+.username {
+    color: #171717;
+    font-weight: 600;
+    margin-left: 0.5em;
 }
 
 .services-cart {
@@ -128,7 +208,7 @@ export default {
     justify-content: space-between;
 
     position: relative;
-    padding-top: 4em ;
+    padding-top: 4em;
     margin-bottom: 2em;
 }
 
@@ -144,5 +224,4 @@ export default {
     gap: 1em;
     margin-bottom: 1em;
 }
-
 </style>

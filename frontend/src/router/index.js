@@ -58,6 +58,13 @@ const router = createRouter({
 			}
 		},
 		{
+			path: '/plumbing-services',
+			component: categoryServices,
+			props: {
+				categoryName: 'Plumbing'
+			}
+		},
+		{
 			path: '/admin',
 			component: adminPage
 		},
