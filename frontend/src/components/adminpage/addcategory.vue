@@ -63,7 +63,7 @@ export default {
             <div v-if="this.successState" class="info success">
                 Category added successfully
             </div>
-    
+
             <div v-if="this.errorState" class="info error">
                 Failed to add Category
             </div>
@@ -132,7 +132,7 @@ export default {
     transition: border 200ms ease;
 }
 
-#categoryForm > .submit-button:hover {
+#categoryForm>.submit-button:hover {
     border: 3px solid var(--rose-dark);
 }
 

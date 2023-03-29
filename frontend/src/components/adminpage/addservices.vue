@@ -16,9 +16,16 @@ export default {
             },
             categories: [
                 "Computer",
-                "CCTV"
+                "Laptop",
+                "CCTV",
+                "Printer",
+                "UPS",
+                "Electrician",
+                "Plumbing"
             ],
-            collections: []
+            collections: [],
+            successState: false,
+            errorState: false
         }
     },
     methods: {
@@ -31,7 +38,6 @@ export default {
             } else {
                 console.log(this.newServiceForm)
                 setDoc(doc(db, this.newServiceForm.categoryName.category + '/' + this.newServiceForm.serviceName), {
-                    rating: "10",
                     rupee: this.newServiceForm.price,
                     timing: this.newServiceForm.timing
                 }).then(() => {
@@ -40,9 +46,14 @@ export default {
                         this.newServiceForm[i] = ''
                     }
                     console.log("New service added successfully")
+                    this.successState = true
+                    this.errorState = false
 
                 }).catch((err) => {
                     console.log(err)
+
+                    this.errorState = true
+                    this.successState = false
                 })
             }
         },
@@ -76,6 +87,14 @@ export default {
             <input type="number" placeholder="price" v-model="this.newServiceForm.price">
 
             <button @click.prevent="addNewService">Add Service</button>
+
+            <div v-if="this.successState" class="info success">
+                New service has been added successfully
+            </div>
+
+            <div v-if="this.errorState" class="info error">
+                Failed to create new service
+            </div>
         </form>
     </div>
 </template>
