@@ -82,12 +82,12 @@ export default {
                             <h5 class="timeClass">{{ this.prettyTimes(index3) }}</h5>
                         </div>
                         <div class="address-card">
-                            <div>
+                            <h4 class="address-title">
                                 Ordered Address:
-                            </div>
-                            <div>{{ time.Address.username }}</div>
-                            <div>{{ time.Address.address_line_1 }}</div>
-                            <div>{{ time.Address.address_line_2 }}</div>
+                            </h4>
+                            <div class="address-line">{{ time.Address.username }}</div>
+                            <div class="address-line">{{ time.Address.address_line_1 }}</div>
+                            <div class="address-line">{{ time.Address.address_line_2 }}</div>
                         </div>
                         <div class="all-categories">
                             <div v-for="(category, index5) in time.services" :key="index5" class="category">
@@ -223,5 +223,18 @@ export default {
     flex-direction: column;
     gap: 1em;
     margin-bottom: 1em;
+}
+
+.address-card {
+    width: 20vw;
+}
+
+.address-title {
+    font-weight: 700;
+}
+
+.address-line {
+    font-size: 01em;
+    font-weight: 200;
 }
 </style>
