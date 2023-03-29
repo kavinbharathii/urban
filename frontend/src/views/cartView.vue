@@ -268,6 +268,8 @@ export default {
             var rzp1 = new Razorpay(options);
 
             rzp1.on('payment.failed', function (response) {
+
+                alert('Bro yen Payment Cancel Panigaa')
                 alert('response.error.code');
                 alert('response.error.description');
                 alert('response.error.source');
