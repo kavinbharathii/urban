@@ -428,6 +428,7 @@ export default {
     align-items: center;
 }
 
+
 .cart {
     width: 75%;
     display: flex;
