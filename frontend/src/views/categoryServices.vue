@@ -6,9 +6,9 @@ import { ref, set } from "firebase/database";
 import { onAuthStateChanged } from 'firebase/auth'
 
 
-import serviceNavbar from './serviceNavbar.vue';
+import serviceNavbar from '../components/servicespage/serviceNavbar.vue';
 import Router from '@/router'
-import { db, auth, db_rt } from '../firebase.js'
+import { db, auth, db_rt } from '../views/firebase.js'
 
 export default {
     name: "categoryServices",
@@ -25,7 +25,8 @@ export default {
             Loading: true,
             userName: "",
             userLoggedIn: false,
-            loggedInUserName: ""
+            loggedInUserName: "",
+            loginedEmail: ""
         }
     },
     mounted: function () {
@@ -35,6 +36,7 @@ export default {
             if (user) {
                 this.userLoggedIn = true
                 const uid = user.email
+                this.loginedEmail = user.email
                 let email_username = uid.split('@')[0]
                 let valid_username = email_username.replaceAll(".", "")
                 console.log("valid name", valid_username)
@@ -128,7 +130,7 @@ export default {
 
 <template>
     <div>
-        <serviceNavbar :showOptions="!this.userLoggedIn" :userName="this.userName" />
+        <serviceNavbar :showOptions="!this.userLoggedIn" :userName="this.userName" :loginedEmail="this.loginedEmail" />
         <div class="main">
             <div class="name-img">
                 <div class="name">

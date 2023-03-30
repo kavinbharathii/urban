@@ -2,7 +2,7 @@
 <script>
 
 import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth'
-import { auth } from '../firebase.js'
+import { auth } from './firebase.js'
 import Router from '@/router'
 
 const delay = ms => new Promise(res_ => setTimeout(res_, ms))

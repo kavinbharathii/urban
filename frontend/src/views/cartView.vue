@@ -12,6 +12,7 @@ export default {
         return {
             loginemail: '',
             actualEmail : '',
+            emptyCart : false,
             cartData: [],
             category: null,
             datas: [],
@@ -110,6 +111,7 @@ export default {
                 } else {
                     console.log("No data available");
                     this.loading = false
+                    this.emptyCart = true
                 }
             })
             onValue(messagesRef, snapshot => {
@@ -307,8 +309,13 @@ export default {
 
         popupmessage() {
             document.getElementById('id02').style.display = 'block'
+        },
+
+        popupclose() {
+            document.getElementById('id02').style.display = 'none'
         }
     }
+
 }
 </script>
 
@@ -324,6 +331,11 @@ export default {
                 <div class="yr-orders"><button><router-link :to="{ path: '/yourorders', query: { useremail: this.loginemail } }"> YourOrders</router-link></button>
                 </div>
             </header>
+        </div>
+
+        <div v-if="this.emptyCart" class="emptyCart-div">
+            <img src="../assets/emptyCart.svg" alt="Empty Cart">
+            <div> Your Cart is Empty </div>
         </div>
 
         <div class="cart-page" v-if="!this.loading">
@@ -418,7 +430,7 @@ export default {
                         </div>
                         <div>
                             <div class="popup"><H3> Successfully Booked </H3></div>
-                            <div class="popup btn"><button>Ok</button></div>
+                            <div class="popup btn"><button @click="popupclose()">Ok</button></div>
                         </div>
                     </div>
                 </div>
@@ -697,6 +709,10 @@ export default {
     padding: .5em 1em;
 }
 
+.yr-orders button a {
+    color: black;
+}
+
 .address-header {
     display: flex;
     align-items: center;
@@ -770,15 +786,36 @@ export default {
     align-items: center;
     justify-content: center;
     padding: 2em 0 0 0;
+    border: none;
+    outline: none;
 }
 
 .btn button {
     border: none;
     outline: none;
     background: none;
-    background-color: rgb(39, 168, 39);
+    background-color: #04c484;
     padding: 0.3em 1em;
     border-radius: 10px;
+    outline: none;
+}
+
+.emptyCart-div {
+    display: flex;
+    flex-direction: column;
+    gap: 3em;
+    align-items: center;
+    justify-content: center;
+    padding-top: 5em;
+}
+
+.emptyCart-div div {
+    font-size: 2em;
+    color: #fc3171bf;
+}
+
+.emptyCart-div img {
+    width: 400px;
 }
 
 @media only screen and (max-width: 768px) {

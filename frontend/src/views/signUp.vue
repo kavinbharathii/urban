@@ -1,7 +1,7 @@
 <script>
 
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../firebase.js'
+import { auth } from './firebase.js'
 import Router from '@/router'
 
 export default {
