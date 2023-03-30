@@ -34,7 +34,7 @@ export default {
 
             let [date, month, year] = dateString.split('-')
             date = date + dateAdditions[parseInt(date[date.length - 1])]
-            month = monthNames[parseInt(month)]
+            month = monthNames[parseInt(month) - 1]
 
             let prettyDateString = [date, month, year].join(" ")
             return prettyDateString
@@ -67,8 +67,16 @@ export default {
 <template>
     <div id="dev">
 
-        <h1 class="title-card">Admin Dashboard</h1>
-        <!-- rendering booked data -->
+        <nav>
+            <h1 class="title-card">Admin Dashboard</h1>
+
+            <div class="nav-links">
+                <p class="nav-link">Add Category</p>
+                <p class="nav-link">Add Services</p>
+                <p class="nav-link">Edit Services</p>
+            </div>
+        </nav>
+
         <div v-for="(bookedData, index0) in this.cartData" :key="index0">
             <div v-for="(userName, index1) in bookedData" :key="index1" class="user-card">
                 <h1 class="username">{{ index1 }}</h1>
@@ -121,11 +129,24 @@ export default {
     align-items: center;
 }
 
-#edit-services {
+#dev > nav {
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+
+    width: 100vw;
+}
+
+.nav-links {
+    display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: row;
+}
+
+.nav-link {
+    width: fit-content;
 }
 
 .title-card {
