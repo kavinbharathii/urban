@@ -5,11 +5,12 @@ import { dbref_rt } from '../views/firebase.js'
 
 export default {
     data() {
-        return{
+        return {
             orderCart: [],
             ordered: [],
             categoryAmt: [],
-            Loading : true
+            Loading : true,
+            status: ''
         }
     },
     props : {
@@ -72,6 +73,10 @@ export default {
             let timePart = [hours, minutes].join(":")
             let prettyTimeString = [timePart, meridian].join(" ")
             return prettyTimeString
+        },
+
+        statusUpdate(status) {
+            this.status = status
         }
     },
 }   
@@ -114,9 +119,12 @@ export default {
                                         <div><pre>Price : {{ data5.rupee }}   </pre></div>
                                         <div><pre>quantity : {{ data5.quantity }}   </pre> </div>
                                         <div><pre>timing : {{ data5.timing }}</pre> </div>
-                                    </div>
+                                        <div> {{ statusUpdate(data5.status) }} </div>
+                                    </div>  
                             </div>
-                            <div class="status">Status  :  </div>
+                            <div class="status">
+                                <div> Status : {{ this.status }} </div>
+                            </div>  
                             <div class="totAmt"> <pre> Total Price : {{ totalbookedamount(data4) }} </pre> </div>
                         </div>
                     </div>
