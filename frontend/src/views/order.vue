@@ -42,6 +42,36 @@ export default {
                 amt += parseInt(data[i].rupee) * parseInt(data[i].quantity)
             }
             return amt
+        },
+        
+        prettyDates(dateString) {
+            const monthNames = ["January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"]
+
+            const dateAdditions = ["th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th"]
+
+            let [date, month, year] = dateString.split('-')
+            date = date + dateAdditions[parseInt(date[date.length - 1])]
+            month = monthNames[parseInt(month)]
+
+            let prettyDateString = [date, month, year].join(" ")
+            return prettyDateString
+        },
+
+        prettyTimes(timeString) {
+            let [hours, minutes, seconds] = timeString.split(":")
+            hours = parseInt(hours)
+            let meridian = parseInt(hours) < 12 ? 'am' : 'pm'
+            hours = (hours > 12) ? hours - 12 : hours 
+            
+            // formatting the "0" hours at midnight time
+            if (hours == 0) hours = 12
+
+            minutes = minutes.padStart(2, '0')
+
+            let timePart = [hours, minutes].join(":")
+            let prettyTimeString = [timePart, meridian].join(" ")
+            return prettyTimeString
         }
     },
 }   
@@ -65,8 +95,8 @@ export default {
 
                     <div v-for="(data3 , index3) in data2" :key="index3" class="order-cart">  
                         <div class="date-time">
-                            <div class="date">Date : {{ index2 }}</div>
-                            <div class="time">Time : {{ index3 }}</div>
+                            <div class="date">Date : {{ this.prettyDates(index2) }}</div>
+                            <div class="time">Time : {{ this.prettyTimes(index3) }}</div>
                         </div>
                         <div v-for="(data4 , index4) in data3.services" :key="index4" class="service-cart">
                             <div>

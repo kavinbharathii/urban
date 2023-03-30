@@ -198,6 +198,9 @@ export default {
                 // sending email
                 this.SendingConfirmEmail()
 
+                // popup message
+                this.popupmessage()
+
             } else {
                 console.log("Declined booking")
                 this.readyToPay = false
@@ -301,6 +304,10 @@ export default {
                 console.log(error)
             })
         },
+
+        popupmessage() {
+            document.getElementById('id02').style.display = 'block'
+        }
     }
 }
 </script>
@@ -396,6 +403,22 @@ export default {
                                 <button class="confirm-button yes-button" @click="this.confirmBooking(true,'Cash on delivery')">Yes</button>
                                 <button class="confirm-button no-button" @click="this.confirmBooking(false)">No</button>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="w3-container">
+                <div id="id02" class="w3-modal">
+                    <div class="w3-modal-content">
+                        <div class="w3-container modal-container">
+                            <span onclick="document.getElementById('id02').style.display='none'"
+                                class="w3-button w3-display-topright">&times;</span>
+                        </div>
+                        <div>
+                            <div class="popup"><H3> Successfully Booked </H3></div>
+                            <div class="popup btn"><button>Ok</button></div>
                         </div>
                     </div>
                 </div>
@@ -740,6 +763,22 @@ export default {
     background-color: #fff;
     border: 1px solid rgb(97,101,187);
     color: blue;
+}
+
+.popup {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2em 0 0 0;
+}
+
+.btn button {
+    border: none;
+    outline: none;
+    background: none;
+    background-color: rgb(39, 168, 39);
+    padding: 0.3em 1em;
+    border-radius: 10px;
 }
 
 @media only screen and (max-width: 768px) {
