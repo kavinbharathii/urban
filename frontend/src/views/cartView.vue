@@ -219,7 +219,8 @@ export default {
                     rupee: categoryObject.rupee,
                     quantity: categoryObject.quantity,
                     booked: true,
-                    paymentMethod: paymentMethod
+                    paymentMethod: paymentMethod,
+                    status: 'pending'
                 })
                 console.log('category saved')
             }
@@ -334,7 +335,7 @@ export default {
         </div>
 
         <div v-if="this.emptyCart" class="emptyCart-div">
-            <img src="../assets/emptyCart.svg" alt="Empty Cart">
+            <img src="/src/assets/emptyCart.svg" alt="Empty Cart">
             <div> Your Cart is Empty </div>
         </div>
 
