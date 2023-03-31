@@ -1,12 +1,11 @@
 <script>
 
-import { child, get} from "firebase/database";
-import { dbref_rt } from '../views/firebase.js'
+import { ref , onValue} from "firebase/database";
+import { db_rt} from '../views/firebase.js'
 
 export default {
     data() {
         return {
-            orderCart: [],
             ordered: [],
             categoryAmt: [],
             Loading : true,
@@ -21,21 +20,22 @@ export default {
     },
     methods: { 
         async getcartdata() {
-            await get(child(dbref_rt, 'Booking/' + this.useremail +'/' )).then((snapshot) => {
-                this.ordered.push(snapshot.val())
-                snapshot.forEach(childSnapshot => {
-                    this.orderCart[childSnapshot.key] = childSnapshot.val()
-                    this.Loading = false
+            
+                const messagesRef = ref(db_rt, 'Booking/' + this.useremail + '/');
+                onValue(messagesRef, snapshot => {
+                    this.ordered = [];
+                    if (snapshot.exists()) {
+                        this.ordered.push(snapshot.val())
+                        this.Loading = false
+
+                    } else {
+                        console.log("No data available");
+                        this.Loading = false
+                    }
                 })
-                })
-                .then(() => {
-                    // console.log( this.orderCart)
-                    this.Loading = false
-                })
-                .catch((error) => {
-                    console.error(error);
-                });            
-        },
+                console.log(this.cartData)
+        },     
+        
         totalbookedamount( data ) {
             
             let amt = 0
@@ -95,9 +95,7 @@ export default {
 
         <div class="cart-view" v-if="!this.Loading">
             <div v-for="(data1, index) in this.ordered" :key="index">
-
                 <div v-for="(data2 , index2) in data1" :key="index2" class="all-carts">
-
                     <div v-for="(data3 , index3) in data2" :key="index3" class="order-cart">  
                         <div class="date-time">
                             <div class="date">Date : {{ this.prettyDates(index2) }}</div>
