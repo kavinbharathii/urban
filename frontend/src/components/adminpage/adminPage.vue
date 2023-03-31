@@ -1,21 +1,15 @@
 
 <script>
 
-import { db, db_rt } from "@/views/firebase.js"
-import { get, ref, onValue } from "@firebase/database";
-import { setDoc, doc, getDocs, collection } from "@firebase/firestore";
+import { db_rt } from "@/views/firebase.js"
+import { ref, onValue , set } from "@firebase/database";
 
 export default {
     data() {
         return {
             bookedData: {},
             cartData: [],
-            options: [
-                { value: 'option1', label: 'Option 1' },
-                { value: 'option2', label: 'Option 2' },
-                { value: 'option3', label: 'Option 3' }
-            ],
-            selectedOptions: []
+            statusValue : ''
         }
     },
     methods: {
@@ -60,6 +54,29 @@ export default {
             let timePart = [hours, minutes].join(":")
             let prettyTimeString = [timePart, meridian].join(" ")
             return prettyTimeString
+        },
+
+        statusupdate(username , date,time, category , categories ) {
+            console.log(username , date , time , category , categories  )
+            
+            this.statusValue = 'status'+ username + date + time + category 
+            let id = document.getElementById(this.statusValue)
+            console.log(id.value)
+
+            for ( let i in categories ){
+                
+                set(ref(db_rt, 'Booking/'  +  username+'/' + date+'/' +  time+'/' +  'services/' +  category+'/'  + i), {
+
+                        booked: categories[i].booked,
+                        paymentMethod: categories[i].paymentMethod,
+                        quantity: categories[i].quantity,
+                        rupee: categories[i].rupee,
+                        timing: categories[i].timing,
+                        status: id.value
+                    }).then(() => {
+                        console.log('Added successfully')
+                    })
+            }
         }
     },
     async mounted() {
@@ -108,7 +125,14 @@ export default {
                                 </div>
                                 <div>Status : </div>
                                 <div>
-                                    
+                                    <select  :id = "'status' + index1 + index2 + index3 + index5">
+                                        <option value="Order Received">Order Received</option>
+                                        <option value="Service in progress">Service in progress</option>
+                                        <option value="Service completed">Service completed</option>
+                                    </select>
+                                </div>
+                                <div @click="statusupdate(index1,index2,index3,index5,category)">
+                                    update 
                                 </div>
                             </div>
                         </div>
