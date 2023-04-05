@@ -487,7 +487,6 @@ export default {
 }
 
 .cart-view {
-    height: 80vh;
     overflow: scroll;
     padding: 0 2em 0 0;
     margin-top: 1em;

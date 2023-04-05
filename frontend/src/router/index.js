@@ -15,25 +15,40 @@ const router = createRouter({
 	routes: [
 		{
 			path: '',
-			component: Home
+			component: Home,
+			meta: {
+				title: 'Serve To All'
+			}
 		},
 		{
 			path: '/signin',
-			component: signIn
+			component: signIn,
+			meta: {
+				title: 'SignIn'
+			}
 		},
 		{
 			path: '/signup',
-			component: signUp
+			component: signUp,
+			meta: {
+				title: 'SignUp'
+			}
 		},
 		{
 			path: '/cart',
 			component: cart,
+			meta: {
+				title: 'Cart'
+			}
 		},
 		{
 			path: '/yourorders',
 			component: orders,
 			props(route) {
 				return {  useremail : route.query.useremail }
+			},
+			meta: {
+				title: 'Booking Orders'
 			}
 		},
 		{
@@ -41,6 +56,9 @@ const router = createRouter({
 			component: categoryServices,
 			props: {
 				categoryName: 'CCTV'
+			},
+			meta: {
+				title: 'CCTV Services'
 			}
 		},
 		{
@@ -48,6 +66,9 @@ const router = createRouter({
 			component: categoryServices,
 			props: {
 				categoryName: 'Computer'
+			},
+			meta: {
+				title: 'Computer Services'
 			}
 		},
 		{
@@ -55,6 +76,9 @@ const router = createRouter({
 			component: categoryServices,
 			props: {
 				categoryName: 'Electrician'
+			},
+			meta: {
+				title: 'Electrician Services'
 			}
 		},
 		{
@@ -62,25 +86,48 @@ const router = createRouter({
 			component: categoryServices,
 			props: {
 				categoryName: 'Plumbing'
+			},
+			meta: {
+				title: 'Plumbing Services'
 			}
 		},
 		{
 			path: '/admin',
-			component: adminPage
+			component: adminPage,
+			meta: {
+				title: 'Admin Dashboard'
+			}
 		},
 		{
 			path:'/admin/addservices',
-			component: addservices
+			component: addservices,
+			meta: {
+				title: 'AddServices'
+			}
 		},
 		{
 			path:'/admin/addcategory',
-			component: addcategory
+			component: addcategory,
+			meta: {
+				title: 'AddCategory'
+			}
 		},
 		{
 			path:'/admin/editservices',
-			component: editservices
+			component: editservices,
+			meta: {
+				title: 'EditServices'
+			}
 		}
 	]
 })
+
+router.beforeEach((to, from, next) => {
+	const title = to.meta.title
+	if (title) {
+	  document.title = title
+	}
+	next()
+  })
 
 export default router

@@ -1,21 +1,16 @@
 
 <script>
 
-import { db, db_rt } from "@/views/firebase.js"
-import { get, ref, onValue } from "@firebase/database";
-import { setDoc, doc, getDocs, collection } from "@firebase/firestore";
+import { db_rt } from "@/views/firebase.js"
+import { ref, onValue, set } from "@firebase/database";
 
 export default {
     data() {
         return {
             bookedData: {},
             cartData: [],
-            options: [
-                { value: 'option1', label: 'Option 1' },
-                { value: 'option2', label: 'Option 2' },
-                { value: 'option3', label: 'Option 3' }
-            ],
-            selectedOptions: []
+            statusValue: '',
+            Loading: true
         }
     },
     methods: {
@@ -25,8 +20,10 @@ export default {
                 this.cartData = [];
                 if (snapshot.exists()) {
                     this.cartData.push(snapshot.val())
+                    this.Loading = false
                 } else {
                     console.log("No data available");
+                    this.Loading = false
                 }
             })
             console.log(this.cartData)
@@ -50,8 +47,8 @@ export default {
             let [hours, minutes, seconds] = timeString.split(":")
             hours = parseInt(hours)
             let meridian = parseInt(hours) < 12 ? 'am' : 'pm'
-            hours = (hours > 12) ? hours - 12 : hours 
-            
+            hours = (hours > 12) ? hours - 12 : hours
+
             // formatting the "0" hours at midnight time
             if (hours == 0) hours = 12
 
@@ -60,6 +57,29 @@ export default {
             let timePart = [hours, minutes].join(":")
             let prettyTimeString = [timePart, meridian].join(" ")
             return prettyTimeString
+        },
+
+        statusupdate(username, date, time, category, categories) {
+            console.log(username, date, time, category, categories)
+
+            this.statusValue = 'status' + username + date + time + category
+            let id = document.getElementById(this.statusValue)
+            console.log(id.value)
+
+            for (let i in categories) {
+
+                set(ref(db_rt, 'Booking/' + username + '/' + date + '/' + time + '/' + 'services/' + category + '/' + i), {
+
+                    booked: categories[i].booked,
+                    paymentMethod: categories[i].paymentMethod,
+                    quantity: categories[i].quantity,
+                    rupee: categories[i].rupee,
+                    timing: categories[i].timing,
+                    status: id.value
+                }).then(() => {
+                    console.log('Added successfully')
+                })
+            }
         }
     },
     async mounted() {
@@ -74,52 +94,70 @@ export default {
 
 <template>
     <div id="dev">
+        <div>
+            <button class="load-btn" v-if="this.Loading">
+                <span class="spinner-border spinner-border-sm" style="color: white"></span>Loading...
+            </button>
+        </div>
 
         <nav>
-            <h1 class="title-card">Admin Dashboard</h1>
 
-            <div class="nav-links">
-                <p class="nav-link">Add Category</p>
-                <p class="nav-link">Add Services</p>
-                <p class="nav-link">Edit Services</p>
+            <div class="title-card" v-if="!this.Loading">Admin Dashboard</div>
+
+            <div class="nav-links" v-if="!this.Loading">
+                <p class="nav-link">AddCategory</p>
+                <p class="nav-link">AddServices</p>
+                <p class="nav-link">EditServices</p>
             </div>
         </nav>
 
         <div v-for="(bookedData, index0) in this.cartData" :key="index0">
             <div v-for="(userName, index1) in bookedData" :key="index1" class="user-card">
                 <h1 class="username">{{ index1 }}</h1>
-                <div v-for="(date, index2) in userName" :key="index2" class="date-card">
-                    <h2 class="dateClass">
-                        <div class="date-circle"></div>    
-                        {{ this.prettyDates(index2) }}
-                    </h2>
-                    <div v-for="(time, index3) in date" :key="index3" class="time-card">
-                        <div class="time">
-                            <h5 class="timeClass">{{ this.prettyTimes(index3) }}</h5>
+
+                <div v-for="(date, index2) in userName" :key="index2" class="order-card">
+                    <div v-for="(time, index3) in date" :key="index3">
+                        <div class="date-time-info">
+                            <div>Date: {{ this.prettyDates(index2) }}</div>
+                            <div>Time: {{ this.prettyTimes(index3) }}</div>
                         </div>
-                        <div class="address-card">
-                            <h4 class="address-title">
-                                Ordered Address:
-                            </h4>
-                            <div class="address-line">{{ time.Address.username }}</div>
-                            <div class="address-line">{{ time.Address.address_line_1 }}</div>
-                            <div class="address-line">{{ time.Address.address_line_2 }}</div>
-                        </div>
-                        <div class="all-categories">
-                            <div v-for="(category, index5) in time.services" :key="index5" class="category">
-                                <div class="categoryname"> {{ index5 }} service </div>
-                                <div v-for="(services, index6) in category" :key="index6" class="services-cart">
-                                    <div class="service-name">{{ index6 }}</div>
-                                    <div class="services-detail">
-                                        <div class="paymentstatus">{{ services.paymentMethod }}</div>
-                                        <div class="quantity">Quantity : {{ services.quantity }}</div>
-                                        <div class="rupee">Price :{{ services.rupee }}</div>
+
+                        <div class="details-card">
+                            <div class="all-categories">
+                                <div v-for="(category, index5) in time.services" :key="index5" class="category">
+                                    <div class="categoryname"> {{ index5 }} service </div>
+                                    <div v-for="(services, index6) in category" :key="index6" class="services-cart">
+                                        <div class="servicename">{{ index6 }}</div>
+                                        <div class="services-detail">
+                                            <div class="paymentstatus"
+                                                :class="`payment ${services.quantity == 'Cash on delivery' ? 'no' : 'yes'} `">
+                                                {{ services.paymentMethod }}
+                                            </div>
+                                            <div class="quantity">Quantity : {{ services.quantity }}</div>
+                                            <div class="rupee">Price :{{ services.rupee }}</div>
+                                        </div>
+                                    </div>
+                                    <div>Status : </div>
+                                    <div>
+                                        <select :id="'status' + index1 + index2 + index3 + index5">
+                                            <option value="Order Received">Order Received</option>
+                                            <option value="Service in progress">Service in progress</option>
+                                            <option value="Service completed">Service completed</option>
+                                        </select>
+                                    </div>
+                                    <div @click="statusupdate(index1, index2, index3, index5, category)" class="update-button">
+                                        update
                                     </div>
                                 </div>
-                                <div>Status : </div>
-                                <div>
-                                    
-                                </div>
+                            </div>
+    
+                            <div class="address-card">
+                                <h4 class="address-title">
+                                    Ordered Address:
+                                </h4>
+                                <div class="address-line">{{ time.Address.username }}</div>
+                                <div class="address-line">{{ time.Address.address_line_1 }}</div>
+                                <div class="address-line">{{ time.Address.address_line_2 }}</div>
                             </div>
                         </div>
                     </div>
@@ -145,8 +183,8 @@ export default {
     justify-content: space-between;
     align-items: center;
     flex-direction: row;
-
     width: 100vw;
+    height: 5em;
 }
 
 .nav-links {
@@ -158,14 +196,16 @@ export default {
 
 .nav-link {
     width: fit-content;
+    margin: 1em;
+    padding: 0.2em 0.5em;
+
+    border-radius: 5px;
+    border: 2px solid var(--rose);
 }
 
 .title-card {
-    margin-top: 1em;
     margin-left: 2em;
-
-    width: 100%;
-    font-weight: 700;
+    font-size: 2em;
 }
 
 .user-card {
@@ -173,51 +213,41 @@ export default {
     flex-direction: column;
     justify-content: center;
     align-items: left;
-
-    border-left: 3px solid var(--rose);
-
-    width: 90vw;
+    width: 80vw;
     margin-bottom: 1.5em;
 }
 
-.date-card {
+.details-card {
+    background-color: #f2f2f2;
+    padding: 1em;
+
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+
     margin-bottom: 2em;
-    /* background: #a9a9a9; */
-    padding: 2em;
-
-    position: relative;
-}
-
-.date-circle {
-    width: 15px;
-    height: 15px;
-    border-radius: 100vh;
-
-    background-color: var(--rose);
-    position: absolute;
-
-    top: 1.8em;
-    left: -0.3em;
-}
-
-.dateClass {
-    font-weight: 500;
-}
-
-.timeClass {
-    font-weight: 500;
-    margin: 0;
-    padding: 0;
-
-    border-bottom: 3px solid var(--rose);
 }
 
 .username {
     color: #171717;
     font-weight: 600;
+    font-size: 1.5em;
     margin-left: 0.5em;
+}
+
+.date-time-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+
+    padding-left: 1.5em;
+    padding-right: 1.5em;
+
+
+    background-color: #cecece;
+    height: 3em;
 }
 
 .services-cart {
@@ -232,29 +262,20 @@ export default {
     margin-left: 1em;
 }
 
-.time-card {
-    display: flex;
-    gap: 2em;
-    flex-direction: row-reverse;
-    align-items: flex-start;
-    justify-content: space-between;
-
-    position: relative;
-    padding-top: 4em;
-    margin-bottom: 2em;
-}
-
 .time {
     position: absolute;
     top: 0;
     left: 0;
 }
 
-.category {
-    display: flex;
-    flex-direction: column;
-    gap: 1em;
-    margin-bottom: 1em;
+.categoryname {
+    font-size: 1.5em;
+    color: var(--rose-dark);
+}
+
+.servicename {
+    padding-left: 1.2em;
+    font-size: 1.1em;
 }
 
 .address-card {
@@ -268,5 +289,13 @@ export default {
 .address-line {
     font-size: 01em;
     font-weight: 200;
+}
+
+.payment.yes {
+    color: rgb(255, 0, 0);
+}
+
+.payment.no {
+    color: green;
 }
 </style>
