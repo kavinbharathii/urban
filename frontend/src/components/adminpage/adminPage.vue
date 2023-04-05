@@ -9,7 +9,8 @@ export default {
         return {
             bookedData: {},
             cartData: [],
-            statusValue : ''
+            statusValue : '',
+            Loading: true
         }
     },
     methods: {
@@ -19,8 +20,10 @@ export default {
                 this.cartData = [];
                 if (snapshot.exists()) {
                     this.cartData.push(snapshot.val())
+                    this.Loading = false
                 } else {
                     console.log("No data available");
+                    this.Loading = false
                 }
             })
             console.log(this.cartData)
@@ -90,7 +93,13 @@ export default {
 <template>
     <div id="dev">
 
-        <h1 class="title-card">Admin Dashboard</h1>
+        <div>
+            <button class="load-btn" v-if="this.Loading">
+                <span class="spinner-border spinner-border-sm" style="color: white"></span>Loading...
+            </button>
+        </div>
+
+        <h1 class="title-card" v-if="!this.Loading">Admin Dashboard</h1>
         <!-- rendering booked data -->
         <div v-for="(bookedData, index0) in this.cartData" :key="index0">
             <div v-for="(userName, index1) in bookedData" :key="index1" class="user-card">
