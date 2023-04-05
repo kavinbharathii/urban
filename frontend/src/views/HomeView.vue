@@ -59,7 +59,7 @@ export default {
 				<categorypage/>
 			</div>
 
-			<div class="page vh-100 vw-100" id="about">
+			<div class="page" id="about">
 				<aboutUs />
 			</div>
 
