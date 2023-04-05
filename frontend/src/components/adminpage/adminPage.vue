@@ -127,7 +127,12 @@ export default {
                                 <div v-for="(services, index6) in category" :key="index6" class="services-cart">
                                     <div class="service-name">{{ index6 }}</div>
                                     <div class="services-detail">
-                                        <div class="paymentstatus">{{ services.paymentMethod }}</div>
+                                        <div class="paymentstatus"
+
+                                        :class="`payment 
+                                            ${ services.quantity == 'Cash on delivery' ?  'no' : 'yes' } ` "
+
+                                        >{{ services.paymentMethod }}</div>
                                         <div class="quantity">Quantity : {{ services.quantity }}</div>
                                         <div class="rupee">Price :{{ services.rupee }}</div>
                                     </div>
@@ -279,4 +284,13 @@ export default {
     font-size: 01em;
     font-weight: 200;
 }
+
+.payment.yes {
+    color: crimson;
+}
+
+.payment.no {
+    color: green;
+}
+
 </style>
