@@ -64,6 +64,8 @@ export default {
     },
     async mounted() {
         this.getAllBookedItems()
+
+        document.title = "Admin Page - Serve To All"
     }
 
 }

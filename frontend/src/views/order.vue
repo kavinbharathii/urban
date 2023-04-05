@@ -53,7 +53,7 @@ export default {
 
             let [date, month, year] = dateString.split('-')
             date = date + dateAdditions[parseInt(date[date.length - 1])]
-            month = monthNames[parseInt(month)]
+            month = monthNames[parseInt(month) - 1]
 
             let prettyDateString = [date, month, year].join(" ")
             return prettyDateString

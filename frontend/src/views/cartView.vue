@@ -37,6 +37,7 @@ export default {
     },
     mounted: function () {
         this.getuser()
+        document.title = "Your Cart - Serve to All"
     },
     methods: {
         getuser() {
@@ -316,7 +317,6 @@ export default {
             document.getElementById('id02').style.display = 'none'
         }
     }
-
 }
 </script>
 
@@ -430,7 +430,7 @@ export default {
                                 class="w3-button w3-display-topright">&times;</span>
                         </div>
                         <div>
-                            <div class="popup"><H3> Successfully Booked </H3></div>
+                            <div class="popup"><h3> Successfully Booked </h3></div>
                             <div class="popup btn"><button @click="popupclose()">Ok</button></div>
                         </div>
                     </div>

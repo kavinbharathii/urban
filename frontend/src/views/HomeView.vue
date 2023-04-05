@@ -18,6 +18,10 @@ export default {
 		categorypage,
 		contactUs,
 		aboutUs,
+	},
+
+	created() {
+		document.title = "Serve To All"
 	}
 }
 
@@ -25,15 +29,15 @@ export default {
 
 <template>
 	<div id="dev">
-
 		<div class="header">
-			<div>
-				<h1 class="logo">IT Arena</h1>
+			<div class="logo">
+				<div>Serve<span style="color: var(--rose-dark);">To</span>All</div>
 			</div>
 			<div>
-				<nav class="nav-bar navbar navbar-expand-sm navbar-dark">	
+				<nav class="nav-bar navbar navbar-expand-sm navbar-dark">
 					<div class="container">
-						<button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#n_bar" aria-controls="navbarNavAltMarkup" aria-label="Toggle navigation">
+						<button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse"
+							data-bs-target="#n_bar" aria-controls="navbarNavAltMarkup" aria-label="Toggle navigation">
 							<span class="navbar-toggler-icon"></span>
 						</button>
 						<div class="collapse navbar-collapse" id="n_bar">
@@ -56,7 +60,7 @@ export default {
 			</div>
 
 			<div class="page" id="services">
-				<categorypage/>
+				<categorypage />
 			</div>
 
 			<div class="page vh-100 vw-100" id="about">
@@ -94,6 +98,7 @@ button {
 }
 
 .logo {
+	font-size: 2em;
 	margin-left: 1.5em;
 	margin-top: .2em;
 }
@@ -158,7 +163,7 @@ a {
 	text-decoration: none;
 }
 
-.navbar-nav > li {
+.navbar-nav>li {
 	margin-right: 0;
 	width: 100%;
 
@@ -169,8 +174,18 @@ a {
 	/* margin-bottom: 2px; */
 }
 
+.logo-subtext {
+	display: flex;
+	font-size: 1.5em;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	margin: 0;
+	letter-spacing: 0.2em;
+}
+
 @media only screen and (max-width: 600px) {
-    .cards-container {
+	.cards-container {
 		flex-direction: column;
 		width: 100vw;
 	}
@@ -179,5 +194,4 @@ a {
 		width: 100vw;
 	}
 }
-
 </style>

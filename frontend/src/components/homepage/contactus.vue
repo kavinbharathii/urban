@@ -113,20 +113,20 @@ export default {
                         <div>
                             <span class="material-symbols-outlined">mail</span>
                         </div>
-                        hello@servbees.com
+                        servetoalls@gmail.com
                     </div>
                     <div class="icon-text-pair">
                         <div>
                             <span class="material-symbols-outlined">location_on</span>
                         </div>
-                        PH: 360Verve, OPC41F, Pioneer Highlands West Tower 2, Madison St., Mandaluyong City
+                        No.200,East Sambandam Road,R.S.Puram, Coimbatore, Tamil Nadu 641002
                     </div>
-                    <div class="icon-text-pair">
+                    <!-- <div class="icon-text-pair">
                         <div>
                             <span class="material-symbols-outlined">map</span>
                         </div>
                         SG: Servbees Pte. Ltd 9 Temasek Boulevard, #07-01 Suntec Tower 2. Singapore 038989
-                    </div>
+                    </div> -->
                 </div>
             </div>
 

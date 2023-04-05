@@ -30,7 +30,7 @@ export default {
 
 <div class="navbar">
     <div class="logo">
-        <div>IT Arena</div>
+        <div>Serve<span style="color: var(--rose-dark);">To</span>All</div>
     </div>
 
     <div class="links">

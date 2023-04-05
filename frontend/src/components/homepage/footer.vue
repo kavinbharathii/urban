@@ -15,7 +15,7 @@ export default {
             <div><font-awesome-icon icon="fa-solid fa-envelope" /></div>
         </div>
         <div class="made-div">
-            <div>© 2023 ItArena Pte Ltd. All rights reserved.Made with <font-awesome-icon icon="fa-solid fa-heart hrt-icon" bounce /> in SG & PH</div>
+            <div>© 2023 ServeToAll Pte Ltd. All rights reserved.Made with <font-awesome-icon icon="fa-solid fa-heart hrt-icon" bounce /> by kreativ.</div>
         </div>
     </div>
 </template>

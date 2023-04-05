@@ -31,6 +31,7 @@ export default {
     },
     mounted: function () {
         this.getData()
+        document.title = `${this.categoryName} Services - Serve To All`
 
         onAuthStateChanged(auth, (user) => {
             if (user) {
