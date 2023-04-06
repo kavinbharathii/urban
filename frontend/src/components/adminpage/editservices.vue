@@ -127,7 +127,7 @@ export default {
 
             <input placeholder="price" type="number" v-model="this.editServiceForm.price">
 
-            <button @click.prevent="editService">Edit Service</button>
+            <button @click.prevent="editService" class="submit-button">Edit Service</button>
 
             <div v-if="this.successState" class="info success">
                 Successfully edited service
@@ -197,6 +197,11 @@ select {
     background-color: var(--rose);
 
     transition: border 200ms ease;
+
+    border: none;
+    outline: none;
+    width: 100%;
+    padding: 0.3em 0.2em;
 }
 
 #editForm>.submit-button:hover {
