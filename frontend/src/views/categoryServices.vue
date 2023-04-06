@@ -1,5 +1,6 @@
 <script>
 
+import { useRoute } from 'vue-router'
 
 import { collection, getDocs } from "firebase/firestore";
 import { ref, set } from "firebase/database";
@@ -15,9 +16,9 @@ export default {
     components: {
         serviceNavbar
     },
-    props: {
-        categoryName: String
-    },
+    // props: {
+    //     categoryName: String
+    // },
     data() {
         return {
             serviceName: [],
@@ -26,10 +27,14 @@ export default {
             userName: "",
             userLoggedIn: false,
             loggedInUserName: "",
-            loginedEmail: ""
+            loginedEmail: "",
+            categoryName: ""
         }
     },
     mounted: function () {
+        const route = useRoute()
+        this.categoryName = route.params.serid
+
         this.getData()
         document.title = `${this.categoryName} Services - Serve To All`
 
@@ -52,6 +57,7 @@ export default {
         console.log("User information")
         console.log(this.userLoggedIn)
     },
+
     methods: {
         async getData() {
 
@@ -127,7 +133,6 @@ export default {
     },
 }
 </script>
-
 
 <template>
     <div>

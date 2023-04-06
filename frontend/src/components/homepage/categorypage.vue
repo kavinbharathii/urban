@@ -6,7 +6,16 @@ import CategoryCard from './CategoryCard.vue'
 export default {
     data() {
         return{
-
+            user: 'barath',
+            services: [
+                'Computer',
+                'Laptop',
+                'CCTV',
+                'Printer',
+                'Ups',
+                'Electrician',
+                'Plumbing'
+            ]
         }
     },
     components: {
@@ -19,8 +28,13 @@ export default {
 <template>
     <div>
         <div class="p2 vw-100">
-            <div class="cards-container">
-                    <router-link to="/computer-services">
+            <div class="cards-container" v-for="(service , ind) in this.services" :key="ind">
+                
+                    <router-link :to="{ path: `/services/${service}` }">
+                        <CategoryCard :categoryName='service' description="Description." />
+                    </router-link>
+
+                    <!-- <router-link to="/computer-services">
                         <CategoryCard categoryName="Computer" description="Description." />
                     </router-link>
                     <router-link to="/laptop-services">
@@ -42,7 +56,7 @@ export default {
                     </router-link>
                     <router-link to="/plumbing-services">
                         <CategoryCard categoryName="Plumbing" description="Description." />
-                    </router-link>
+                    </router-link> -->
             </div>
         </div>
     </div>
@@ -50,6 +64,14 @@ export default {
 
 
 <style scoped>
+
+.p2 {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
 .cards-container {
 	display: flex;
 	flex-wrap: wrap;
@@ -58,9 +80,6 @@ export default {
 	justify-content: center;
 	align-items: center;
 	gap: 1.5em;
-
-	min-width: 100vw;
-	min-height: 100vh;
 
 	padding: 2em 0;
 }

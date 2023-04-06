@@ -118,6 +118,13 @@ const router = createRouter({
 			meta: {
 				title: 'EditServices'
 			}
+		},
+		{
+			path: '/services/:serid',
+			component: categoryServices,
+			// props: {
+			// 	categoryName: $route.params.serid
+			// },
 		}
 	]
 })
