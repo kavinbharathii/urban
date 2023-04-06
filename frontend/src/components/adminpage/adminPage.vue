@@ -137,16 +137,18 @@ export default {
                                             <div class="rupee">Price :{{ services.rupee }}</div>
                                         </div>
                                     </div>
-                                    <div>Status : </div>
-                                    <div>
-                                        <select :id="'status' + index1 + index2 + index3 + index5">
-                                            <option value="Order Received">Order Received</option>
-                                            <option value="Service in progress">Service in progress</option>
-                                            <option value="Service completed">Service completed</option>
-                                        </select>
-                                    </div>
-                                    <div @click="statusupdate(index1, index2, index3, index5, category)" class="update-button">
-                                        update
+                                    <div class="status-div">
+                                        <div>Order status: </div>
+                                        <div>
+                                            <select :id="'status' + index1 + index2 + index3 + index5">
+                                                <option value="Order Received">Order Received</option>
+                                                <option value="Service in progress">Service in progress</option>
+                                                <option value="Service completed">Service completed</option>
+                                            </select>
+                                        </div>
+                                        <div @click="statusupdate(index1, index2, index3, index5, category)" class="status-update">
+                                            update
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -289,6 +291,21 @@ export default {
 .address-line {
     font-size: 01em;
     font-weight: 200;
+}
+
+.status-div {
+    margin-top: 3.5em;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+}
+
+.status-update {
+    background-color: rgb(81 112 235);
+    padding: 0 0.5em 0 0.5em;
+    color: #ffffff;
 }
 
 .payment.yes {
