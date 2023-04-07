@@ -66,6 +66,9 @@ export default {
             let id = document.getElementById(this.statusValue)
             console.log(id.value)
 
+            const checkBoxId = 'status' + username + date + time + category + 'checkBox'
+            let checkBox = document.getElementById(checkBoxId)
+
             for (let i in categories) {
 
                 set(ref(db_rt, 'Booking/' + username + '/' + date + '/' + time + '/' + 'services/' + category + '/' + i), {
@@ -78,6 +81,9 @@ export default {
                     status: id.value
                 }).then(() => {
                     console.log('Added successfully')
+                    checkBox.innerHTML = "<span class='material-symbols-outlined bold-green'>check_circle</span>"
+                }).catch((err) => {
+                    console.log("Error")
                 })
             }
         }
@@ -100,16 +106,40 @@ export default {
             </button>
         </div>
 
-        <nav>
-
-            <div class="title-card" v-if="!this.Loading">Admin Dashboard</div>
-
-            <div class="nav-links" v-if="!this.Loading">
-                <p class="nav-link"> <router-link to='/admin/addCategory'>AddCategory</router-link> </p>
-                <p class="nav-link"> <router-link to='/admin/addservices'>AddServices</router-link> </p>
-                <p class="nav-link"> <router-link to='/admin/editservices'>EditServices</router-link></p>
+        <div class="header" v-if="!this.Loading">
+            <div class="logo">
+                Admin Dashboard
             </div>
-        </nav>
+            <div>
+                <nav class="nav-bar navbar navbar-expand-sm navbar-dark">
+                    <div class="container">
+                        <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#n_bar" aria-controls="navbarNavAltMarkup" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="n_bar">
+                            <ul class="navbar-nav">
+                                <li class="nav-item">
+                                    <router-link to='/admin/addCategory'>
+                                        <p class="nav-link">Add Category</p>
+                                    </router-link>
+                                </li>
+                                <li class="nav-item">
+                                    <router-link to='/admin/addservices'>
+                                        <p class="nav-link">Add Services</p>
+                                    </router-link>
+                                </li>
+                                <li class="nav-item">
+                                    <router-link to='/admin/editservices'>
+                                        <p class="nav-link">Edit Services</p>
+                                    </router-link>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
 
         <div v-for="(bookedData, index0) in this.cartData" :key="index0">
             <div v-for="(userName, index1) in bookedData" :key="index1" class="user-card">
@@ -146,13 +176,19 @@ export default {
                                                 <option value="Service completed">Service completed</option>
                                             </select>
                                         </div>
-                                        <div @click="statusupdate(index1, index2, index3, index5, category)" class="status-update">
+                                        <div @click="statusupdate(index1, index2, index3, index5, category)"
+                                            class="status-update">
                                             update
+                                        </div>
+                                        <div class="updated-status" :id="'status' + index1 + index2 + index3 + index5 + 'checkBox'">
+                                            <!-- <span class="material-symbols-outlined">
+                                                check_circle
+                                            </span> -->
                                         </div>
                                     </div>
                                 </div>
                             </div>
-    
+
                             <div class="address-card">
                                 <h4 class="address-title">
                                     Ordered Address:
@@ -180,29 +216,92 @@ export default {
     align-items: center;
 }
 
-#dev > nav {
+.nav-bar {
+    text-decoration: none;
+    z-index: 100;
+}
+
+
+.header {
+    margin-top: .3em;
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    flex-direction: row;
-    width: 100vw;
-    height: 5em;
+    width: 100%;
+}
+
+.collapse {
+    justify-content: end;
+}
+
+button {
+    background-color: #171717;
+}
+
+.logo {
+    font-size: 2em;
+    margin-left: 1.5em;
+    margin-top: .2em;
 }
 
 .nav-links {
+    margin-right: 1.5em;
+
     display: flex;
-    justify-content: center;
-    align-items: center;
     flex-direction: row;
+    gap: 0.4em;
 }
 
 .nav-link {
-    width: fit-content;
-    margin: 1em;
-    padding: 0.2em 0.5em;
+    text-decoration: none;
+    text-transform: uppercase;
 
-    border-radius: 5px;
-    border: 2px solid var(--rose);
+    position: relative;
+    z-index: 1;
+    color: #171717;
+    margin: 0 0.5em 0 0.5em;
+}
+
+.nav-link:hover {
+    color: #171717;
+}
+
+.nav-link::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    bottom: 0;
+    left: -0.25em;
+    right: -0.25em;
+    background-color: #fc3171bf;
+    transform-origin: center right;
+    transform: scaleX(0);
+    transition: transform 0.2s ease-in-out;
+}
+
+.nav-link:hover::before {
+    transform: scaleX(1);
+    transform-origin: center left;
+}
+
+
+a {
+    text-decoration: none;
+}
+
+.navbar-nav>li {
+    display: flex;
+    justify-content: right;
+}
+
+.logo-subtext {
+    display: flex;
+    font-size: 1.5em;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 0;
+    letter-spacing: 0.2em;
 }
 
 .title-card {
@@ -289,7 +388,7 @@ export default {
 }
 
 .address-line {
-    font-size: 01em;
+    font-size: 1em;
     font-weight: 200;
 }
 
@@ -314,5 +413,10 @@ export default {
 
 .payment .no {
     color: green;
+}
+
+.bold-green {
+    font-weight: 700;
+    color: #4ade80;
 }
 </style>

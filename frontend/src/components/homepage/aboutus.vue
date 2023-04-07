@@ -253,8 +253,11 @@ export default {
     </div>
 
     <div class="text-area">
-        We provide <span style="color: #fc3171bf;">high quality</span> services ranging from CCTV, Laptop and Desktop
-        repairs to UPS, Plumbing and Electricals.
+        <h1>About Us</h1>
+        <div>
+            We provide <span style="color: #fc3171bf;">high quality</span> services ranging from CCTV, Laptop and Desktop
+            repairs to UPS, Plumbing and Electricals.
+        </div>
     </div>
 </div></template>
 
@@ -291,6 +294,16 @@ export default {
     width: 20vw;
     font-size: 1.3em;
 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.text-area > h1 {
+    font-family: "Satoshi", sans-serif;
+
+    font-size: 3.5em;
 }
 
 @media only screen and (max-width: 768px ){

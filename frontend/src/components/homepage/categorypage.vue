@@ -6,7 +6,6 @@ import CategoryCard from './CategoryCard.vue'
 export default {
     data() {
         return{
-            user: 'barath',
             services: [
                 'Computer',
                 'Laptop',
@@ -26,37 +25,14 @@ export default {
 </script>
 
 <template>
-    <div>
+    <div id="dev">
+        <h1>Our Services</h1>
         <div class="p2 vw-100">
             <div class="cards-container" v-for="(service , ind) in this.services" :key="ind">
                 
                     <router-link :to="{ path: `/services/${service}` }">
                         <CategoryCard :categoryName='service' description="Description." />
                     </router-link>
-
-                    <!-- <router-link to="/computer-services">
-                        <CategoryCard categoryName="Computer" description="Description." />
-                    </router-link>
-                    <router-link to="/laptop-services">
-                        <CategoryCard categoryName="Laptop" description="Description." />
-                    </router-link>
-
-                    <router-link to="/cctv-services">
-                        <CategoryCard categoryName="CCTV" description="Description." />
-                    </router-link>
-                    <router-link to="/printer-services">
-                        <CategoryCard categoryName="Printer" description="Description." />
-                    </router-link>
-                    <router-link to="/ups-services">
-                        <CategoryCard categoryName="UPS" description="Description." />
-                    </router-link>
-
-                    <router-link to="/electrician-services">
-                        <CategoryCard categoryName="Electrician" description="Description." />
-                    </router-link>
-                    <router-link to="/plumbing-services">
-                        <CategoryCard categoryName="Plumbing" description="Description." />
-                    </router-link> -->
             </div>
         </div>
     </div>
@@ -64,6 +40,19 @@ export default {
 
 
 <style scoped>
+
+#dev {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-family: "Satoshi", sans-serif;
+}
+
+#dev > h1 {
+    font-size: 4em;
+    font-family: "Satoshi", sans-serif;
+}
 
 .p2 {
     display: flex;

@@ -66,5 +66,10 @@ export default {
     z-index: 999;
 }
 
+.text-area > * {
+    font-family: "Satoshi";
+    font-weight: 100;
+}
+
 
 </style>
