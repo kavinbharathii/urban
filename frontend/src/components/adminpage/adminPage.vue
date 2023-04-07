@@ -308,11 +308,11 @@ export default {
     color: #ffffff;
 }
 
-.payment.yes {
+.payment .yes {
     color: rgb(255, 0, 0);
 }
 
-.payment.no {
+.payment .no {
     color: green;
 }
 </style>
