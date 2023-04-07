@@ -105,9 +105,9 @@ export default {
             <div class="title-card" v-if="!this.Loading">Admin Dashboard</div>
 
             <div class="nav-links" v-if="!this.Loading">
-                <p class="nav-link">AddCategory</p>
-                <p class="nav-link">AddServices</p>
-                <p class="nav-link">EditServices</p>
+                <p class="nav-link"> <router-link to='/admin/addCategory'>AddCategory</router-link> </p>
+                <p class="nav-link"> <router-link to='/admin/addservices'>AddServices</router-link> </p>
+                <p class="nav-link"> <router-link to='/admin/editservices'>EditServices</router-link></p>
             </div>
         </nav>
 

@@ -86,7 +86,7 @@ export default {
 
             <input type="number" placeholder="price" v-model="this.newServiceForm.price">
 
-            <button @click.prevent="addNewService">Add Service</button>
+            <button @click.prevent="addNewService" class="submit-button">Add Service</button>
 
             <div v-if="this.successState" class="info success">
                 New service has been added successfully
@@ -157,6 +157,11 @@ select {
     background-color: var(--rose);
 
     transition: border 200ms ease;
+
+    border: none;
+    outline: none;
+    width: 100%;
+    padding: 0.3em 0.2em;
 }
 
 #serviceForm>.submit-button:hover {
