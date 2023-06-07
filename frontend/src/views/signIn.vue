@@ -38,7 +38,6 @@ export default {
                     const uid = user.email;
                     let email_username = uid.split('@')[0]
                     let valid_username = email_username.replace(".", "")
-                    console.log(valid_username)
                 } else {
                     console.log("Can't get user e-mail")
                     Router.push('/signup')
@@ -50,13 +49,15 @@ export default {
             signInWithEmailAndPassword(auth, this.form.email, this.form.password)
                 .then((userCredential) => {
                     const user = userCredential.user;
-                    console.log('sigin successfully')
+                    console.log('sigin successfully' , user.email )
                     this.errorState = false
                     this.successState = true
-
-                    console.log('this')
+                    if ( user.email == 'servetoall@gmail.com' ) {
+                        Router.push('/admin')
+                        console.log('admin')
+                        return
+                    }
                     delay(2000)
-                    console.log('that')
                     Router.push('/#services')
                 })
                 .catch((error) => {

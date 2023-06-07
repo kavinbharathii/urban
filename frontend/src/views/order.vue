@@ -20,20 +20,19 @@ export default {
     },
     methods: { 
         async getcartdata() {
-            
+                console.log('Checking')
                 const messagesRef = ref(db_rt, 'Booking/' + this.useremail + '/');
                 onValue(messagesRef, snapshot => {
                     this.ordered = [];
                     if (snapshot.exists()) {
                         this.ordered.push(snapshot.val())
                         this.Loading = false
-
+                        console.log(this.ordered)
                     } else {
                         console.log("No data available");
                         this.Loading = false
                     }
                 })
-                console.log(this.cartData)
         },     
         
         totalbookedamount( data ) {

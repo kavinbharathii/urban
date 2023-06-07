@@ -59,6 +59,9 @@ export default {
     },
 
     methods: {
+        adminconsole() {
+            Router.push('/admin')
+        },
         async getData() {
 
             const querySnapshot = await getDocs(collection(db, this.categoryName));
@@ -137,6 +140,7 @@ export default {
 <template>
     <div>
         <serviceNavbar :showOptions="!this.userLoggedIn" :userName="this.userName" :loginedEmail="this.loginedEmail" />
+        
         <div class="main">
             <div class="name-img">
                 <div class="name">
@@ -153,8 +157,12 @@ export default {
                 <span class="spinner-border spinner-border-sm" style="color: white"></span>Loading..
             </button>
 
+            <div v-if="this.loginedEmail == 'servetoall@gmail.com'">  
+                <div class="admin-console" @click="adminconsole()"> <button> Go to Admin Console </button></div>
+            </div>
 
             <h3 v-if="!this.Loading">Provided Services with Pricing</h3>
+
             <div class="all-cards" v-if="!this.Loading">
 
                 <div class="cards" v-for="(data, index) in this.providedServices" :key="index">
@@ -176,6 +184,8 @@ export default {
                 </div>
 
                 <div class="free"></div>
+
+                
             </div>
 
         </div>
@@ -306,6 +316,20 @@ h3 {
     transform: translateY(1em);
     transition: .35s;
     color: red;
+}
+
+.admin-console {
+        padding-left: 15%;
+    margin-bottom: 2em;
+
+}
+
+.admin-console button {
+    border: none;
+    background: #fc3171bf;
+    padding: 0.3em 0.5em;
+    border-radius: 10px;
+    outline: none;
 }
 
 @media only screen and (max-width: 600px) {
